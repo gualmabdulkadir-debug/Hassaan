@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hassaan Digital Point</title>
 <style>
@@ -32,24 +32,28 @@ const cfg={apiKey:"AIzaSyCWrKkSmgPXDt6KL7FNyMLZeI6kXd4ukU0",authDomain:"hassaan-
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ST={placed:"Naya",self:"Seller khud pahuncha raha hai",needboy:"Delivery Boy chahiye",arrived:"Pahunch gaya",assigned:"Assigned",picked:"Raste me hai",delivered:"Deliver ho gaya",cancelled:"Cancelled"};
-let seen={},me=null,subs=[],D={products:[],orders:[],users:[],hist:[]},sq="",creating=false,pending=false;
+let seen={},me={role:"customer",id:"guest",name:"Grahak"},subs=[],D={products:[],orders:[],users:[],hist:[]},sq="",creating=false,pending=false,showLogin=false;
 const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render(1)};
 const sorted=a=>[...a].sort((x,y)=>(y.createdAt?.seconds||9e9)-(x.createdAt?.seconds||9e9));
 const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(seen[k]&&k=="orders"&&me.role!="customer"&&s.docChanges().some(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified")))ping();seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.error(k,e)));
-function render(f){if(!me)return;if(!f&&(document.activeElement?.matches("input,select,textarea")||(me.role=="seller"&&$("#pn2")?.value))){pending=true;return}pending=false;
- $("#who").innerHTML=`${esc(me.name)} (${{customer:"Grahak",admin:"Admin",seller:"Seller",delivery:"Delivery"}[me.role]}) ${me.role!="customer"?"<button class=g data-a=notif>🔔</button> ":""}<button class=g data-a=out>Logout</button>`;
+function render(f){if(!f&&(document.activeElement?.matches("input,select,textarea")||(me.role=="seller"&&$("#pn2")?.value))){pending=true;return}pending=false;
+ if(showLogin){loginV();return}
+ $("#who").innerHTML=me.id=="guest"?`<button class=g data-a=openlogin>🔑 Seller / Admin Login</button>`:`${esc(me.name)} (${{customer:"Grahak",admin:"Admin",seller:"Seller",delivery:"Delivery"}[me.role]}) ${me.role!="customer"?"<button class=g data-a=notif>🔔</button> ":""}<button class=g data-a=out>Logout</button>`;
  $("#app").innerHTML={customer:vC,admin:vA,seller:vS,delivery:vD}[me.role]()}
 document.addEventListener("focusout",()=>setTimeout(()=>pending&&render(),80));
-function loginV(){$("#who").innerHTML="";$("#app").innerHTML=`<div class=card style="max-width:380px;margin:auto"><h2>Login</h2><div class=row><input id=nm placeholder="Naam (Sirf naye grahak ke liye)"></div><div class=row><input id=em placeholder="Email"></div><div class=row><input id=pw type=password placeholder="Password (Kam se kam 6 characters)"></div><div class=row><button class=b data-a=login>Login</button><button class=g data-a=reg>Naya Grahak Account</button></div><a data-a=reset>Password bhool gaye?</a></div>`}
+function loginV(){$("#who").innerHTML=`<button class=g data-a=closelogin>← Store par wapas jayein</button>`;$("#app").innerHTML=`<div class=card style="max-width:380px;margin:auto"><h2>Seller / Admin Login</h2><div class=row><input id=em placeholder="Email"></div><div class=row><input id=pw type=password placeholder="Password"></div><div class=row><button class=b data-a=login>Login</button></div><a data-a=reset>Password bhool gaye?</a></div>`}
 async function boot(u){const s=await getDoc(doc(db,"users",u.uid));
  if(!s.exists()||s.data().status!="active"){alert("Ye account chalu nahi hai. Admin se sampark karein.");return signOut(auth)}
- me={id:u.uid,...s.data()};const r=me.role;
- if(r=="admin")subs.push(onSnapshot(doc(db,"settings","draft"),s=>{DR=s.exists()?s.data():null;render()},()=>{}));subs.push(onSnapshot(doc(db,"settings","fees"),s=>{if(s.exists())F={...F,...s.data()};render()}));if(r=="customer"){sub(query(collection(db,"products"),where("status","==","approved")),"products");sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
+ me={id:u.uid,...s.data()};showLogin=false;const r=me.role;
+ if(r=="admin")subs.push(onSnapshot(doc(db,"settings","draft"),s=>{DR=s.exists()?s.data():null;render()},()=>{}));subs.push(onSnapshot(doc(db,"settings","fees"),s=>{if(s.exists())F={...F,...s.data()};render()}));
+ sub(query(collection(db,"products"),where("status","==","approved")),"products");
+ if(r=="customer"){sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
  if(r=="seller"){sub(query(collection(db,"products"),where("sellerId","==",me.id)),"products");sub(query(collection(db,"orders"),where("sellerId","==",me.id)),"orders")}
  if(r=="delivery")sub(query(collection(db,"orders"),where("boyId","==",me.id)),"orders");
  if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users")}
  render(1)}
-  const CATS={"Kapde":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL","Free Size"]],["Color"],["Material"],["Kiske liye",["Men","Women","Kids","Unisex"]]]},
+onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};D={products:[],orders:[],users:[],hist:[]};if(!u){me={role:"customer",id:"guest",name:"Grahak"};sub(query(collection(db,"products"),where("status","==","approved")),"products");render(1)}else if(!creating)boot(u)});
+ const CATS={"Kapde":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL","Free Size"]],["Color"],["Material"],["Kiske liye",["Men","Women","Kids","Unisex"]]]},
 "Mobile aur Electronics":{e:"📱",f:[["Brand"],["Model"],["Color"],["Warranty",["Koi nahi","6 Mahine","1 Saal","2 Saal"]],["Box me kya milega"]]},
 "Kirana aur Khana":{e:"🛒",f:[["Brand"],["Pack Size ya Quantity"],["Veg ya Non-Veg",["Veg","Non-Veg"]],["Expiry ya Shelf Life"]]},
 "Ghar aur Kitchen":{e:"🏠",f:[["Brand"],["Material"],["Color"],["Size ya Capacity"]]},
@@ -80,7 +84,7 @@ function ordT(list,m){if(!list.length)return'<p class=mu>Koi order nahi hai</p>'
  else if(s)act=o.status=="placed"?b("Khud pahunchaunga","self")+" "+b("Delivery boy se","needboy"):o.status=="self"?b("📍 Pahunch gaya","arrived")+" "+sh():o.status=="arrived"?b("Deliver ho gaya","delivered")+" "+sh():"—";
  else if(d)act=o.status=="assigned"?b("Pickup kiya","picked"):o.status=="picked"?b("📍 Pahunch gaya","arrived")+" "+sh():o.status=="arrived"?b("Deliver ho gaya","delivered")+" "+sh():"—";
  return`<tr><td>${o.id.slice(0,5)}</td><td>${(o.items||[]).map(i=>esc(i.name)).join(", ")}</td><td>${s?(o.itemsTotal??o.total):o.total}${!s&&o.platformFee!=null?`<div class=mu>Samaan ${o.itemsTotal} + Platform${o.platformFee} + Delivery ${o.deliveryFee} (${o.km} km)</div>`:""}</td>${a||d||s?`<td>${esc(o.rname\vert{}\vert{}o.name)}<div class=mu>${esc(o.addr)}, ${esc(o.city\vert{}\vert{}"")} - ${esc(o.pin||"")} · 📞 ${esc(o.phone)}${o.lat?`<a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target=_blank>🗺️ Rasta</a>`:""}</div></td>`:""}<td><span class="tag ${o.status=="delivered"?"ok":o.status=="cancelled"?"bad":""}">${ST[o.status]}</span>${o.liveLat?` <a href="https://www.google.com/maps?q=${o.liveLat},${o.liveLng}" target=_blank>🗺️</a>`:""}</td>${a||m=="c"?`<td>${esc(o.boyName||"-")}</td>`:""}${a||d||s?`<td>${act}</td>`:""}${m=="c"?`<td><button class=b data-a=trk data-id=${o.id}>Track</button></td>`:""}</tr>`}).join("")+"</table></div>"}
-  function vC(){const to=D.orders.find(x=>x.id==trk);if(to)return vT(to);const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||p.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,
+ function vC(){const to=D.orders.find(x=>x.id==trk);if(to)return vT(to);const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||p.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,
  S=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,6),V=[...new Set(H.filter(h=>h.type=="view").map(h=>h.text))].slice(0,6),
  C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean),chips=l=>l.map(x=>`<button class=g data-a=chip data-q="${esc(x)}">${esc(x)}</button>`).join(""),G=split(C);
  return`${SITE.open===false?`<div class=card>⛔ ${esc(SITE.closedMsg||"Abhi order band hain")}</div>`:""}${me.lat==null?'<div class=card>📍 Apne ilake ki dukanein dekhne ke liye <button class=b data-a=loc>Meri Location</button></div>':""}<div class=row><input id=sq value="${esc(sq)}" placeholder="Samaan khojein" style="flex:1"><button class=b data-a=search>Khojein</button></div>
@@ -109,14 +113,16 @@ const A={
   try{const c=await createUserWithEmailAndPassword(auth,e,$("#pw").value);await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:"customer",status:"active",address:"",phone:"",createdAt:serverTimestamp()});creating=false;await boot(c.user)}finally{creating=false}},
  async reset(){const e=$("#em").value.trim();if(!e)return alert("Email bharein");await sendPasswordResetEmail(auth,e);alert("Reset link email par bheja gaya")},
  out(){signOut(auth)},
+ openlogin(){showLogin=true;render(1)},
+ closelogin(){showLogin=false;render(1)},
  search(){sq=$("#sq").value.trim();if(sq)addDoc(collection(db,"users",me.id,"history"),{type:"search",text:sq,t:serverTimestamp()});render(1)},
  chip(d){sq=d.q;render(1)},
- view(d){const p=D.products.find(x=>x.id==d.id);addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()})},
+ view(d){const p=D.products.find(x=>x.id==d.id);if(p&&me.id!="guest")addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()})},
  add(d){A.view(d);setCart([...cart(),d.id])},rm(d){const c=cart();c.splice(+d.i,1);setCart(c)},
  async place(){const ad=$("#ad").value.trim(),ph=$("#ph").value.trim(),rn=$("#rn").value.trim(),pn=$("#pn").value.trim(),ct=$("#ct").value.trim();if(!rn||!ad||!ct)return alert("Naam, pata aur shahar zaroor bharein");if(!/^[6-9]\d{9}$/.test(ph))return alert("Sahi 10 digit ka mobile number dalei");if(!/^\d{6}$/.test(pn))return alert("Sahi 6 digit ka pin code dalei");
   const C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean),items=C.map(p=>({pid:p.id,name:p.name,price:p.price,sellerId:p.sellerId}));
-  await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph,pin:pn,city:ct,rname:rn});Object.assign(me,{address:ad,phone:ph,pin:pn,city:ct,rname:rn});
-  await addDoc(collection(db,"orders"),{customerId:me.id,name:me.name,addr:ad,phone:ph,items,sellerIds:[...new Set(items.map(i=>i.sellerId))],total:items.reduce((a,i)=>a+i.price,0),status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});setCart([]);alert("Order ho gaya ✅")},
+  if(me.id!="guest"){await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph,pin:pn,city:ct,rname:rn});Object.assign(me,{address:ad,phone:ph,pin:pn,city:ct,rname:rn})}
+  await addDoc(collection(db,"orders"),{customerId:me.id,name:rn,addr:ad,phone:ph,items,sellerIds:[...new Set(items.map(i=>i.sellerId))],total:items.reduce((a,i)=>a+i.price,0),status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});setCart([]);alert("Order ho gaya ✅")},
  async addp(){const n=$("#pn").value.trim(),p=+$("#pp").value;if(!n||!p)return alert("Naam aur keemat bharein");await addDoc(collection(db,"products"),{name:n,price:p,emoji:$("#pe").value||"📦",sellerId:me.id,sellerName:me.name,status:"pending",createdAt:serverTimestamp()})},
  delp(d){if(confirm("Hatayein?"))return deleteDoc(doc(db,"products",d.id))},pst(d){return updateDoc(doc(db,"products",d.id),{status:d.s})},
  st(d){return updateDoc(doc(db,"orders",d.id),{status:d.s})},
@@ -125,21 +131,21 @@ const A={
  async blk(d){const u=D.users.find(x=>x.id==d.id),s=u.status=="active"?"blocked":"active";await updateDoc(doc(db,"users",u.id),{status:s});
   if(s=="blocked"&&u.role=="seller")for(const p of D.products.filter(p=>p.sellerId==u.id))await updateDoc(doc(db,"products",p.id),{status:"pending"})}};
 Object.assign(A,{
- loc(){if($("#ad")){me.address=$("#ad").value;me.phone=$("#ph").value;me.pin=$("#pn").value;me.city=$("#ct").value;me.rname=$("#rn").value}return new Promise(ok=>navigator.geolocation.getCurrentPosition(async p=>{me.lat=p.coords.latitude;me.lng=p.coords.longitude;await updateDoc(doc(db,"users",me.id),{lat:me.lat,lng:me.lng});render(1);ok()},()=>{alert("Location ki ijazat dein");ok()}))},
+ loc(){if($("#ad")){me.address=$("#ad").value;me.phone=$("#ph").value;me.pin=$("#pn").value;me.city=$("#ct").value;me.rname=$("#rn").value}return new Promise(ok=>navigator.geolocation.getCurrentPosition(async p=>{me.lat=p.coords.latitude;me.lng=p.coords.longitude;if(me.id!="guest")await updateDoc(doc(db,"users",me.id),{lat:me.lat,lng:me.lng});render(1);ok()},()=>{alert("Location ki ijazat dein");ok()}))},
  notif(){try{Notification.requestPermission()}catch(e){}ping()},
  rm(d){const c=cart();c.splice(c.indexOf(d.id),1);setCart(c)},
  async addp(){const n=$("#pn").value.trim(),p=+$("#pp").value;if(!n||!p)return alert("Naam aur keemat bharein");await addDoc(collection(db,"products"),{name:n,price:p,emoji:$("#pe").value||"📦",sellerId:me.id,sellerName:me.name,lat:me.lat,lng:me.lng,status:"pending",createdAt:serverTimestamp()})},
- async place(){const ad=$("#ad").value.trim(),ph=$("#ph").value.trim();if(!ad||!ph)return alert("Pata aur phone bharein");if(me.lat==null)return alert("Pehle 📍 Meri Location dabayein");
+ async place(){const ad=$("#ad").value.trim(),ph=$("#ph").value.trim(),rn=$("#rn").value.trim(),pn=$("#pn").value.trim(),ct=$("#ct").value.trim();if(!ad||!ph||!rn)return alert("Naam, pata aur phone bharein");if(me.lat==null)return alert("Pehle 📍 Meri Location dabayein");
   const G=split(cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean));if(G.some(g=>g.df==null))return alert("Kisi dukaan ki location nahi hai");if(G.some(g=>g.out))return alert("Kuch dukanein "+F.maxKm+" km ki seema se bahar hain, unhein cart se hatayein");if(SITE.open===false)return alert(SITE.closedMsg||"Abhi order band hain");
-  await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph});me.address=ad;me.phone=ph;
-  for(const g of G)await addDoc(collection(db,"orders"),{customerId:me.id,name:me.name,rname:rn,addr:ad,city:ct,pin:pn,phone:ph,lat:me.lat,lng:me.lng,sellerId:g.l[0].sellerId,sellerName:g.l[0].sellerName,items:g.l.map(p=>({pid:p.id,name:p.name,price:p.price})),itemsTotal:g.t,platformFee:g.pf,deliveryFee:g.df,km:+g.k.toFixed(1),etaMin:g.eta,total:g.t+g.pf+g.df,payment:"cod",status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});
+  if(me.id!="guest"){await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph});me.address=ad;me.phone=ph}
+  for(const g of G)await addDoc(collection(db,"orders"),{customerId:me.id,name:rn,rname:rn,addr:ad,city:ct,pin:pn,phone:ph,lat:me.lat,lng:me.lng,sellerId:g.l[0].sellerId,sellerName:g.l[0].sellerName,items:g.l.map(p=>({pid:p.id,name:p.name,price:p.price})),itemsTotal:g.t,platformFee:g.pf,deliveryFee:g.df,km:+g.k.toFixed(1),etaMin:g.eta,total:g.t+g.pf+g.df,payment:"cod",status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});
   setCart([]);alert("Order ho gaya ✅")},
  async draft(){await setDoc(doc(db,"settings","draft"),wv());alert("Draft save ho gaya")},
  async live(){const v=wv();await setDoc(doc(db,"settings","draft"),v);await setDoc(doc(db,"settings","site"),v);alert("Site live ho gayi 🚀")},
  async fees(){await setDoc(doc(db,"settings","fees"),{pct:+$("#fp").value,perKm:+$("#fk").value,min:+$("#fm").value,maxKm:+$("#fr").value,prep:+$("#fq").value,minPerKm:+$("#fv").value});alert("Save ho gaya")}});
 onSnapshot(doc(db,"settings","site"),x=>site(x.exists()?x.data():{}),()=>{});
 Object.assign(A,{
- view(d){cur=d.id;gi=0;const p=D.products.find(x=>x.id==d.id);if(p)addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()});render(1);scrollTo(0,0)},
+ view(d){cur=d.id;gi=0;const p=D.products.find(x=>x.id==d.id);if(p&&me.id!="guest")addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()});render(1);scrollTo(0,0)},
  back(){cur=null;render(1)},gal(d){gi=+d.i;render(1)},
  add(d){cur=null;setCart([...cart(),d.id]);setTimeout(()=>$("#cartbox")?.scrollIntoView(),60)},
  async addp(){const c=$("#pc").value,n=$("#pn2").value.trim(),mrp=+$("#pm").value,pr=+$("#pp").value,w=$("#pw").value,d=$("#pd").value.trim(),fs=[...$("#pi").files].slice(0,4);
