@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hassaan Digital Point</title>
 <style>
@@ -33,6 +33,7 @@ const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ST={placed:"Naya",self:"Seller khud pahuncha raha hai",needboy:"Delivery Boy chahiye",arrived:"Pahunch gaya",assigned:"Assigned",picked:"Raste me hai",delivered:"Deliver ho gaya",cancelled:"Cancelled"};
 let seen={},me={role:"customer",id:"guest",name:"Grahak"},subs=[],D={products:[],orders:[],users:[],hist:[]},sq="",creating=false,pending=false,showLogin=false;
+let F={pct:5,perKm:10,min:30,maxKm:15,prep:15,minPerKm:3},SITE={},DR=null,trk=null,cur=null,sharing=null,wid=null,gi=0,lastW=0;
 const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render(1)};
 const sorted=a=>[...a].sort((x,y)=>(y.createdAt?.seconds||9e9)-(x.createdAt?.seconds||9e9));
 const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(seen[k]&&k=="orders"&&me.role!="customer"&&s.docChanges().some(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified")))ping();seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.error(k,e)));
@@ -53,7 +54,7 @@ async function boot(u){const s=await getDoc(doc(db,"users",u.uid));
  if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users")}
  render(1)}
 onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};D={products:[],orders:[],users:[],hist:[]};if(!u){me={role:"customer",id:"guest",name:"Grahak"};sub(query(collection(db,"products"),where("status","==","approved")),"products");render(1)}else if(!creating)boot(u)});
- const CATS={"Kapde":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL","Free Size"]],["Color"],["Material"],["Kiske liye",["Men","Women","Kids","Unisex"]]]},
+  const CATS={"Kapde":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL","Free Size"]],["Color"],["Material"],["Kiske liye",["Men","Women","Kids","Unisex"]]]},
 "Mobile aur Electronics":{e:"📱",f:[["Brand"],["Model"],["Color"],["Warranty",["Koi nahi","6 Mahine","1 Saal","2 Saal"]],["Box me kya milega"]]},
 "Kirana aur Khana":{e:"🛒",f:[["Brand"],["Pack Size ya Quantity"],["Veg ya Non-Veg",["Veg","Non-Veg"]],["Expiry ya Shelf Life"]]},
 "Ghar aur Kitchen":{e:"🏠",f:[["Brand"],["Material"],["Color"],["Size ya Capacity"]]},
@@ -84,7 +85,7 @@ function ordT(list,m){if(!list.length)return'<p class=mu>Koi order nahi hai</p>'
  else if(s)act=o.status=="placed"?b("Khud pahunchaunga","self")+" "+b("Delivery boy se","needboy"):o.status=="self"?b("📍 Pahunch gaya","arrived")+" "+sh():o.status=="arrived"?b("Deliver ho gaya","delivered")+" "+sh():"—";
  else if(d)act=o.status=="assigned"?b("Pickup kiya","picked"):o.status=="picked"?b("📍 Pahunch gaya","arrived")+" "+sh():o.status=="arrived"?b("Deliver ho gaya","delivered")+" "+sh():"—";
  return`<tr><td>${o.id.slice(0,5)}</td><td>${(o.items||[]).map(i=>esc(i.name)).join(", ")}</td><td>${s?(o.itemsTotal??o.total):o.total}${!s&&o.platformFee!=null?`<div class=mu>Samaan ${o.itemsTotal} + Platform${o.platformFee} + Delivery ${o.deliveryFee} (${o.km} km)</div>`:""}</td>${a||d||s?`<td>${esc(o.rname\vert{}\vert{}o.name)}<div class=mu>${esc(o.addr)}, ${esc(o.city\vert{}\vert{}"")} - ${esc(o.pin||"")} · 📞 ${esc(o.phone)}${o.lat?`<a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target=_blank>🗺️ Rasta</a>`:""}</div></td>`:""}<td><span class="tag ${o.status=="delivered"?"ok":o.status=="cancelled"?"bad":""}">${ST[o.status]}</span>${o.liveLat?` <a href="https://www.google.com/maps?q=${o.liveLat},${o.liveLng}" target=_blank>🗺️</a>`:""}</td>${a||m=="c"?`<td>${esc(o.boyName||"-")}</td>`:""}${a||d||s?`<td>${act}</td>`:""}${m=="c"?`<td><button class=b data-a=trk data-id=${o.id}>Track</button></td>`:""}</tr>`}).join("")+"</table></div>"}
- function vC(){const to=D.orders.find(x=>x.id==trk);if(to)return vT(to);const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||p.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,
+  function vC(){const to=D.orders.find(x=>x.id==trk);if(to)return vT(to);const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||p.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,
  S=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,6),V=[...new Set(H.filter(h=>h.type=="view").map(h=>h.text))].slice(0,6),
  C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean),chips=l=>l.map(x=>`<button class=g data-a=chip data-q="${esc(x)}">${esc(x)}</button>`).join(""),G=split(C);
  return`${SITE.open===false?`<div class=card>⛔ ${esc(SITE.closedMsg||"Abhi order band hain")}</div>`:""}${me.lat==null?'<div class=card>📍 Apne ilake ki dukanein dekhne ke liye <button class=b data-a=loc>Meri Location</button></div>':""}<div class=row><input id=sq value="${esc(sq)}" placeholder="Samaan khojein" style="flex:1"><button class=b data-a=search>Khojein</button></div>
@@ -124,7 +125,7 @@ const A={
   if(me.id!="guest"){await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph,pin:pn,city:ct,rname:rn});Object.assign(me,{address:ad,phone:ph,pin:pn,city:ct,rname:rn})}
   await addDoc(collection(db,"orders"),{customerId:me.id,name:rn,addr:ad,phone:ph,items,sellerIds:[...new Set(items.map(i=>i.sellerId))],total:items.reduce((a,i)=>a+i.price,0),status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});setCart([]);alert("Order ho gaya ✅")},
  async addp(){const n=$("#pn").value.trim(),p=+$("#pp").value;if(!n||!p)return alert("Naam aur keemat bharein");await addDoc(collection(db,"products"),{name:n,price:p,emoji:$("#pe").value||"📦",sellerId:me.id,sellerName:me.name,status:"pending",createdAt:serverTimestamp()})},
- delp(d){if(confirm("Hatayein?"))return deleteDoc(doc(db,"products",d.id))},pst(d){return updateDoc(doc(db,"products",d.id),{status:d.s})},
+ delp(d){if(confirm("Hatayein?"))return deleteDoc(doc(db,"products",d.id))},pst(d){return updateDoc(doc(db,"orders",d.id),{status:d.s})},
  st(d){return updateDoc(doc(db,"orders",d.id),{status:d.s})},
  async mk(){const n=$("#sn").value.trim(),e=$("#se").value.trim(),p=$("#sp").value,r=$("#sr").value;if(!n||!e||p.length<6)return alert("Sab bharein, password 6+ characters");
   const sec=initializeApp(cfg,"s"+Date.now());try{const a=getAuth(sec),c=await createUserWithEmailAndPassword(a,e,p);await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:r,status:"active",createdAt:serverTimestamp()});await signOut(a);alert("Account ban gaya ✅")}finally{deleteApp(sec)}},
@@ -138,7 +139,7 @@ Object.assign(A,{
  async place(){const ad=$("#ad").value.trim(),ph=$("#ph").value.trim(),rn=$("#rn").value.trim(),pn=$("#pn").value.trim(),ct=$("#ct").value.trim();if(!ad||!ph||!rn)return alert("Naam, pata aur phone bharein");if(me.lat==null)return alert("Pehle 📍 Meri Location dabayein");
   const G=split(cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean));if(G.some(g=>g.df==null))return alert("Kisi dukaan ki location nahi hai");if(G.some(g=>g.out))return alert("Kuch dukanein "+F.maxKm+" km ki seema se bahar hain, unhein cart se hatayein");if(SITE.open===false)return alert(SITE.closedMsg||"Abhi order band hain");
   if(me.id!="guest"){await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph});me.address=ad;me.phone=ph}
-  for(const g of G)await addDoc(collection(db,"orders"),{customerId:me.id,name:rn,rname:rn,addr:ad,city:ct,pin:pn,phone:ph,lat:me.lat,lng:me.lng,sellerId:g.l[0].sellerId,sellerName:g.l[0].sellerName,items:g.l.map(p=>({pid:p.id,name:p.name,price:p.price})),itemsTotal:g.t,platformFee:g.pf,deliveryFee:g.df,km:+g.k.toFixed(1),etaMin:g.eta,total:g.t+g.pf+g.df,payment:"cod",status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});
+  for(const g of G)await addDoc(collection(db,"orders"),{customerId:me.id,name:rn,rname:rn,addr:ad,city:ct,pin:pn,phone:ph,lat:me.lat,lng:me.lng,sellerId:g.l[0].sellerId,sellerName:g.l[0].sellerName,items:g.l.map(p=>({pid:p.id,name:p.price,price:p.price})),itemsTotal:g.t,platformFee:g.pf,deliveryFee:g.df,km:+g.k.toFixed(1),etaMin:g.eta,total:g.t+g.pf+g.df,payment:"cod",status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()});
   setCart([]);alert("Order ho gaya ✅")},
  async draft(){await setDoc(doc(db,"settings","draft"),wv());alert("Draft save ho gaya")},
  async live(){const v=wv();await setDoc(doc(db,"settings","draft"),v);await setDoc(doc(db,"settings","site"),v);alert("Site live ho gayi 🚀")},
