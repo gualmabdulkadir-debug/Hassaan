@@ -51,30 +51,60 @@ function loginV(){
   <div class=row><button class=b data-a=login style="width:100%">Login Karein</button></div>
  </div>`;
 }
- function vC(){
+ <script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc,addDoc,collection,onSnapshot,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCWrKkSmgPXDt6KL7FNyMLZeI6kXd4ukU0",authDomain:"hassaan-s.firebaseapp.com",projectId:"hassaan-s",storageBucket:"hassaan-s.firebasestorage.app",messagingSenderId:"12302351650",appId:"1:12302351650:web:6c5a5c4ced2b210f79397b"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let me={role:"customer",id:"guest",name:"Grahak"},D={products:[],orders:[]},sq="",showLogin=false,curP=null;
+
+const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render()};
+
+function render(){
+ if(showLogin){loginV();return}
+ $("#who").innerHTML=me.id=="guest"?`<button class=g style="color:#fff;border-color:#fff" data-a=openlogin>🔑 Login</button>`:`${esc(me.name)} (${me.role}) <button class=g style="color:#fff;border-color:#fff" data-a=out>Logout</button>`;
+ $("#app").innerHTML={customer:vC,admin:vA,seller:vS,delivery:vD}[me.role]();
+}
+
+function loginV(){
+ $("#who").innerHTML=`<button class=g style="color:#fff;border-color:#fff" data-a=closelogin>← Store Par Wapas</button>`;
+ $("#app").innerHTML=`<div class=card style="max-width:360px;margin:30px auto">
+  <h2>Seller / Admin Login</h2>
+  <div class=row><input id=em placeholder="Email"></div>
+  <div class=row><input id=pw type=password placeholder="Password"></div>
+  <div class=row><button class=b data-a=login style="width:100%">Login Karein</button></div>
+ </div>`;
+}
+
+function vC(){
  if(curP){
   const p=D.products.find(x=>x.id==curP);
   if(!p)curP=null;
   else return `<button class=g data-a=back>← Wapas</button>
   <div class=card style="margin-top:10px">
    <div class=em>${esc(p.emoji||"📦")}</div>
-   <h2>${esc(p.name)}</h2>
-   <div class=pr style="font-size:22px">₹${p.price}</div>
-   <p class=mu>${esc(p.desc||"Koi description nahi hai")}</p>
+   <h2>${esc(p.name||p.title||"Product")}</h2>
+   <div class=pr style="font-size:22px">₹${p.price||p.Price||0}</div>
+   <p class=mu>${esc(p.desc||p.description||"Koi description nahi hai")}</p>
    <div class=row><button class=y data-a=add data-id=${p.id}>🛒 Cart me jodein</button></div>
   </div>`;
  }
- const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())),C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean);
+ const ps=D.products.filter(p=>(p.name||p.title||"").toLowerCase().includes(sq.toLowerCase())),C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean);
  return `<div class=row><input id=sq value="${esc(sq)}" placeholder="Samaan khojein..." style="flex:1"><button class=b data-a=search>Search</button></div>
  <h2>🛍️ Sabhi Samaan (Firebase Store)</h2>
  <div class=grid>${ps.map(p=>`<div class=card data-a=view data-id=${p.id} style="cursor:pointer">
   <div class=em>${esc(p.emoji||"📦")}</div>
-  <div class=t2><b>${esc(p.name)}</b></div>
-  <div class=pr>₹${p.price}</div>
- </div>`).join("")||'<p class=mu>Dukaan me abhi koi samaan nahi hai ya load ho raha hai...</p>'}</div>
+  <div class=t2><b>${esc(p.name||p.title||"Unnamed Item")}</b></div>
+  <div class=pr>₹${p.price||p.Price||0}</div>
+ </div>`).join("")||'<p class=mu>Dukaan me abhi koi samaan nahi mila...</p>'}</div>
  <h2 id=cartbox>🧺 Cart (${C.length})</h2>
- <div class=card>${C.map((p,i)=>`<div class=row>${esc(p.emoji\vert{}\vert{}"📦")} ${esc(p.name)} — <b>₹${p.price}</b> <button class=g data-a=rm data-i=${i}>Hatayein</button></div>`).join("")||'<span class=mu>Cart khali hai</span>'}
- ${C.length?`<hr><b>Total: ₹${C.reduce((a,b)=>a+b.price,0)}</b>
+ <div class=card>${C.map((p,i)=>`<div class=row>${esc(p.emoji\vert{}\vert{}"📦")} ${esc(p.name||p.title)} — <b>₹${p.price\vert{}\vert{}p.Price\vert{}\vert{}0}</b> <button class=g data-a=rm data-i=${i}>Hatayein</button></div>`).join("")||'<span class=mu>Cart khali hai</span>'}
+ ${C.length?`<hr><b>Total: ₹${C.reduce((a,b)=>a+(b.price||b.Price||0),0)}</b>
  <h3>Order karne ke liye pata bharein:</h3>
  <div class=row><input id=rn placeholder="Naam *"><input id=ph placeholder="Mobile Number *"></div>
  <div class=row><input id=ad placeholder="Pura Pata (Makan no, Gali) *"></div>
@@ -88,16 +118,11 @@ function vS(){
  <div class=row><input id=pe placeholder="Emoji (e.g. 📱, 👕) *"><input id=pd placeholder="Chota Vivran"></div>
  <button class=b data-a=addp style="margin-top:8px">Product Jodein</button></div>
  <h3>Aapke Products</h3>
- <div class=card>${D.products.filter(p=>p.sellerId==me.id).map(p=>`<div class=row>${esc(p.emoji)} ${esc(p.name)} - ₹${p.price}</div>`).join("")||'<p class=mu>Koi product nahi joda</p>'}</div>`;
+ <div class=card>${D.products.filter(p=>p.sellerId==me.id).map(p=>`<div class=row>${esc(p.emoji)} ${esc(p.name\vert{}\vert{}p.title)} - ₹${p.price||p.Price}</div>`).join("")||'<p class=mu>Koi product nahi joda</p>'}</div>`;
 }
 
-function vA(){
- return `<h2>Admin Panel</h2><div class=card>Total Products: ${D.products.length} | Total Orders: ${D.orders.length}</div>`;
-}
-
-function vD(){
- return `<h2>Delivery Boy Panel</h2><div class=card>Assigned Orders dikhenge</div>`;
-}
+function vA(){ return `<h2>Admin Panel</h2><div class=card>Total Products: ${D.products.length}</div>`; }
+function vD(){ return `<h2>Delivery Boy Panel</h2><div class=card>Assigned Orders</div>`; }
 
 const A={
  async login(){
@@ -122,8 +147,8 @@ const A={
   const C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean);
   await addDoc(collection(db,"orders"),{
    customerId:me.id,name:rn,phone:ph,addr:ad,
-   items:C.map(p=>({name:p.name,price:p.price})),
-   total:C.reduce((a,b)=>a+b.price,0),status:"placed",createdAt:serverTimestamp()
+   items:C.map(p=>({name:p.name||p.title,price:p.price||p.Price})),
+   total:C.reduce((a,b)=>a+(b.price||b.Price||0),0),status:"placed",createdAt:serverTimestamp()
   });
   setCart([]);alert("Order safaltapoorvak ho gaya! ✅");
  },
@@ -143,7 +168,7 @@ document.addEventListener("click",async e=>{
  try{await A[b.dataset.a](b.dataset)}catch(x){alert(x.message)}
 });
 
-// Guest User ke liye pehle hi dukaan load ho jaye
+// 🔥 DUKAAN KHOLEIN: bina kisi status/approval filter ke seedha saara data dikhayega!
 onSnapshot(collection(db,"products"),s=>{
  D.products=s.docs.map(d=>({id:d.id,...d.data()}));
  render();
@@ -154,7 +179,6 @@ onAuthStateChanged(auth,u=>{
   getDoc(doc(db,"users",u.uid)).then(s=>{
    if(s.exists()){me={id:u.uid,...s.data()};render()}
   });
-  onSnapshot(collection(db,"orders"),s=>{D.orders=s.docs.map(d=>({id:d.id,...d.data()}));render()});
  }else{
   me={role:"customer",id:"guest",name:"Grahak"};
   render();
