@@ -5,7 +5,7 @@
 :root{--bg:#f1f3f6;--cd:#fff;--tx:#212121;--mu:#878787;--ac:#2874f0;--bd:#e8e1d6;--ok:#2b8a3e;--bad:#c92a2a}
 @media(prefers-color-scheme:dark){:root{--bg:#17140f;--cd:#221e17;--tx:#f3ede3;--mu:#a59d8f;--bd:#373126;--ac:#4d8ff5}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Devanagari",sans-serif}
-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:var(--ac);color:#fff;position:sticky;top:0;z-index:5}
+header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 main{padding:0 16px 40px;max-width:1000px;margin:auto}a{color:var(--ac);cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:8px}
@@ -17,149 +17,142 @@ input,select{padding:8px;border:1px solid var(--bd);border-radius:8px;background
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px;border-bottom:1px solid var(--bd);text-align:left}
 .tag{padding:2px 8px;border-radius:99px;font-size:12px;background:var(--bd)}.ok{background:var(--ok);color:#fff}.bad{background:var(--bad);color:#fff}
 h2{font-size:17px;margin:18px 0 8px}.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}.st b{font-size:22px;display:block}
-header .g{color:#fff;border-color:#ffffff99}
+header{background:var(--ac);color:#fff;position:sticky;top:0;z-index:5}header .g{color:#fff;border-color:#ffffff99}
 .y{background:#ff9f00;color:#fff}.o{background:#fb641b;color:#fff}.y,.o{font-size:15px;padding:12px 18px;flex:1}.off{color:#388e3c;font-weight:600;font-size:13px}
 .pd{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.big img{width:100%;max-height:380px;object-fit:contain}
 .th{width:56px;height:56px;object-fit:cover;border:2px solid var(--bd);border-radius:6px;cursor:pointer}.th.on{border-color:var(--ac)}
 .gi{width:100%;height:150px;object-fit:contain}.t2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;margin:6px 0}.card[data-a]{cursor:pointer}
 </style></head><body>
 <header><b id="ttl">🛍️ Hassaan Digital Point</b><span id="who"></span></header><div id="bn" style="max-width:1000px;margin:auto;padding:0 16px"></div><main id="app"><p class="mu">⏳ लोड हो रहा है…</p></main><footer id="ft" class="mu" style="text-align:center;padding:20px"></footer>
-
-<script type="module">
+<script>
+function __e(m){var a=document.getElementById("app");a.innerHTML='<div class="card" style="color:#c92a2a">⚠️ गड़बड़: '+String(m).replace(/</g,"&lt;")+'</div>'}
+addEventListener("error",function(e){__e(e.message||"script error")});
+addEventListener("unhandledrejection",function(e){__e((e.reason&&e.reason.message)||e.reason)});
+setTimeout(function(){var a=document.getElementById("app");if(a&&a.textContent.indexOf("लोड हो रहा")>-1)__e("कोड लोड नहीं हुआ (इंटरनेट की दिक्कत या फ़ाइल अधूरी अपलोड हुई)")},6000);
+</script>
+<script type="module" onerror="__e('Firebase की लाइब्रेरी लोड नहीं हुई, इंटरनेट जाँचें')">
 import{initializeApp,deleteApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,addDoc,collection,query,where,orderBy,limit,onSnapshot,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import{getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,addDoc,collection,query,where,orderBy,limit,getDocs,onSnapshot,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCWrKkSmgPXDt6KL7FNyMLZeI6kXd4ukU0",authDomain:"hassaan-s.firebaseapp.com",projectId:"hassaan-s",storageBucket:"hassaan-s.firebasestorage.app",messagingSenderId:"12302351650",appId:"1:12302351650:web:6c5a5c4ced2b210f79397b"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ST={placed:"नया",self:"सेलर खुद पहुँचा रहा",needboy:"डिलीवरी बॉय चाहिए",arrived:"पहुँच गया",assigned:"असाइन",picked:"रास्ते में",delivered:"डिलीवर हुआ",cancelled:"रद्द"};
-
-let seen={},me={role:"customer",id:"guest",name:"ग्राहक"},subs=[],D={products:[],orders:[],users:[],hist:[]},sq="",creating=false,showLogin=false;
-const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render()};
+let seen={},me=null,subs=[],D={products:[],orders:[],users:[],hist:[]},sq="",creating=false,pending=false;
+const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render(1)};
 const sorted=a=>[...a].sort((x,y)=>(y.createdAt?.seconds||9e9)-(x.createdAt?.seconds||9e9));
-
-function sub(q,k){subs.push(onSnapshot(q,s=>{seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.error(k,e)))}
-
-function render(){
- if(showLogin){loginV();return}
- $("#who").innerHTML=me.id=="guest"?`<button class=g data-a=openlogin>🔑 लॉगिन</button>`:`${esc(me.name)} (${{customer:"ग्राहक",admin:"एडमिन",seller:"सेलर",delivery:"डिलीवरी"}[me.role]}) <button class=g data-a=out>लॉगआउट</button>`;
- $("#app").innerHTML={customer:vC,admin:vA,seller:vS,delivery:vD}[me.role]();
-}
-
-function loginV(){
- $("#who").innerHTML=`<button class=g data-a=closelogin>← दुकान पर वापस</button>`;
- $("#app").innerHTML=`<div class=card style="max-width:380px;margin:20px auto"><h2>लॉगिन / साइनअप</h2><div class=row><input id=nm placeholder="नाम (नए ग्राहक के लिए)"></div><div class=row><input id=em placeholder="ईमेल"></div><div class=row><input id=pw type=password placeholder="पासवर्ड (कम से कम 6 अक्षर)"></div><div class=row><button class=b data-a=login>लॉगिन</button><button class=g data-a=reg>नया अकाउंट बनाएँ</button></div></div>`;
-}
- function vC(){
- const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);
- const ps=D.products.filter(p=>(p.name||p.title||"").toLowerCase().includes(sq.toLowerCase())),
- C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean);
- return `${SITE.open===false?`<div class=card>⛔ ${esc(SITE.closedMsg||"अभी ऑर्डर बंद हैं")}</div>`:""}
- <div class=row><input id=sq value="${esc(sq)}" placeholder="सामान खोजें..." style="flex:1"><button class=b data-a=search>खोजें</button></div>
- <h2>🛍️ सभी सामान (Firebase Store)</h2>
- <div class=grid>${ps.map(p=>{const off=p.mrp>p.price?Math.round((p.mrp-p.price)*100/p.mrp):0;return`<div class=card data-a=view data-id=${p.id}>${p.imgs?.[0]?`<img class=gi src="${p.imgs[0]}">`:`<div class=em>${esc(p.emoji||"📦")}</div>`}<div class=t2><b>${esc(p.name||p.title||"सामान")}</b></div><div><b>₹${p.price\vert{}\vert{}p.Price\vert{}\vert{}0}</b>${off?`<s class=mu>₹${p.mrp}</s> <span class=off>${off}% off</span>`:""}</div><div class=mu>${esc(p.sellerName||"विक्रेता")}</div></div>`}).join("")||'<p class=mu>अभी कोई सामान नहीं मिला या लोड हो रहा है...</p>'}</div>
- <h2 id=cartbox>🧺 कार्ट (${C.length})</h2>
- <div class=card>${C.map((p,i)=>`<div class=row>${esc(p.emoji\vert{}\vert{}"📦")} ${esc(p.name||p.title)} — <b>₹${p.price\vert{}\vert{}p.Price\vert{}\vert{}0}</b> <button class=g data-a=rm data-i=${i}>हटाएँ</button></div>`).join("")||'<span class=mu>कार्ट खाली है</span>'}
- ${C.length?`<hr><b>कुल: ₹${C.reduce((a,b)=>a+(b.price||b.Price||0),0)}</b>
- <h3>डिलीवरी का पता:</h3>
- <div class=row><input id=rn placeholder="नाम *" value="${esc(me.rname||me.name||"")}"><input id=ph placeholder="मोबाइल नंबर *" value="${esc(me.phone||"")}"><input id=pn placeholder="पिन कोड *" value="${esc(me.pin||"")}"></div>
- <div class=row><input id=ad placeholder="पूरा पता (मकान नंबर, गली) *" value="${esc(me.address||"")}"><input id=ct placeholder="शहर *" value="${esc(me.city||"")}"></div>
- <div class=row><button class=o data-a=place style="width:100%">ऑर्डर करें (कैश ऑन डिलीवरी)</button></div>`:""}</div>`;
-}
-
-function vP(p){
- const im=p.imgs||[];
- return`<button class=g data-a=back>← वापस</button><div class="card pd" style="margin-top:10px"><div><div class=big>${im[0]?`<img src="${im[0]}">`:`<div class=em>${esc(p.emoji||"📦")}</div>`}</div></div>
- <div><h2 style="margin-top:0">${esc(p.name||p.title)}</h2><div class=mu>विक्रेता: ${esc(p.sellerName||"सेलर")}</div><div style="font-size:26px;font-weight:700;color:var(--ac)">₹${p.price||p.Price||0}</div>
- <div class=row><button class=y data-a=add data-id=${p.id}>🛒 कार्ट में जोड़ें</button></div><p>${esc(p.desc||p.description||"")}</p></div></div>`;
-}
-
-function vS(){
- return`<h2>सेलर डैशबोर्ड</h2>
- <div class=card><h3>नया प्रोडक्ट जोड़ें</h3>
- <div class=row><input id=pn2 placeholder="प्रोडक्ट का नाम *"><input id=pp type=number placeholder="कीमत ₹ *"></div>
- <div class=row><input id=pe placeholder="इमोजी (e.g. 📱, 👕)"><input id=pd placeholder="विवरण"></div>
- <button class=b data-a=addp style="margin-top:8px">प्रोडक्ट भेजें</button></div>
- <h3>आपके प्रोडक्ट्स</h3>
- <div class=card>${D.products.filter(p=>p.sellerId==me.id).map(p=>`<div class=row>${esc(p.emoji||"📦")} ${esc(p.name\vert{}\vert{}p.title)} - ₹${p.price||p.Price}</div>`).join("")||'<p class=mu>कोई प्रोडक्ट नहीं जुड़ा है</p>'}</div>`;
-}
-
-function vA(){return`<h2>एडमिन पैनल</h2><div class=card>कुल प्रोडक्ट्स: ${D.products.length}</div>`;}
-function vD(){return`<h2>डिलीवरी पैनल</h2><div class=card>असाइन किए गए ऑर्डर दिखेंगे</div>`;}
+const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(seen[k]&&k=="orders"&&me.role!="customer"&&s.docChanges().some(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified")))ping();seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.error(k,e)));
+function render(f){if(!me)return;if(!f&&(document.activeElement?.matches("input,select,textarea")||(me.role=="seller"&&$("#pn2")?.value))){pending=true;return}pending=false;
+ $("#who").innerHTML=`${esc(me.name)} (${{customer:"ग्राहक",admin:"एडमिन",seller:"सेलर",delivery:"डिलीवरी"}[me.role]}) ${me.role!="customer"?"<button class=g data-a=notif>🔔</button> ":""}<button class=g data-a=out>लॉगआउट</button>`;
+ $("#app").innerHTML={customer:vC,admin:vA,seller:vS,delivery:vD}[me.role]()}
+document.addEventListener("focusout",()=>setTimeout(()=>pending&&render(),80));
+function loginV(){$("#who").innerHTML="";$("#app").innerHTML=`<div class=card style="max-width:380px;margin:auto"><h2>लॉगिन</h2><div class=row><input id=nm placeholder="नाम (सिर्फ़ नए ग्राहक के लिए)"></div><div class=row><input id=em placeholder="ईमेल"></div><div class=row><input id=pw type=password placeholder="पासवर्ड (कम से कम 6 अक्षर)"></div><div class=row><button class=b data-a=login>लॉगिन</button><button class=g data-a=reg>नया ग्राहक अकाउंट</button></div><a data-a=reset>पासवर्ड भूल गए?</a></div>`}
+async function boot(u){const s=await getDoc(doc(db,"users",u.uid));
+ if(!s.exists()||s.data().status!="active"){alert("यह अकाउंट चालू नहीं है। एडमिन से संपर्क करें।");return signOut(auth)}
+ me={id:u.uid,...s.data()};const r=me.role;
+ if(r=="admin")subs.push(onSnapshot(doc(db,"settings","draft"),s=>{DR=s.exists()?s.data():null;render()},()=>{}));subs.push(onSnapshot(doc(db,"settings","fees"),s=>{if(s.exists())F={...F,...s.data()};render()}));if(r=="customer"){sub(query(collection(db,"products"),where("status","==","approved")),"products");sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
+ if(r=="seller"){sub(query(collection(db,"products"),where("sellerId","==",me.id)),"products");sub(query(collection(db,"orders"),where("sellerId","==",me.id)),"orders")}
+ if(r=="delivery")sub(query(collection(db,"orders"),where("boyId","==",me.id)),"orders");
+ if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users")}
+ render(1)}
+onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};me=null;D={products:[],orders:[],users:[],hist:[]};if(!u)loginV();else if(!creating)boot(u)});
+let F={pct:5,perKm:7,min:10,maxKm:10,prep:15,minPerKm:3,cod:3,payUrl:""},SITE={},DR=null,cur=null,gi=0,trk=null,sharing=null,wid=null,lastW=0,pm="cod";
+const STEPS=[["placed","ऑर्डर मिला"],["acc","तैयारी / डिलीवरी तय"],["picked","रास्ते में"],["arrived","आपके पास पहुँचा"],["delivered","डिलीवर हुआ"]],RK={placed:0,self:1,needboy:1,assigned:1,picked:2,arrived:3,delivered:4};
+function vT(o){const r=RK[o.status]??0,live=o.liveLat!=null&&["picked","arrived","self"].includes(o.status),d=live&&o.lat!=null?km(o.liveLat,o.liveLng,o.lat,o.lng):null,x=o.status=="cancelled";
+ return`<button class=g data-a=untrk>← वापस</button><div class=card><h2 style="margin-top:0">ऑर्डर #${o.id.slice(0,5)}</h2><div class=mu>${esc(o.sellerName)} · ₹${o.total}</div>
+ ${x?"<p>❌ ऑर्डर रद्द हो गया</p>":STEPS.map(([k,l],i)=>`<div class=row><span class="tag ${i<=r?"ok":""}">${i<=r?"✔":i+1}</span> <span style="${i==r?"font-weight:700":i>r?"color:var(--mu)":""}">${l}</span></div>`).join("")}
+ ${x||o.status=="delivered"?"":`<p>⏱ ${d!=null?`करीब ${Math.max(1,Math.ceil(d*F.minPerKm))} मिनट में (${d.toFixed(1)} किमी दूर)`:`करीब ${o.etaMin||"-"} मिनट में`}</p>`}
+ ${o.boyName?`<div class=mu>डिलीवरी बॉय: ${esc(o.boyName)}</div>`:""}
+ ${live?`<iframe src="https://maps.google.com/maps?q=${o.liveLat},${o.liveLng}&z=15&output=embed" style="width:100%;height:280px;border:0;border-radius:12px"></iframe><div class=mu>लाइव लोकेशन (हर कुछ सेकंड में अपडेट) · <a href="https://www.google.com/maps?q=${o.liveLat},${o.liveLng}" target=_blank>मैप में खोलें</a></div>`:""}</div>`}
+const CATS={"कपड़े":{e:"👕",f:[["ब्रांड"],["साइज़",["XS","S","M","L","XL","XXL","फ्री साइज़"]],["रंग"],["कपड़ा"],["किसके लिए",["पुरुष","महिला","बच्चे","यूनिसेक्स"]]]},
+"मोबाइल और इलेक्ट्रॉनिक्स":{e:"📱",f:[["ब्रांड"],["मॉडल"],["रंग"],["वारंटी",["कोई नहीं","6 महीने","1 साल","2 साल"]],["बॉक्स में क्या मिलेगा"]]},
+"किराना और खाने का सामान":{e:"🛒",f:[["ब्रांड"],["पैक साइज़ या मात्रा"],["शाकाहारी या मांसाहारी",["शाकाहारी","मांसाहारी"]],["एक्सपायरी या शेल्फ़ लाइफ़"]]},
+"घर और किचन":{e:"🏠",f:[["ब्रांड"],["मटीरियल"],["रंग"],["साइज़ या क्षमता"]]},
+"सुंदरता और पर्सनल केयर":{e:"💄",f:[["ब्रांड"],["प्रकार"],["मात्रा"],["किसके लिए",["पुरुष","महिला","सभी"]]]},
+"जूते-चप्पल":{e:"👟",f:[["ब्रांड"],["साइज़"],["रंग"],["मटीरियल"],["किसके लिए",["पुरुष","महिला","बच्चे"]]]},
+"खिलौने और अन्य":{e:"🧸",f:[["ब्रांड"],["उम्र समूह"],["मटीरियल"]]}};
+const attrsUI=c=>{$("#attrs").innerHTML=(CATS[c]?.f||[]).map(([k,o],i)=>o?`<select id=at${i}><option value="">${k} *</option>${o.map(x=>`<option>${x}</option>`).join("")}</select>`:`<input id=at${i} placeholder="${k} *">`).join("")};
+const shrink=f=>new Promise(r=>{const i=new Image;i.onload=()=>{const k=Math.min(1,520/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*k;c.height=i.height*k;c.getContext("2d").drawImage(i,0,0,c.width,c.height);r(c.toDataURL("image/jpeg",.65))};i.src=URL.createObjectURL(f)});
+function vP(p){const im=p.imgs||[],off=p.mrp>p.price?Math.round((p.mrp-p.price)*100/p.mrp):0;
+ return`<button class=g data-a=back>← वापस</button><div class="card pd"><div><div class=big>${im[gi]?`<img src="${im[gi]}">`:`<div class=em>${esc(p.emoji)}</div>`}</div><div class=row>${im.map((x,i)=>`<img class="th ${i==gi?"on":""}" src="${x}" data-a=gal data-i=${i}>`).join("")}</div></div>
+ <div><h2 style="margin-top:0">${esc(p.name)}</h2><div class=mu>${esc(p.category||"")} · विक्रेता: ${esc(p.sellerName)}</div><div style="font-size:26px;font-weight:700">₹${p.price} ${off?`<s class=mu style="font-size:16px">₹${p.mrp}</s> <span class=off>${off}% off</span>`:""}</div><div class=mu>वज़न: ${esc(p.weight||"-")}</div>${me.lat!=null&&p.lat!=null?`<div style="color:#388e3c">⏱ करीब ${F.prep+Math.ceil(km(me.lat,me.lng,p.lat,p.lng)*F.minPerKm)} मिनट में डिलीवरी</div>`:""}
+ <div class=row><button class=y data-a=add data-id=${p.id}>🛒 कार्ट में जोड़ें</button><button class=o data-a=add data-id=${p.id}>⚡ अभी खरीदें</button></div>
+ <h2>मुख्य जानकारी</h2><table>${Object.entries(p.attrs||{}).map(([k,v])=>`<tr><td class=mu>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("")}</table><h2>विवरण</h2><p>${esc(p.desc||"")}</p></div></div>`}
+ function vC(){const to=D.orders.find(x=>x.id==trk);if(to)return vT(to);const cp=D.products.find(p=>p.id==cur);if(cp)return vP(cp);const ps=D.products.filter(p=>p.name.toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||p.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,
+ S=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,6),V=[...new Set(H.filter(h=>h.type=="view").map(h=>h.text))].slice(0,6),
+ C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean),chips=l=>l.map(x=>`<button class=g data-a=chip data-q="${esc(x)}">${esc(x)}</button>`).join(""),G=split(C);
+ return`${SITE.open===false?`<div class=card>⛔ ${esc(SITE.closedMsg||"अभी ऑर्डर बंद हैं")}</div>`:""}${me.lat==null?'<div class=card>📍 अपने इलाके की दुकानें देखने के लिए <button class=b data-a=loc>मेरी लोकेशन</button></div>':""}<div class=row><input id=sq value="${esc(sq)}" placeholder="सामान खोजें" style="flex:1"><button class=b data-a=search>खोजें</button></div>
+ ${S.length?`<div class=row><span class=mu>पिछली खोज:</span>${chips(S)}</div>`:""}${V.length?`<div class=row><span class=mu>हाल में देखे:</span>${chips(V)}</div>`:""}
+ <div class=grid>${ps.map(p=>{const off=p.mrp>p.price?Math.round((p.mrp-p.price)*100/p.mrp):0;return`<div class=card data-a=view data-id=${p.id}>${p.imgs?.[0]?`<img class=gi src="${p.imgs[0]}">`:`<div class=em>${esc(p.emoji)}</div>`}<div class=t2>${esc(p.name)}</div><div><b>₹${p.price}</b>${off?`<s class=mu>₹${p.mrp}</s> <span class=off>${off}% off</span>`:""}</div><div class=mu>${esc(p.weight\vert{}\vert{}"")} · ${esc(p.sellerName)}</div></div>`}).join("")||'<p class=mu>कुछ नहीं मिला</p>'}</div>
+ <h2 id=cartbox>🧺 कार्ट (${C.length})</h2><div class=card>${G.map(g=>`<div><b>${esc(g.l[0].sellerName)}</b> <span class=mu>${g.k==null?"":g.k.toFixed(1)+" किमी"}</span>${g.l.map(p=>`<div class=row>${esc(p.emoji)} ${esc(p.name)} — ₹${p.price} <button class=g data-a=rm data-id=${p.id}>हटाएँ</button></div>`).join("")}<div class=mu>${g.eta!=null?"⏱ करीब "+g.eta+" मिनट में डिलीवरी · ":""}सामान ₹${g.t} + प्लेटफ़ॉर्म फीस ₹${g.pf} + डिलीवरी ${g.df==null?"(लोकेशन चाहिए)":"₹"+g.df}${g.cf?" + COD चार्ज ₹"+g.cf:""}${g.out?' <b style="color:var(--bad)">⚠️ यह दुकान '+F.maxKm+' किमी की सीमा से बाहर है</b>':""}</div></div><hr>`).join("")||'<span class=mu>कार्ट खाली है</span>'}
+ ${C.length?`<b>कुल: ₹${G.reduce((a,g)=>a+g.t+g.pf+(g.df||0)+g.cf,0)}</b><h2>डिलीवरी का पता</h2><div class=row><input id=rn placeholder="नाम *" value="${esc(me.rname||me.name||"")}"><input id=ph placeholder="मोबाइल नंबर * (10 अंक)" inputmode=numeric maxlength=10 value="${esc(me.phone||"")}"><input id=pn placeholder="पिन कोड *" inputmode=numeric maxlength=6 value="271124"></div><div class=row><input id=ad placeholder="पूरा पता *" value="${esc(me.address||"रसूलपुर करदा, ब्लॉक वज़ीरगंज")}" style="flex:1"><input id=ct placeholder="शहर *" value="${esc(me.city||"गोंडा")}"></div><div class=row><label><input type=radio name=pm value=cod ${pm=="cod"?"checked":""}> कैश ऑन डिलीवरी (+₹${F.cod})</label><label><input type=radio name=pm value=online${pm=="online"?"checked":""} ${F.payUrl?"":"disabled"}> ऑनलाइन पेमेंट (UPI / कार्ड / नेटबैंकिंग)${F.payUrl?"":" — जल्द चालू होगा"}</label></div><div class=row><button class=g data-a=loc>📍 ${me.lat!=null?"लोकेशन बदलें":"मेरी लोकेशन"}</button><button class=o data-a=place>${pm=="cod"?"ऑर्डर करें":"पेमेंट करके ऑर्डर करें"}</button></div>`:""}</div>
+ <h2>मेरे ऑर्डर</h2>${ordT(D.orders,"c")}`}
+function vS(){return`<div class=row><button class=g data-a=notif>🔔 ऑर्डर अलर्ट चालू करें</button><button class=g data-a=loc>📍 ${me.lat!=null?"दुकान की लोकेशन बदलें":"दुकान की लोकेशन सेट करें"}</button></div>
+ ${me.lat==null?'<p class=mu>पहले दुकान पर खड़े होकर लोकेशन सेट करें, तभी प्रोडक्ट जोड़ पाएँगे।</p>':`<h2>नया प्रोडक्ट लिस्ट करें</h2><div class=card><div class=row><select id=pc data-c=cat><option value="">कैटेगरी चुनें *</option>${Object.keys(CATS).map(c=>`<option>${c}</option>`).join("")}</select><input id=pn2 placeholder="प्रोडक्ट का नाम *" style="flex:1"></div>
+ <div class=row><input id=pm type=number placeholder="MRP ₹ *"><input id=pp type=number placeholder="बिक्री कीमत ₹ *"><input id=pw type=number placeholder="वज़न *" style="width:90px"><select id=pu><option>g</option><option>kg</option><option>ml</option><option>L</option></select></div>
+ <div id=attrs class=row></div><textarea id=pd placeholder="विवरण *" rows=3 style="width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--cd);color:var(--tx)"></textarea>
+ <div class=row><span class=mu>फ़ोटो (1 से 4) *</span><input id=pi type=file accept="image/*" multiple></div><button class=b data-a=addp>एडमिन अप्रूवल के लिए भेजें</button></div>`}
+ <div class="card tw"><table>${D.products.map(p=>`<tr><td>${p.imgs?.[0]?`<img src="${p.imgs[0]}" width=40>`:esc(p.emoji)} ${esc(p.name)}</td><td>₹${p.price}</td><td><span class="tag ${p.status=="approved"?"ok":""}">${p.status=="approved"?"लाइव":"अप्रूवल बाकी"}</span></td><td><button class=r data-a=delp data-id=${p.id}>हटाएँ</button></td></tr>`).join("")||"<tr><td class=mu>कोई प्रोडक्ट नहीं</td></tr>"}</table></div>
+ <h2>मेरे ऑर्डर</h2>${ordT(D.orders,"s")}`}
+const vD=()=>`<h2>मुझे असाइन हुए ऑर्डर</h2>${ordT(D.orders,"d")}`;
+function vA(){const rev=D.orders.filter(o=>o.status=="delivered").reduce((a,o)=>a+o.total,0),U=D.users.filter(u=>u.role!="admin");
+ return`<div class=st><div class=card><b>${D.orders.length}</b>ऑर्डर</div><div class=card><b>₹${D.orders.filter(o=>o.status=="delivered").reduce((a,o)=>a+(o.platformFee||0),0)}</b>आपकी फीस कमाई</div><div class=card><b>${D.users.filter(u=>u.role=="customer").length}</b>ग्राहक</div><div class=card><b>${D.products.filter(p=>p.status=="pending").length}</b>अप्रूवल बाकी</div></div>
+ ${wform()}<h2>फीस सेटिंग</h2><div class=row>प्लेटफ़ॉर्म % <input id=fp type=number value=${F.pct} style="width:70px"> प्रति किमी ₹ <input id=fk type=number value=${F.perKm} style="width:70px"> कम से कम ₹ <input id=fm type=number value=${F.min} style="width:70px"> सेवा सीमा किमी <input id=fr type=number value=${F.maxKm} style="width:70px"> तैयारी मिनट <input id=fq type=number value=${F.prep} style="width:70px"> मिनट प्रति किमी <input id=fv type=number value=${F.minPerKm} style="width:70px"> COD चार्ज ₹ <input id=fcod type=number value=${F.cod} style="width:70px"> <input id=fpu placeholder="पेमेंट सर्वर का लिंक (ऑनलाइन पेमेंट के लिए)" value="${esc(F.payUrl||"")}" style="flex:1"><button class=b data-a=fees>सेव</button></div><h2>ऑर्डर</h2>${ordT(D.orders,"a")}
+ <h2>नया सेलर / डिलीवरी बॉय अकाउंट</h2><div class=row><input id=sn placeholder="नाम"><input id=se placeholder="ईमेल"><input id=sp placeholder="पासवर्ड (6+)"><select id=sr><option value=seller>सेलर</option><option value=delivery>डिलीवरी बॉय</option></select><button class=b data-a=mk>बनाएँ</button></div>
+ <div class="card tw"><table>${U.map(u=>`<tr><td>${esc(u.name)}<div class=mu>${esc(u.email)}</div></td><td>${{customer:"ग्राहक",seller:"सेलर",delivery:"डिलीवरी"}[u.role]}</td><td><span class="tag ${u.status=="active"?"ok":"bad"}">${u.status=="active"?"चालू":"ब्लॉक"}</span></td><td><button class=g data-a=blk data-id=${u.id}>${u.status=="active"?"ब्लॉक":"चालू करें"}</button></td></tr>`).join("")}</table></div>
+ <h2>प्रोडक्ट</h2><div class="card tw"><table>${D.products.map(p=>`<tr><td>${esc(p.emoji)}${esc(p.name)}</td><td>₹${p.price}</td><td>${esc(p.sellerName)}</td><td><span class="tag ${p.status=="approved"?"ok":""}">${p.status=="approved"?"लाइव":"अप्रूवल बाकी"}</span></td><td><button class=b data-a=pst data-id=${p.id} data-s=${p.status=="approved"?"pending":"approved"}>${p.status=="approved"?"रोकें":"अप्रूव"}</button> <button class=r data-a=delp data-id=${p.id}>हटाएँ</button></td></tr>`).join("")}</table></div>`}
 
 const A={
- async login(){
-  try{
-   const u=await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value);
-   const s=await getDoc(doc(db,"users",u.user.uid));
-   if(s.exists()){me={id:u.user.uid,...s.data()};showLogin=false;boot(u.user)}
-   else alert("अकाउंट रिकॉर्ड नहीं मिला");
-  }catch(e){alert("लॉगिन में गलती: "+e.message)}
- },
- async reg(){
-  const n=$("#nm").value.trim(),e=$("#em").value.trim(),p=$("#pw").value;
-  if(!n||!e||!p)return alert("सब जानकारी भरें!");
-  creating=true;
-  try{
-   const c=await createUserWithEmailAndPassword(auth,e,p);
-   await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:"customer",status:"active",createdAt:serverTimestamp()});
-   creating=false;showLogin=false;boot(c.user);
-  }catch(x){alert(x.message);creating=false;}
- },
- openlogin(){showLogin=true;render()},
- closelogin(){showLogin=false;render()},
- out(){signOut(auth);me={role:"customer",id:"guest",name:"ग्राहक"};render()},
- search(){sq=$("#sq")?.value.trim()||"";render()},
- view(d){cur=d.id;render()},
- back(){cur=null;render()},
- add(d){cur=null;setCart([...cart(),d.id]);alert("कार्ट में जोड़ दिया गया ✅")},
- rm(d){const c=cart();c.splice(+d.i,1);setCart(c)},
+ async login(){await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)},
+ async reg(){const n=$("#nm").value.trim(),e=$("#em").value.trim();if(!n)return alert("अपना नाम भरें");creating=true;
+  try{const c=await createUserWithEmailAndPassword(auth,e,$("#pw").value);await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:"customer",status:"active",address:"रसूलपुर करदा, ब्लॉक वज़ीरगंज",phone:"",pin:"271124",city:"गोंडा",createdAt:serverTimestamp()});creating=false;await boot(c.user)}finally{creating=false}},
+ async reset(){const e=$("#em").value.trim();if(!e)return alert("ईमेल भरें");await sendPasswordResetEmail(auth,e);alert("रीसेट लिंक ईमेल पर भेज दिया")},
+ out(){signOut(auth)},
+ search(){sq=$("#sq").value.trim();if(sq)addDoc(collection(db,"users",me.id,"history"),{type:"search",text:sq,t:serverTimestamp()});render(1)},
+ chip(d){sq=d.q;render(1)},
+ view(d){cur=d.id;gi=0;const p=D.products.find(x=>x.id==d.id);if(p)addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()});render(1);scrollTo(0,0)},
+ back(){cur=null;render(1)},gal(d){gi=+d.i;render(1)},
+ add(d){cur=null;setCart([...cart(),d.id]);setTimeout(()=>$("#cartbox")?.scrollIntoView(),60)},
+ rm(d){const c=cart();c.splice(c.indexOf(d.id),1);setCart(c)},
+ async delp(d){if(confirm("हटाएँ?"))return deleteDoc(doc(db,"products",d.id))},
+ async pst(d){return updateDoc(doc(db,"products",d.id),{status:d.s})},
+ async st(d){if(d.s=="delivered"&&sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null}return updateDoc(doc(db,"orders",d.id),{status:d.s})},
+ async mk(){const n=$("#sn").value.trim(),e=$("#se").value.trim(),p=$("#sp").value,r=$("#sr").value;if(!n||!e||p.length<6)return alert("सब भरें, पासवर्ड 6+ अक्षर");
+  const sec=initializeApp(cfg,"s"+Date.now());try{const a=getAuth(sec),c=await createUserWithEmailAndPassword(a,e,p);await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:r,status:"active",createdAt:serverTimestamp()});await signOut(a);alert("अकाउंट बन गया ✅")}finally{deleteApp(sec)}},
+ async blk(d){const u=D.users.find(x=>x.id==d.id),s=u.status=="active"?"blocked":"active";await updateDoc(doc(db,"users",u.id),{status:s});
+  if(s=="blocked"&&u.role=="seller")for(const p of D.products.filter(p=>p.sellerId==u.id))await updateDoc(doc(db,"products",p.id),{status:"pending"})},
+ loc(){if($("#ad")){me.address=$("#ad").value;me.phone=$("#ph").value;me.pin=$("#pn").value;me.city=$("#ct").value;me.rname=$("#rn").value}return new Promise(ok=>navigator.geolocation.getCurrentPosition(async p=>{me.lat=p.coords.latitude;me.lng=p.coords.longitude;await updateDoc(doc(db,"users",me.id),{lat:me.lat,lng:me.lng});render(1);ok()},()=>{alert("लोकेशन की इजाज़त दें");ok()}))},
+ notif(){try{Notification.requestPermission()}catch(e){}ping()},
+ async addp(){const c=$("#pc").value,n=$("#pn2").value.trim(),mrp=+$("#pm").value,pr=+$("#pp").value,w=$("#pw").value,d=$("#pd").value.trim(),fs=[...$("#pi").files].slice(0,4);
+  if(!c||!n||!mrp||!pr||!w||!d||!fs.length)return alert("कैटेगरी, नाम, कीमत, वज़न, विवरण और कम से कम 1 फ़ोटो ज़रूरी है");if(pr>mrp)return alert("बिक्री कीमत MRP से ज़्यादा नहीं हो सकती");
+  const at={};for(const [i,[k]] of CATS[c].f.entries()){const v=$("#at"+i).value.trim();if(!v)return alert(k+" भरें");at[k]=v}
+  const imgs=await Promise.all(fs.map(shrink));
+  await addDoc(collection(db,"products"),{name:n,category:c,mrp,price:pr,weight:w+" "+$("#pu").value,desc:d,attrs:at,imgs,emoji:CATS[c].e,sellerId:me.id,sellerName:me.name,lat:me.lat,lng:me.lng,status:"pending",createdAt:serverTimestamp()});alert("भेज दिया ✅ एडमिन के अप्रूवल का इंतज़ार करें");render(1)},
  async place(){
-  const rn=$("#rn")?.value.trim()||me.name,ph=$("#ph")?.value.trim()\vert{}\vert{}"",ad=$("#ad")?.value.trim()||"",pn=$("#pn")?.value.trim()\vert{}\vert{}"",ct=$("#ct")?.value.trim()||"";
-  if(!ad||!ph)return alert("नाम, पता और फ़ोन नंबर ज़रूर भरें!");
-  const C=cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean);
-  await addDoc(collection(db,"orders"),{
-   customerId:me.id,name:rn,phone:ph,addr:ad,pin:pn,city:ct,
-   items:C.map(p=>({name:p.name||p.title,price:p.price||p.Price})),
-   total:C.reduce((a,b)=>a+(b.price||b.Price||0),0),status:"placed",createdAt:serverTimestamp()
-  });
-  setCart([]);alert("ऑर्डर सफलतापूर्वक हो गया! ✅");
- },
- async addp(){
-  const n=$("#pn2").value.trim(),p=+$("#pp").value,e=$("#pe").value.trim()\vert{}\vert{}"📦",d=$("#pd").value.trim();
-  if(!n||!p)return alert("नाम और कीमत ज़रूर भरें!");
-  await addDoc(collection(db,"products"),{
-   name:n,price:p,emoji:e,desc:d,sellerId:me.id,sellerName:me.name,status:"approved",createdAt:serverTimestamp()
-  });
-  alert("प्रोडक्ट जोड़ दिया गया! ✅");render();
- }
+  const ad=$("#ad")?.value.trim()||"",ph=$("#ph")?.value.trim()\vert{}\vert{}"",rn=$("#rn")?.value.trim()||me.name||"",pn=$("#pn")?.value.trim()\vert{}\vert{}"271124",ct=$("#ct")?.value.trim()||"गोंडा";
+  if(!ad||!ph||!rn)return alert("नाम, पता और फ़ोन भरें");if(me.lat==null)return alert("पहले 📍 मेरी लोकेशन दबाएँ");
+  const G=split(cart().map(id=>D.products.find(p=>p.id==id)).filter(Boolean));if(G.some(g=>g.df==null))return alert("किसी दुकान की लोकेशन नहीं है");if(G.some(g=>g.out))return alert("कुछ दुकानें "+F.maxKm+" किमी की सीमा से बाहर हैं, उन्हें कार्ट से हटाएँ");if(SITE.open===false)return alert(SITE.closedMsg||"अभी ऑर्डर बंद हैं");
+  await updateDoc(doc(db,"users",me.id),{address:ad,phone:ph,pin:pn,city:ct,rname:rn});me.address=ad;me.phone=ph;me.pin=pn;me.city=ct;me.rname=rn;
+  const tx="HDP"+Date.now();let tot=0;for(const g of G){tot+=g.t+g.pf+g.df+g.cf;await addDoc(collection(db,"orders"),{customerId:me.id,name:me.name,rname:rn,addr:ad,city:ct,pin:pn,phone:ph,lat:me.lat,lng:me.lng,sellerId:g.l[0].sellerId,sellerName:g.l[0].sellerName,items:g.l.map(p=>({pid:p.id,name:p.name,price:p.price})),itemsTotal:g.t,platformFee:g.pf,deliveryFee:g.df,km:+g.k.toFixed(1),etaMin:g.eta,total:g.t+g.pf+g.df+g.cf,payment:pm,codFee:g.cf,paid:false,txnid:tx,status:"placed",boyId:null,boyName:"",createdAt:serverTimestamp()})}
+  setCart([]);if(pm=="online")return payNow(tx,tot);alert("ऑर्डर हो गया ✅")},
+ async draft(){await setDoc(doc(db,"settings","draft"),wv());alert("ड्राफ्ट सेव हो गया")},
+ async live(){const v=wv();await setDoc(doc(db,"settings","draft"),v);await setDoc(doc(db,"settings","site"),v);alert("साइट लाइव हो गई 🚀")},
+ async fees(){await setDoc(doc(db,"settings","fees"),{pct:+$("#fp").value,perKm:+$("#fk").value,min:+$("#fm").value,maxKm:+$("#fr").value,prep:+$("#fq").value,minPerKm:+$("#fv").value,cod:+$("#fcod").value,payUrl:$("#fpu").value.trim()});alert("सेव हो गया")},
+ trk(d){trk=d.id;render(1);scrollTo(0,0)},untrk(){trk=null;render(1)},
+ share(d){if(sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null;return render(1)}
+  if(wid!=null)navigator.geolocation.clearWatch(wid);sharing=d.id;lastW=0;
+  wid=navigator.geolocation.watchPosition(p=>{if(Date.now()-lastW<15000)return;lastW=Date.now();updateDoc(doc(db,"orders",d.id),{liveLat:p.coords.latitude,liveLng:p.coords.longitude,liveAt:Date.now()}).catch(()=>{})},()=>{alert("लोकेशन की इजाज़त दें");sharing=null;render(1)},{enableHighAccuracy:true});render(1)},
+ paid(d){return updateDoc(doc(db,"orders",d.id),{paid:true})}
 };
 
-document.addEventListener("click",async e=>{
- const b=e.target.closest("[data-a]");
- if(!b)return;
- try{await A[b.dataset.a](b.dataset)}catch(x){alert(x.message)}
-});
+onSnapshot(doc(db,"settings","site"),x=>site(x.exists()?x.data():{}),()=>{});
 
-function boot(u){
- sub(collection(db,"products"),"products");
- if(u&&u.uid!="guest"){
-  sub(query(collection(db,"orders"),where("customerId","==",u.uid)),"orders");
- }
- render();
-}
+async function payNow(tx,amt){const r=await fetch(F.payUrl+"/start",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({txnid:tx,amount:amt,firstname:((me.rname||me.name).replace(/[^\w ]/g,"")||"Customer"),email:me.email,phone:me.phone})}).then(x=>x.json());
+ const fm=document.createElement("form");fm.method="POST";fm.action=r.action;for(const[k,v]of Object.entries(r.fields)){const i=document.createElement("input");i.type="hidden";i.name=k;i.value=v;fm.appendChild(i)}document.body.appendChild(fm);fm.submit()}
+{const q=new URLSearchParams(location.search).get("pay");if(q)setTimeout(()=>alert(q=="ok"?"✅ पेमेंट सफल। एडमिन की पुष्टि के बाद ऑर्डर आगे बढ़ेगा।":"❌ पेमेंट नहीं हुआ। दोबारा कोशिश करें या कैश ऑन डिलीवरी चुनें।"),900)}
 
-onAuthStateChanged(auth,u=>{
- subs.forEach(f=>f());subs=[];
- if(u&&!creating){
-  getDoc(doc(db,"users",u.uid)).then(s=>{
-   if(s.exists()){me={id:u.uid,...s.data()};boot(u)}
-   else boot({uid:"guest"});
-  });
- }else{
-  me={role:"customer",id:"guest",name:"ग्राहक"};
-  boot({uid:"guest"});
- }
-});
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-a]");if(!b)return;try{await A[b.dataset.a](b.dataset)}catch(x){alert(x.message)}});
+document.addEventListener("change",async e=>{const s=e.target;if(s.name=="pm"){if($("#ad")){me.address=$("#ad").value;me.phone=$("#ph").value;me.pin=$("#pn").value;me.city=$("#ct").value;me.rname=$("#rn").value}pm=s.value;return render(1)}if(s.dataset.c=="cat")return attrsUI(s.value);if(s.dataset.c!="assign"||!s.value)return;const u=D.users.find(x=>x.id==s.value);
+ try{await updateDoc(doc(db,"orders",s.dataset.id),{boyId:u.id,boyName:u.name,status:"assigned"})}catch(x){alert(x.message)}});
+document.addEventListener("keydown",e=>{if(e.key=="Enter"&&e.target.id=="sq")A.search();if(e.key=="Enter"&&e.target.id=="pw")A.login().catch(x=>alert(x.message))});
 </script></body></html>
