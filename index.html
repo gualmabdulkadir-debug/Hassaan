@@ -85,7 +85,7 @@ const CATS={"Fashion":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL
 "Beauty & Personal Care":{e:"💄",f:[["Brand"],["Type"],["Quantity"],["Ideal for",["Men","Women","All"]]]},
 "Footwear":{e:"👟",f:[["Brand"],["Size"],["Color"],["Material"],["Ideal for",["Men","Women","Kids"]]]},
 "Toys & Others":{e:"🧸",f:[["Brand"],["Age group"],["Material"]]}};
-const TABS={admin:[["dash","Dashboard"],["orders","Orders"],["products","Products"],["customers","Customers"],["pay","Payouts"],["staff","Staff"],["settings","Settings"]],seller:[["orders","Orders"],["products","My products"],["earn","Earnings"],["add","Add product"]],delivery:[["orders","My deliveries"]]};
+const TABS={admin:[["dash","Dashboard"],["orders","Orders"],["products","Products"],["customers","Customers"],["pay","Payouts"],["notify","Notifications"],["staff","Staff"],["settings","Settings"]],seller:[["orders","Orders"],["products","My products"],["earn","Earnings"],["add","Add product"]],delivery:[["orders","My deliveries"]]};
 let me=null,subs=[],seen={},D={products:[],orders:[],users:[],hist:[],duty:[]},F={pct:3,pfMax:10,perKm:7,min:10,maxKm:10,prep:15,minPerKm:3,cod:0,payUrl:"",partners:false,feeBy:"customer",holdHours:48,payHour:18},SITE={},DR=null,BN=[],chat=[],chOpen=false;
 let cv="shop",tab="",cur=null,gi=0,trk=null,sq="",cat="",pm="cod",lv=false,pending=false,sharing=null,wid=null,lastW=0,pay=null,cq="",cshow="ordered",ofil="all",am="login";
 const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render(1)};
@@ -102,15 +102,19 @@ function orderAlert(t){ping(t);let e=$("#oa");if(!e){e=document.createElement("d
  clearInterval(alT);alT=setInterval(()=>ping(t),5000);document.title="🔔 New order! "+ttl}
 const shrink=(f,m=520,q=.65)=>new Promise((ok,no)=>{const i=new Image;i.onload=()=>{const k=Math.min(1,m/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",q))};i.onerror=()=>no(new Error("Could not read that image"));i.src=URL.createObjectURL(f)});
 function split(C){const g={};C.forEach(p=>(g[p.sellerId]=g[p.sellerId]||[]).push(p));return Object.values(g).map(l=>{const t=l.reduce((a,p)=>a+p.price,0),k=me.lat!=null&&l[0].lat!=null?km(me.lat,me.lng,l[0].lat,l[0].lng):null,sd=l.every(p=>p.selfDel);return{l,t,k,sd,pf:Math.min(F.pfMax,Math.round(t*F.pct/100)),df:k==null?null:(sd?Math.max(...l.map(p=>+p.selfFee||0)):dfee(k)),out:k!=null&&k>F.maxKm,eta:k==null?null:F.prep+Math.ceil(k*F.minPerKm),cf:pm=="cod"?F.cod:0}})}
-const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.error(k,e)));
+const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));if(me&&me.role=="customer"){if(k=="products"&&PP&&D.products.some(p=>p.id==PP)){cur=PP;gi=0;cv="product";PP=null}if(k=="orders"&&PT&&D.orders.some(o=>o.id==PT)){trk=PT;cv="track";PT=null}}render()},e=>console.error(k,e)));
+let PP=new URLSearchParams(location.search).get("p"),PT=new URLSearchParams(location.search).get("track");
+const api=p=>F.payUrl.trim().replace(/\/+$/,"")+p;
+const statusPush=id=>{if(F.payUrl)fetch(api("/status"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({id})}).catch(()=>{})};
+const canAsk=()=>{try{return me&&me.role=="customer"&&SITE.vapid&&window.Notification&&Notification.permission=="default"&&!localStorage.nno}catch(e){return false}};
 const pushNotify=ids=>{if(!F.payUrl||!ids.length)return;fetch(F.payUrl.trim().replace(/\/+$/,"")+"/notify",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({ids})}).catch(()=>{})};
-async function pushSetup(){try{if(!me||me.role=="customer"||!SITE.vapid||!("serviceWorker" in navigator)||!window.Notification||Notification.permission!="granted")return;
+async function pushSetup(){try{if(!me||!SITE.vapid||!("serviceWorker" in navigator)||!window.Notification||Notification.permission!="granted")return;
  const{getMessaging,getToken}=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js");
  const reg=await navigator.serviceWorker.register("firebase-messaging-sw.js"),tok=await getToken(getMessaging(app),{vapidKey:SITE.vapid,serviceWorkerRegistration:reg});
  if(tok&&localStorage["fcm_"+me.id]!=tok){await updateDoc(doc(db,"users",me.id),{fcm:arrayUnion(tok)});localStorage["fcm_"+me.id]=tok}}catch(e){console.warn("push",e)}}
 const notifySeller=(o,id)=>{if(!SITE.notifyUrl||!o.sellerPhone)return;const text="🛒 New order #"+id.slice(0,6).toUpperCase()+" - "+(SITE.name||"Store")+"\n"+o.items.map(i=>i.name).join(", ")+"\nAmount: "+inr(o.itemsTotal)+"\nCustomer: "+o.rname+" "+o.phone+"\nAddress: "+o.addr+", "+o.city+"\nPlease open the seller panel to accept.";fetch(SITE.notifyUrl.replace(/\/$/,"")+"/notify",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({to:o.sellerPhone,text})}).catch(()=>{})};
 /* ---------- layout ---------- */
-const FORM=()=>cv=="profile"||(me.role=="seller"&&tab=="add"&&cv!="profile")||(me.role=="admin"&&["settings","staff"].includes(tab))||(me.role=="customer"&&["cart","pay"].includes(cv));
+const FORM=()=>cv=="profile"||(me.role=="seller"&&tab=="add"&&cv!="profile")||(me.role=="admin"&&["settings","staff","notify"].includes(tab))||(me.role=="customer"&&["cart","pay"].includes(cv));
 function head0(){const lg=SITE.logoImg?`<img class=lgi src="${SITE.logoImg}">`:`<span class=lge>${esc(SITE.logo||"🛍️")}</span>`;return`<div class=hw><a class=brand data-a=shop>${lg}<b>${esc(SITE.name||"Hassaan Digital Point")}</b></a></div>`}
 function head(){const n=cart().length,c=me.role=="customer";
  const pf=`<button class="hb ic" data-a=go data-v=profile title="Profile">👤<span class=hl>${me.guest?"Login":esc((me.rname||me.name||"").split(" ")[0])}</span></button>`;
@@ -168,6 +172,7 @@ function pCard(p){const o=pOff(p);return`<div class="card pc" data-a=view data-i
 function vShop(){const ps=D.products.filter(p=>p.lat!=null&&(!cat||p.category==cat)&&(p.name||"").toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,mid=BN.filter(b=>b.place=="mid");
  const rs=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,5);
  return`${SITE.open===false?`<div class=alert>${esc(SITE.closedMsg||"Ordering is paused right now.")}</div>`:""}
+ ${canAsk()?'<div class="card note">🔔 <span><b>Offers aur order updates</b> ki notification chahiye? Order nikalne par aur sale ki khabar phone par milegi.</span><button class=b data-a=cnotif>Allow</button><button class=g data-a=cnotifno>Later</button></div>':""}
  ${me.lat==null?'<div class="card note">📍 <span><b>See shops near you.</b> Share your location to see delivery time and fees.</span><button class=b data-a=loc>Share location</button></div>':""}
  ${catTiles()}${cat?`<div class=row><span class=mu>Showing: <b>${esc(cat)}</b></span><button class=g data-a=cat data-k="">Clear filter</button></div>`:""}
  ${mid.length?`<div class=midb>${mid.map(b=>`<img src="${b.img}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`:""}
@@ -239,8 +244,19 @@ function aPay(){const by={};D.orders.forEach(o=>{const i=sInfo(o);if(i&&o.status
  return`<div class=card><div class=oh><b>${esc(u.name||l[0].o.sellerName)}</b><span class=mu>${esc(u.phone||"")}</span></div><div class=mu>UPI: <b>${esc(u.upi||"not added")}</b></div><div style="margin:6px 0">Pay now <b>${inr(di)}</b> · Collect now <b>${inr(dout)}</b> · Net to send <b>${inr(di-dout)}</b></div>
  ${l.map(({o,i})=>`<div class=rowi><div style="flex:1"><b>#${o.id.slice(0,6).toUpperCase()}</b><div class=mu>${i.dir=="in"?"Pay seller":"Collect from seller"} ${inr(i.amt)} · ${isDue({i})?"due now":"on "+fdt(i.due)}</div></div><button class=g data-a=setl data-id=${o.id}>Mark done</button></div>`).join("")}
  <div class=row><button class=b data-a=setlall data-id=${sid}>Mark all due as settled</button>${u.upi&&di-dout>0?`<a class="g ab" href="upi://pay?pa=${encodeURIComponent(u.upi)}&pn=${encodeURIComponent(u.name||"Seller")}&am=${di-dout}&cu=INR&tn=${encodeURIComponent("Payout")}">Pay ${inr(di-dout)} by UPI</a>`:""}</div></div>`}).join("")||'<div class="card empty mu">Nothing to settle yet</div>'}`}
+const NTPL=[["🎉","Aaj ka offer","🎉 Aaj ka khaas offer!","Aaj chuninda products par bumper discount. Jaldi order karein."],["⏰","Sale aane wali hai","⏰ Sale shuru hone wali hai!","Kal se badi sale shuru ho rahi hai. Taiyaar rahein, site par milte hain."],["🔥","Flash sale","🔥 Flash sale abhi shuru!","Sirf kuch ghante ke liye bhaari chhoot. Abhi order karein."],["🚨","Zaroori suchna","🚨 Zaroori suchna","Kripya dhyan dein: "],["🚚","Delivery late","🚚 Delivery mein thodi deri","Mausam ya traffic ki wajah se delivery mein deri ho sakti hai. Dhairya ke liye shukriya."],["🛑","Dukaan band","🛑 Dukaan aaj band hai","Aaj dukaan band rahegi. Agle din se order le jaayenge."]];
+const AUD={customer:"all customers",seller:"all sellers",delivery:"all delivery partners",all:"everyone (customers, sellers, delivery, admin)"};
+function aNotify(){const ps=D.products.filter(p=>p.status=="approved"),bc=D.bc||[];
+ return`<h2>Send notification</h2><div class=card><p class=mu>Phone par notification jaati hai un logon ko jinhone Allow kiya hai. Pehle ek template chuniye, phir badal sakte hain.</p>
+ <div class=row>${NTPL.map((t,i)=>`<button class=g data-a=tpl data-i=${i}>${t[0]} ${t[1]}</button>`).join("")}</div>
+ <div class=f><div><label class=l>Kisko bhejna hai</label><select id=na><option value=customer>Customers</option><option value=seller>Sellers</option><option value=delivery>Delivery partners</option><option value=all>Everyone</option></select></div>
+ <div><label class=l>Product (optional, tap karne par ye product khulega)</label><select id=np><option value="">No product</option>${ps.map(p=>`<option value=${p.id}>${esc(p.name)} - ${inr(p.price)}${pOff(p)?" ("+pOff(p)+"% off)":""}</option>`).join("")}</select></div></div>
+ <label class=l>Title (max 80)</label><input id=nt maxlength=80 style="width:100%" placeholder="Jaise: 🎉 Aaj ka khaas offer!">
+ <label class=l style="margin-top:10px">Message (max 240)</label><textarea id=nb maxlength=240 rows=3 style="width:100%" placeholder="Customer ko kya batana hai"></textarea>
+ <div class=row><button class="o big" data-a=bsend>Send notification</button></div>${F.payUrl?"":'<div class=alert>Pehle Settings → Fees & delivery mein Payment server URL bharein.</div>'}</div>
+ <h2>Pichhli notifications</h2>${bc.length?bc.map(b=>`<div class="card rowi" style="margin-bottom:8px"><div style="flex:1"><b>${esc(b.title)}</b><div class=mu>${esc(b.body)}</div><div class=mu>${esc(AUD[b.audience]||b.audience)} · ${b.sent} of ${b.total} phones · ${when(b.t)}</div></div></div>`).join(""):'<div class="card empty mu">Abhi tak koi notification nahi bheji</div>'}`}
 /* ---------- admin ---------- */
-function vAdmin(){return{dash:aDash,orders:aOrders,products:aProds,customers:aCusts,pay:aPay,staff:aStaff,settings:aSet}[tab]()}
+function vAdmin(){return{dash:aDash,orders:aOrders,products:aProds,customers:aCusts,pay:aPay,notify:aNotify,staff:aStaff,settings:aSet}[tab]()}
 function aDash(){const O=D.orders,dl=O.filter(o=>o.status=="delivered"),cnt=new Set(O.map(o=>o.customerId)).size;
  return`<div class=st><div class=card><b>${O.length}</b>Total orders</div><div class=card><b>${O.filter(o=>!["delivered","cancelled"].includes(o.status)).length}</b>Active orders</div><div class=card><b>${inr(dl.reduce((a,o)=>a+(o.total||0),0))}</b>Delivered sales</div><div class=card><b>${inr(dl.reduce((a,o)=>a+(o.platformFee||0)+(o.codFee||0),0))}</b>Your earnings</div><div class=card><b>${cnt}</b>Customers who ordered</div><div class=card><b>${D.products.filter(p=>p.status=="pending").length}</b>Products to approve</div><div class=card><b>${O.filter(o=>o.payment!="cod"&&!o.paid&&o.status!="cancelled").length}</b>Payments to verify</div></div><h2>Latest orders</h2>${oList(sorted(O).slice(0,5),"a")}`}
 function aOrders(){const l=D.orders.filter(o=>ofil=="all"||(ofil=="open"?!["delivered","cancelled"].includes(o.status):ofil=="unpaid"?o.payment!="cod"&&!o.paid:o.status==ofil));
@@ -268,6 +284,16 @@ const fe=x=>({"auth/email-already-in-use":"This email already has an account. Pl
 function drawChat(){$("#chat").style.display=chOpen?"flex":"none";if(!chOpen)return;$("#cm").innerHTML=chat.map(m=>`<div class="m ${m.r}">${esc(m.t)}</div>`).join("")||'<div class=mu>Namaste! Order, delivery, payment ya kisi bhi cheez ke baare mein poochhiye.</div>';$("#cm").scrollTop=1e9}
 const A={
  oaok(){clearInterval(alT);$("#oa")?.remove();document.title=ttl;cv="shop";if(me.role!="delivery")tab="orders";render(1)},
+ tpl(d){const t=NTPL[+d.i];$("#nt").value=t[2];$("#nb").value=t[3];if(t[0]=="🚨"||t[0]=="🛑"){$("#na").value="all"}},
+ async bsend(){const t=$("#nt").value.trim(),m=$("#nb").value.trim(),au=$("#na").value,pid=$("#np").value;
+  if(!t||!m)return toast("Title aur message likhna zaroori hai");if(!F.payUrl)return toast("Pehle Payment server URL bharein");
+  if(!confirm("Ye notification "+AUD[au]+" ko bheji jayegi. Bheju?"))return;toast("Bhej raha hoon...");let off=0,sent=0,total=0;
+  for(let n=0;n<40;n++){const tok=await auth.currentUser.getIdToken(),r=await fetch(api("/broadcast"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({idToken:tok,audience:au,title:t,body:m,productId:pid,offset:off})}).then(x=>x.json());
+   if(!r.ok)throw new Error(r.error||"Send failed");sent+=r.sent;total=r.total;if(r.next==null)break;off=r.next}
+  if(!total)return toast("Abhi kisi ne notification allow nahi ki");
+  await addDoc(collection(db,"broadcasts"),{title:t,body:m,audience:au,productId:pid,sent,total,t:serverTimestamp()});toast(sent+" phones par bhej di");$("#nt").value=$("#nb").value=""},
+ async cnotif(){try{await Notification.requestPermission()}catch(e){}await pushSetup();toast(Notification.permission=="granted"?"Done! Ab offers aur order updates milenge":"Notification allow nahi hui");render(1)},
+ cnotifno(){try{localStorage.nno=1}catch(e){}render(1)},
  chat(){chOpen=!chOpen;drawChat();if(chOpen)setTimeout(()=>$("#ci").focus(),50)},
  async csend(){const i=$("#ci"),t=i.value.trim();if(!t)return;i.value="";chat.push({r:"u",t},{r:"b",t:"..."});drawChat();let rep;
   try{if(!SITE.aiUrl)throw 0;const r=await fetch(SITE.aiUrl.replace(/\/$/,"")+"/chat",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({store:SITE.name||"Hassaan Digital Point",messages:chat.slice(0,-1).slice(-10).map(m=>({role:m.r=="u"?"user":"assistant",content:m.t}))})}).then(x=>x.json());rep=r.reply}
@@ -314,7 +340,7 @@ const A={
  trk(d){trk=d.id;cv="track";render(1);scrollTo(0,0)},
  share(d){if(sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null;return render(1)}if(wid!=null)navigator.geolocation.clearWatch(wid);sharing=d.id;lastW=0;
   wid=navigator.geolocation.watchPosition(p=>{if(Date.now()-lastW<15000)return;lastW=Date.now();updateDoc(doc(db,"orders",d.id),{liveLat:p.coords.latitude,liveLng:p.coords.longitude,liveAt:Date.now()}).catch(()=>{})},()=>{toast("Please allow location access");sharing=null;render(1)},{enableHighAccuracy:true});render(1)},
- st(d){if(d.s=="delivered"&&sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null}return updateDoc(doc(db,"orders",d.id),d.s=="delivered"?{status:d.s,deliveredAt:serverTimestamp()}:{status:d.s})},
+ st(d){if(d.s=="delivered"&&sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null}return updateDoc(doc(db,"orders",d.id),d.s=="delivered"?{status:d.s,deliveredAt:serverTimestamp()}:{status:d.s}).then(()=>statusPush(d.id))},
  paid(d){return updateDoc(doc(db,"orders",d.id),{paid:true})},delo(d){if(confirm("Delete this order permanently?"))return deleteDoc(doc(db,"orders",d.id))},
  async addp(){const c=$("#pc").value,n=$("#pn2").value.trim(),mrp=+$("#pm").value,pr=+$("#pp").value,w=$("#pw").value,ds=$("#pd").value.trim(),fs=[...$("#pi").files].slice(0,4),self=$("#dm").value=="self",fee=Math.max(0,+$("#df").value||0);
   if(!c||!n||!mrp||!pr||!w||!ds||!fs.length)return toast("Category, name, prices, weight, description and at least 1 photo are required");if(pr>mrp)return toast("Selling price cannot be more than MRP");
@@ -343,7 +369,7 @@ document.addEventListener("click",async e=>{if(me&&me.role!="customer"&&window.N
 document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#addp"))calc()});
 document.addEventListener("change",async e=>{const s=e.target,c=s.dataset.c;if(s.closest&&s.closest("#addp"))calc();if(s.name=="pm"){keep();pm=s.value;return render(1)}
  if(c=="cat")return attrsUI(s.value);if(c=="ofil"){ofil=s.value;return render(1)}if(c=="cshow"){cshow=s.value;return render(1)}
- if(c=="assign"&&s.value){const u=D.users.find(x=>x.id==s.value);try{await updateDoc(doc(db,"orders",s.dataset.id),{boyId:u.id,boyName:u.name,status:"assigned"})}catch(x){toast(x.message)}}});
+ if(c=="assign"&&s.value){const u=D.users.find(x=>x.id==s.value);try{await updateDoc(doc(db,"orders",s.dataset.id),{boyId:u.id,boyName:u.name,status:"assigned"});statusPush(s.dataset.id)}catch(x){toast(x.message)}}});
 document.addEventListener("keydown",e=>{if(e.key!="Enter")return;const i=e.target.id;if(i=="sq")A.search();if(i=="cq")A.csearch();if(i=="ci")A.csend();if(i=="pw")(am=="signup"?A.signup():A.login()).catch(x=>toast(fe(x)))});
 /* ---------- auth ---------- */
 function loginV(){$("#hd").innerHTML=head0();$("#bn").style.display="none";$("#nav").innerHTML="";document.body.classList.remove("hn");$("#ft").innerHTML=foot();const su=am=="signup";
@@ -357,10 +383,10 @@ async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(r=="customer"){sub(query(collection(db,"products"),where("status","==","approved")),"products");sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
  if(r=="seller"){sub(query(collection(db,"products"),where("sellerId","==",me.id)),"products");sub(query(collection(db,"orders"),where("sellerId","==",me.id)),"orders")}
  if(r=="delivery")sub(query(collection(db,"orders"),where("boyId","==",me.id)),"orders");
- if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users")}
+ if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users");sub(query(collection(db,"broadcasts"),orderBy("t","desc"),limit(10)),"bc")}
  if(r!="customer")sub(query(collection(db,"duty"),where("online","==",true)),"duty");
  if(r!="customer"){navigator.wakeLock?.request("screen").catch(()=>{});document.addEventListener("visibilitychange",()=>{if(!document.hidden)navigator.wakeLock?.request("screen").catch(()=>{})})}
- render(1);if(r!="customer")setTimeout(pushSetup,800)}
+ render(1);setTimeout(pushSetup,800)}
 onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};me=null;D={products:[],orders:[],users:[],hist:[],duty:[]};
  if(!u){$("#app").innerHTML='<p class="mu">Loading...</p>';signInAnonymously(auth).catch(e=>{loginV();toast("Guest access is off. Enable Anonymous sign-in in Firebase Authentication ("+e.code+")")})}else boot(u)});
 onSnapshot(doc(db,"settings","site"),x=>site(x.exists()?x.data():{}),()=>{});
