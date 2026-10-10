@@ -177,7 +177,7 @@ function vCart(){const C=cartItems(),G=split(C),sf=F.feeBy=="seller";
  return`<h2>Cart & checkout</h2><div class=two><div>${G.map(x=>`<div class=card><div class=oh><b>${esc(x.l[0].sellerName)}</b><span class=mu>${x.k==null?"Share location to see delivery time":x.k.toFixed(1)+" km · about "+x.eta+" min"}</span></div>
  ${x.l.map(p=>`<div class=rowi><span>${esc(p.name)}</span><b style="margin-left:auto">${inr(p.price)}</b><button class=g data-a=rm data-id=${p.id}>Remove</button></div>`).join("")}
  <div class=mu>Items ${inr(x.t)}${sf?"":" · Platform fee "+inr(x.pf)} · Delivery ${x.df==null?"-":(x.df?inr(x.df):"FREE")}${x.cf?" · COD "+inr(x.cf):""}</div>${x.out?`<div class=alert style="margin-top:8px">This shop is outside your ${F.maxKm} km delivery range. Please remove it.</div>`:""}</div>`).join("")}</div>
- <div class=card><h3>Delivery details</h3><div class=f><div><label class=l>Full name *</label><input id=rn value="${esc(me.rname||(me.name=="Customer"?"":me.name)||"")}"></div><div><label class=l>Mobile number *</label><input id=ph inputmode=numeric maxlength=10 value="${v("phone")}"></div><div><label class=l>PIN code *</label><input id=pn inputmode=numeric maxlength=6 value="${v("pin")}"></div><div><label class=l>City *</label><input id=ct value="${v("city")}"></div></div>
+ <div class=card><h3>Delivery details</h3><div class=f><div><label class=l>Full name *</label><input id=rn value="${esc(me.rname||(me.name=="Customer"?"":me.name)||"")}"></div><div><label class=l>Mobile number *</label><input id=ph inputmode=numeric maxlength=10 value="${v("phone")}"></div><div><label class=l>PIN code (optional)</label><input id=pn inputmode=numeric maxlength=6 value="${v("pin")}"></div><div><label class=l>City *</label><input id=ct value="${v("city")}"></div></div>
  <label class=l>Full address (house no., street, area) *</label><input id=ad style="width:100%" value="${v("address")}"><div class=row><button class=g data-a=loc>📍 ${me.lat!=null?"Update my location":"Use my location"}</button><span class=mu>${me.lat!=null?"Location saved":"Required for delivery fee and time"}</span></div>
  <h3 style="margin-top:14px">Payment</h3>${op.map(([k,l])=>`<label class=rowi><input type=radio name=pm value=${k} ${pm==k?"checked":""}> ${l}</label>`).join("")}
  <div class=oh style="margin-top:10px"><span>Total payable</span><b style="font-size:20px">${inr(tot)}</b></div><button class="o big" style="width:100%" data-a=place>${pm=="cod"?"Place order":"Place order & pay"}</button></div></div>`}
@@ -269,7 +269,7 @@ const A={
  notif(){try{Notification.requestPermission()}catch(e){}ping("Alerts are on. You will hear this sound for new orders.");toast("Order alerts enabled while this page is open")},
  csearch(){cq=$("#cq").value.trim();render(1)},
  async place(){const g=i=>$("#"+i).value.trim(),rn=g("rn"),ph=g("ph"),pn=g("pn"),ad=g("ad"),ct=g("ct");
-  if(!rn||!ad||!ct)return toast("Please enter your name, address and city");if(!/^[6-9]\d{9}$/.test(ph))return toast("Enter a valid 10-digit mobile number");if(!/^\d{6}$/.test(pn))return toast("Enter a valid 6-digit PIN code");
+  if(!rn||!ad||!ct)return toast("Please enter your name, address and city");if(!/^[6-9]\d{9}$/.test(ph))return toast("Enter a valid 10-digit mobile number");if(pn&&!/^\d{6}$/.test(pn))return toast("PIN code must be 6 digits (or leave it empty)");
   if(SITE.open===false)return toast(SITE.closedMsg||"Ordering is paused right now");if(me.lat==null)return toast("Tap 'Use my location' first");
   const G=split(cartItems());if(!G.length)return;if(G.some(x=>x.df==null))return toast("A shop in your cart has no location");if(G.some(x=>x.out))return toast("Remove shops outside the "+F.maxKm+" km range");
   const pr={address:ad,phone:ph,pin:pn,city:ct,rname:rn,name:rn};await updateDoc(doc(db,"users",me.id),pr);Object.assign(me,pr);
@@ -305,7 +305,7 @@ const A={
  async addbn(){const fs=[...$("#bnf").files];if(!fs.length)return toast("Choose at least one image");const pl=$("#bnp").value,ca=$("#bnl").value;
   for(const f of fs){const img=await shrink(f,1200,.72);await addDoc(collection(db,"banners"),{img,place:pl,cat:ca,t:serverTimestamp()})}toast(fs.length+" banner(s) uploaded");$("#bnf").value="";render(1)},
  delbn(d){if(confirm("Delete this banner?"))return deleteDoc(doc(db,"banners",d.id))},
- async fees(){const g=i=>+$("#"+i).value;await setDoc(doc(db,"settings","fees"),{pct:g("fp"),perKm:g("fk"),min:g("fm"),maxKm:g("fr"),prep:g("fq"),minPerKm:g("fv"),cod:g("fcod"),pfMax:g("fx"),feeBy:$("#ffb").value,partners:$("#fdp").value=="1",payUrl:$("#fpu").value.trim()});toast("Saved")}};
+ async fees(){const g=i=>+$("#"+i).value;await setDoc(doc(db,"settings","fees"),{pct:g("fp"),perKm:g("fk"),min:g("fm"),maxKm:g("fr")||10,prep:g("fq"),minPerKm:g("fv"),cod:g("fcod"),pfMax:g("fx"),feeBy:$("#ffb").value,partners:$("#fdp").value=="1",payUrl:$("#fpu").value.trim()});toast("Saved")}};
 async function payNow(tx,amt){const r=await fetch(F.payUrl+"/start",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({txnid:tx,amount:amt,firstname:((me.rname||me.name||"").replace(/[^\w ]/g,"")||"Customer"),email:me.email||"customer@hassandigitalpoint.xyz",phone:me.phone})}).then(x=>x.json());
  const fm=document.createElement("form");fm.method="POST";fm.action=r.action;for(const[k,v]of Object.entries(r.fields)){const i=document.createElement("input");i.type="hidden";i.name=k;i.value=v;fm.appendChild(i)}document.body.appendChild(fm);fm.submit()}
 document.addEventListener("click",async e=>{if(me&&me.role!="customer"&&window.Notification&&Notification.permission=="default"){try{Notification.requestPermission()}catch(x){}}
@@ -323,7 +323,7 @@ async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(!s.exists()||s.data().status!="active"){toast("This account is not active. Contact the store admin.");return signOut(auth)}
  me={id:u.uid,...s.data(),guest:u.isAnonymous};lv=false;cv="shop";tab="";const r=me.role;
  if(r=="admin")subs.push(onSnapshot(doc(db,"settings","draft"),x=>{DR=x.exists()?x.data():null},()=>{}));
- subs.push(onSnapshot(doc(db,"settings","fees"),x=>{if(x.exists())F={...F,...x.data()};render()},()=>{}));
+ subs.push(onSnapshot(doc(db,"settings","fees"),x=>{if(x.exists())F={...F,...x.data()};if(!(F.maxKm>0))F.maxKm=10;render()},()=>{}));
  if(r=="customer"){sub(query(collection(db,"products"),where("status","==","approved")),"products");sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
  if(r=="seller"){sub(query(collection(db,"products"),where("sellerId","==",me.id)),"products");sub(query(collection(db,"orders"),where("sellerId","==",me.id)),"orders")}
  if(r=="delivery")sub(query(collection(db,"orders"),where("boyId","==",me.id)),"orders");
