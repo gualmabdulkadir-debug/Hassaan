@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#2874f0">
+<meta name="theme-color" content="#f8cb46">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -97,6 +97,49 @@ body:not(.adm) .ck,body:not(.adm) .ntst{display:none}
 .av{background:linear-gradient(135deg,var(--p),#1a56c4);box-shadow:0 6px 16px #1a56c444}
 .rowi a{flex:1;font-weight:600;text-decoration:none;color:var(--tx)}.rowi a:after{content:"›";float:right;color:var(--mu);font-size:20px;line-height:1}
 .card.note{background:var(--cd);border:1px solid var(--bd)}
+
+/* ===== Blinkit-style layer ===== */
+:root{--p:#0c831f;--y:#f8cb46;--g:#0c831f;--cta:#0c831f}
+body{background:#f5f5f5}
+@media(prefers-color-scheme:dark){body{background:var(--bg)}}
+#hd{background:var(--y);color:#1c1c1c;border-radius:0;box-shadow:0 2px 8px #0002}
+.hw{padding:10px 12px 12px;gap:8px}
+.brand{color:#1c1c1c;font-weight:800}
+.lgi{height:38px;width:38px;box-shadow:none;border:1px solid #0001}
+.dv{display:flex;flex-direction:column;line-height:1.15;min-width:0}.dv small{font-weight:800;font-size:11px;letter-spacing:.3px}.dv b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:42vw;display:block}
+.hb{background:#0000000f;color:#1c1c1c}.hb.ic{border-radius:50%}.hu{color:#1c1c1c}
+.cb{background:var(--g)}
+.sb{border-radius:12px;box-shadow:none;border:1px solid #0001}.sb input{background:#fff;padding:12px 14px}.sb button{background:#fff;color:var(--g)}
+.card{border-radius:14px;box-shadow:0 1px 4px #0000000f;border:1px solid #0000000d}
+button{border-radius:10px}
+.b{background:var(--g)}
+.y{background:#fff;color:var(--g);border:1px solid var(--g)}
+.o{background:var(--g);box-shadow:none}
+.tab{border-radius:10px}.tab.on{background:var(--g);color:#fff}
+.bsl{border-radius:14px;box-shadow:none}.midb img{border-radius:14px}
+.hero{background:linear-gradient(135deg,#0c831f,#1fa83a);box-shadow:none;border-radius:16px}.hero .o{background:var(--y);color:#1c1c1c}
+.ct{background:transparent;box-shadow:none;border:0;padding:4px 0;font-size:12px;font-weight:600;color:var(--tx)}
+.ct i{background:#e6f4ea;border-radius:16px;padding:12px 0;font-size:32px;margin-bottom:6px}
+.ct.on{background:transparent;color:var(--g)}.ct.on i{background:var(--y)}
+.cts .ct{min-width:78px}.cts.wrap{grid-template-columns:repeat(4,1fr)}
+.pc{border-radius:12px;border:1px solid #0000001a;box-shadow:none}
+.pc .im{background:#fff;padding:8px}.pc .bd{padding:8px 10px 10px}
+.bdg{background:#3b6fd4;border-radius:0 0 8px 0;top:0;left:0;text-transform:uppercase}
+.eta{display:inline-block;background:#f1f1f1;color:#333;border-radius:6px;font-size:10px;font-weight:800;padding:2px 6px;margin-bottom:6px}
+.pbar{display:flex;justify-content:space-between;align-items:flex-end;gap:6px;margin-top:8px}.pbar .pr{font-size:14px}.pbar s{font-size:11px}
+.addb{background:#f7fff9;color:var(--g);border:1px solid var(--g);border-radius:8px;padding:6px 18px;font-weight:800;font-size:13px}
+.stp{display:inline-flex;align-items:center;background:var(--g);color:#fff;border-radius:8px;overflow:hidden}.stp button{background:none;color:#fff;border-radius:0;padding:6px 10px;font-size:16px;line-height:1}.stp b{min-width:18px;text-align:center;font-size:13px}
+#nav{left:0;right:0;bottom:0;border-radius:0;box-shadow:0 -2px 10px #0001;border-top:1px solid var(--bd)}#nav button.on{color:var(--g)}
+.oc{padding:0;overflow:hidden}
+.oct{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.oico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff6d6;flex:none}.oico.ok{background:#e6f4ea}.oico.bad{background:#fee2e2}
+.oimgs{display:flex;gap:8px;padding:0 14px 10px;overflow-x:auto;scrollbar-width:none}
+.oimgs>*{width:52px;height:52px;border-radius:10px;border:1px solid var(--bd);background:#fff;object-fit:contain;flex:none;display:flex;align-items:center;justify-content:center;font-size:26px}
+.oc .ol{padding:0 14px 6px}.oc .row{padding:0 14px 12px;margin:0}
+.dstrip{display:flex;gap:10px;align-items:center;background:#e6f4ea;color:#0c5a17;font-weight:700;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+#cbar{position:fixed;left:10px;right:10px;bottom:68px;z-index:35;background:var(--g);color:#fff;border-radius:14px;padding:11px 16px;display:none;align-items:center;justify-content:space-between;box-shadow:0 6px 18px #0c831f66;cursor:pointer}#cbar small{display:block;opacity:.9;font-size:11px}
+body.hn.cb2{padding-bottom:150px}
+body.hn #fab{bottom:140px}body.hn #chat{bottom:200px}
 #cm .b{color:var(--tx)}#cm .m{line-height:1.5}
 </style></head><body>
 <div id="hd"></div><div id="bn"></div><main id="app"><p class="mu">Loading...</p></main><footer id="ft"></footer>
@@ -138,6 +181,10 @@ const when=t=>t?.toDate?t.toDate().toLocaleString("en-IN",{day:"numeric",month:"
 const pOff=p=>p.mrp>p.price?Math.round((p.mrp-p.price)*100/p.mrp):0;
 const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(h))};
 const dfee=k=>Math.max(F.min,Math.ceil(k)*F.perKm);
+const etaOf=p=>me&&me.lat!=null&&p.lat!=null?F.prep+Math.ceil(km(me.lat,me.lng,p.lat,p.lng)*F.minPerKm):F.prep;
+const nearEta=()=>{if(me&&me.lat!=null){const d=D.products.filter(p=>p.lat!=null).map(p=>km(me.lat,me.lng,p.lat,p.lng));if(d.length)return F.prep+Math.ceil(Math.min(...d)*F.minPerKm)}return F.prep};
+const grp=l=>{const m=new Map();l.forEach(p=>m.set(p.id,[p,(m.get(p.id)?.[1]||0)+1]));return[...m.values()]};
+const stp=id=>{const q=cart().filter(x=>x==id).length;return q?`<div class=stp><button data-a=dec data-id=${id}>−</button><b>${q}</b><button data-a=inc data-id=${id}>+</button></div>`:`<button class=addb data-a=inc data-id=${id}>ADD</button>`};
 const ping=t=>{try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator();o.connect(c.destination);o.frequency.value=880;o.start();setTimeout(()=>o.stop(),600)}catch(e){}navigator.vibrate?.([300,150,300]);try{if(Notification.permission=="granted"){const nt=SITE.name||"Hassaan Digital Point",no={body:t||"New order update",icon:"icon-192.png",tag:"app-"+String(t||"").slice(0,40),vibrate:[200,100,200]};(navigator.serviceWorker?navigator.serviceWorker.ready.then(r=>r.showNotification(nt,no)):Promise.reject()).catch(()=>{try{new Notification(nt,no)}catch(e){}})}}catch(e){}};
 let alT=null,ttl=document.title;
 function orderAlert(t){ping(t);let e=$("#oa");if(!e){e=document.createElement("div");e.id="oa";e.style.cssText="position:fixed;inset:0;background:#000a;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px";document.body.appendChild(e)}
@@ -147,7 +194,7 @@ const shrink=(f,m=520,q=.65)=>new Promise((ok,no)=>{const i=new Image;i.onload=(
 const opt=(u,w)=>typeof u=="string"&&u.includes("res.cloudinary.com")&&u.includes("/upload/")&&!u.includes("/upload/f_")?u.replace("/upload/","/upload/f_auto,q_auto,w_"+w+"/"):u;
 const upImg=async(f,big,small)=>{if(!(SITE.cloudName&&SITE.cloudPreset))return shrink(f,...small);const d=await shrink(f,...big),fd=new FormData();fd.append("file",d);fd.append("upload_preset",SITE.cloudPreset);const r=await fetch("https://api.cloudinary.com/v1_1/"+encodeURIComponent(SITE.cloudName)+"/image/upload",{method:"POST",body:fd}).then(x=>x.json()).catch(()=>({}));if(!r.secure_url)throw new Error("Photo upload fail: "+((r.error&&r.error.message)||"Cloudinary name/preset check kijiye"));return r.secure_url};
 function split(C){const g={};C.forEach(p=>(g[p.sellerId]=g[p.sellerId]||[]).push(p));return Object.values(g).map(l=>{const t=l.reduce((a,p)=>a+p.price,0),k=me.lat!=null&&l[0].lat!=null?km(me.lat,me.lng,l[0].lat,l[0].lng):null,sd=l.every(p=>p.selfDel);return{l,t,k,sd,pf:Math.min(F.pfMax,Math.round(t*F.pct/100)),df:k==null?null:(sd?Math.max(...l.map(p=>+p.selfFee||0)):dfee(k)),out:k!=null&&k>F.maxKm,eta:k==null?null:F.prep+Math.ceil(k*F.minPerKm),cf:pm=="cod"?F.cod:0}})}
-const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&seen[k]&&(k=="inbox"||k=="bc")){const ch=s.docChanges().filter(x=>x.type=="added"&&!x.doc.metadata.hasPendingWrites);if(ch.length&&!document.hidden){const o=ch[0].doc.data();if(k=="inbox"||o.audience==me.role||o.audience=="all"){toast("🔔 "+o.title);ping(o.title)}}if(cv=="notif")lsSet("ns_"+me.id,Date.now())}if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));if(me&&me.role=="customer"){if(k=="products"&&PP&&D.products.some(p=>p.id==PP)){cur=PP;gi=0;cv="product";PP=null}if(k=="orders"&&PT&&D.orders.some(o=>o.id==PT)){trk=PT;cv="track";PT=null}}render()},e=>console.error(k,e)));
+const TRIM=new Set();let LN="";const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&k=="inbox")s.docs.slice(5).forEach(d=>{if(!TRIM.has(d.id)){TRIM.add(d.id);deleteDoc(d.ref).catch(()=>{})}});if(me&&seen[k]&&(k=="inbox"||k=="bc")){const ch=s.docChanges().filter(x=>x.type=="added"&&!x.doc.metadata.hasPendingWrites);if(ch.length&&!document.hidden){const o=ch[0].doc.data();if(k=="inbox"&&(o.title+o.body)!=LN){LN=o.title+o.body;toast("🔔 "+o.title)}}if(cv=="notif")lsSet("ns_"+me.id,Date.now())}if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));if(me&&me.role=="customer"){if(k=="products"&&PP&&D.products.some(p=>p.id==PP)){cur=PP;gi=0;cv="product";PP=null}if(k=="orders"&&PT&&D.orders.some(o=>o.id==PT)){trk=PT;cv="track";PT=null}}render()},e=>console.error(k,e)));
 let PP=new URLSearchParams(location.search).get("p"),PT=new URLSearchParams(location.search).get("track");
 const api=p=>F.payUrl.trim().replace(/\/+$/,"")+p;
 const statusPush=id=>{if(F.payUrl)fetch(api("/status"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({id})}).catch(()=>{})};
@@ -162,13 +209,13 @@ async function pushSetup(loud){try{if(!me||!SITE.vapid||!("serviceWorker" in nav
 const notifySeller=(o,id)=>{if(!SITE.notifyUrl||!o.sellerPhone)return;const text="🛒 New order #"+id.slice(0,6).toUpperCase()+" - "+(SITE.name||"Store")+"\n"+o.items.map(i=>i.name).join(", ")+"\nAmount: "+inr(o.itemsTotal)+"\nCustomer: "+o.rname+" "+o.phone+"\nAddress: "+o.addr+", "+o.city+"\nPlease open the seller panel to accept.";fetch(SITE.notifyUrl.replace(/\/$/,"")+"/notify",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({to:o.sellerPhone,text})}).catch(()=>{})};
 /* ---------- layout ---------- */
 const FORM=()=>cv=="profile"||(me.role=="seller"&&tab=="add"&&cv!="profile")||(me.role=="admin"&&["settings","staff","notify"].includes(tab))||(me.role=="customer"&&["cart","pay"].includes(cv));
-function head0(){const lg=`<img class=lgi src="${SITE.logoImg||"icon-192.png"}">`;return`<div class=hw><a class=brand data-a=shop>${lg}<b>${esc(SITE.name||"Hassaan Digital Point")}</b></a></div>`}
+function head0(dv){const lg=`<img class=lgi src="${SITE.logoImg||"icon-192.png"}">`;return`<div class=hw><a class=brand data-a=shop>${lg}${dv||`<b>${esc(SITE.name||"Hassaan Digital Point")}</b>`}</a></div>`}
 function head(){const n=cart().length,c=me.role=="customer";
  const pf=`<button class="hb ic" data-a=go data-v=profile title="Profile">👤<span class=hl>${me.guest?"Login":esc((me.rname||me.name||"").split(" ")[0])}</span></button>`;
  const un=unread(),bell=`<button class="hb ic" data-a=go data-v=notif title="Notifications">🔔${un?`<i class=cb>${un>9?"9+":un}</i>`:""}</button>`;
  const ins=standalone()?"":`<button class="hb ic" data-a=install title="Install app">📲<span class=hl>App</span></button>`;const acts=c?`${ins}<button class="hb ic" data-a=go data-v=cart title="Cart">🛒${n?`<i class=cb>${n}</i>`:""}</button>${bell}${pf}`:`${ins}<span class=hu>${me.role}</span>${bell}${pf}`;
  const srch=c&&cv=="shop"?`<div class=sb><input id=sq value="${esc(sq)}" placeholder="Search for products, brands and more"><button data-a=search>Search</button></div>`:"";
- const bk=c&&cv!="shop"?`<button class="hb ic bk" data-a=back title="Back">←</button>`:"";return head0().replace("<div class=hw>","<div class=hw>"+bk).replace("</a></div>",`</a>${srch}<div class=ha>${acts}</div></div>`)}
+ const bk=c&&cv!="shop"?`<button class="hb ic bk" data-a=back title="Back">←</button>`:"";const dv=c&&cv=="shop"?`<span class=dv><small>⚡ DELIVERY IN ~${nearEta()} MINUTES</small><b>${esc(me.city||me.address||"Set your location")} ▾</b></span>`:"";return head0(dv).replace("<div class=hw>","<div class=hw>"+bk).replace("</a></div>",`</a>${srch}<div class=ha>${acts}</div></div>`)}
 function supportHTML(){const w=SITE.wa||DEF.wa,m=SITE.mail||DEF.mail,a=SITE.addr||DEF.addr;return`<div class=fc><b>Help & Support</b><a target=_blank href="${waLink(w,"Hello, I need help")}">💬 WhatsApp: ${esc(w)}</a><a href="mailto:${esc(m)}">✉️ ${esc(m)}</a><span>📍 ${esc(a)}</span><a data-a=chat>🤖 Chat with our AI assistant</a></div>`}
 function foot(){return`<div class=fw>${supportHTML()}<div class=fc><b>${esc(SITE.name||"Hassaan Digital Point")}</b><span>${esc(SITE.footer||"Local shops, delivered to your door.")}</span>${SITE.phone?`<a href="tel:${esc(SITE.phone)}">📞 ${esc(SITE.phone)}</a>`:""}</div></div><div class=cp>© ${new Date().getFullYear()} ${esc(SITE.name||"Hassaan Digital Point")}. All rights reserved.</div>`}
 function render(f){if(!me||lv)return;if(!f&&(FORM()||document.activeElement?.matches("input,select,textarea"))){pending=true;return}pending=false;
@@ -176,16 +223,21 @@ function render(f){if(!me||lv)return;if(!f&&(FORM()||document.activeElement?.mat
  $("#hd").innerHTML=head();$("#bn").style.display=c&&cv=="shop"?"":"none";
  const t=TABS[me.role];if(t&&!tab)tab=t[0][0];
  const tb=t&&!prof?`<div class=tabs>${t.map(([k,l])=>`<button class="tab ${tab==k?"on":""}" data-a=tab data-t=${k}>${l}</button>`).join("")}</div>`:"";
- $("#app").innerHTML=tb+((!prof&&(!c||cv=="shop"||cv=="orders"))?instCard()+notifCard():"")+(cv=="notif"?vNotif():prof?vProfile():{customer:vCust,admin:vAdmin,seller:vSeller,delivery:vDel}[me.role]());
+ const hsl=$(".hs")?.scrollLeft||0,ctl=$(".cts")?.scrollLeft||0;$("#app").innerHTML=tb+((!prof&&(!c||cv=="shop"||cv=="orders"))?instCard()+notifCard():"")+(cv=="notif"?vNotif():prof?vProfile():{customer:vCust,admin:vAdmin,seller:vSeller,delivery:vDel}[me.role]());
+ {const h=$(".hs"),k=$(".cts");if(h)h.scrollLeft=hsl;if(k)k.scrollLeft=ctl}
  const nv=[["shop","🏠","Home"],["cats","🗂️","Categories"],["orders","📦","Orders"],["cart","🛒","Cart"],["profile","👤","Account"]];
- $("#nav").innerHTML=c?nv.map(([k,i,l])=>`<button class="${cv==k||(k=="shop"&&cv=="product")?"on":""}" data-a=go data-v=${k}><span>${i}</span>${l}</button>`).join(""):"";document.body.classList.toggle("hn",c);document.body.classList.toggle("adm",me.role=="admin");$("#ft").style.display=prof?"none":"";
+ $("#nav").innerHTML=c?nv.map(([k,i,l])=>`<button class="${cv==k||(k=="shop"&&cv=="product")?"on":""}" data-a=go data-v=${k}><span>${i}</span>${l}</button>`).join(""):"";document.body.classList.toggle("hn",c);document.body.classList.toggle("adm",me.role=="admin");cbar();$("#ft").style.display=prof?"none":"";
  $("#ft").innerHTML=foot();if($("#calc"))calc()}
 document.addEventListener("focusout",()=>setTimeout(()=>pending&&render(),80));
+function cbar(){let e=$("#cbar");if(!e){e=document.createElement("div");e.id="cbar";e.dataset.a="go";e.dataset.v="cart";document.body.appendChild(e)}
+ const C=me&&me.role=="customer"&&!lv?cartItems():[],show=C.length&&["shop","cats","product"].includes(cv);
+ e.style.display=show?"flex":"none";document.body.classList.toggle("cb2",!!show);
+ if(show){const t=C.reduce((a,p)=>a+p.price,0);e.innerHTML=`<span><b>${C.length} item${C.length>1?"s":""}</b><small>${inr(t)} + fees</small></span><b>View cart ›</b>`}}
 function drawBn(){const t=BN.filter(b=>b.place!="mid");let h=SITE.banner?`<div class="card" style="background:var(--p);color:#fff;font-weight:600">${esc(SITE.banner)}</div>`:"";
  if(SITE.bannerImg&&!BN.length)h+=`<div class=bsl><img src="${SITE.bannerImg}"></div>`;
  if(t.length)h+=`<div class=bsl id=bsl>${t.map(b=>`<img src="${opt(b.img,1000)}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`;$("#bn").innerHTML=h}
 setInterval(()=>{const e=$("#bsl");if(!e||e.children.length<2)return;const i=Math.round(e.scrollLeft/e.clientWidth)+1;e.scrollTo({left:(i>=e.children.length?0:i)*e.clientWidth,behavior:"smooth"})},4000);
-function site(d){SITE=d||{};setTimeout(()=>pushSetup(),500);document.title=SITE.name||"Hassaan Digital Point";document.documentElement.style.setProperty("--p",SITE.color||"#2874f0");drawBn();$("#ft").innerHTML=foot();if(!me||lv)$("#hd").innerHTML=head0();render()}
+function site(d){SITE=d||{};setTimeout(()=>pushSetup(),500);document.title=SITE.name||"Hassaan Digital Point";drawBn();$("#ft").innerHTML=foot();if(!me||lv)$("#hd").innerHTML=head0();render()}
 /* ---------- install app + notification cards ---------- */
 let DIP=null;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(e){return false}};
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();DIP=e;render()});
@@ -208,11 +260,15 @@ function notifBox(){if(!window.Notification)return'<div class=card><h3>🔔 Noti
  return`<div class=card><h3>🔔 Notifications</h3><p>${st}</p><div class="mu ck" style="margin:6px 0 10px">${ck("serviceWorker" in navigator&&"PushManager" in window,"Browser support")}${ck(p=="granted","Notification allow")}${ck(!!SITE.vapid,"Store ki push key (VAPID) set")}${ck(!!me.pushOk,"Is phone ka setup")}</div>${!SITE.vapid?'<p class=mu>Admin ko Settings mein push key daalni hogi.</p>':""}${me.pushFail&&E?`<p class=mu>Error: <b>${esc(E)}</b>${hint?"<br>"+hint:""}</p>`:""}<div class=row>${p!="granted"?'<button class=b data-a=cnotif>Allow notifications</button>':'<button class="g ntst" data-a=ntest>Send test notification</button><button class=g data-a=cnotif>Retry setup</button>'}</div></div>`}
 /* ---------- notification inbox (bell icon) ---------- */
 let NP=0;const tms=t=>t&&t.toMillis?t.toMillis():0,NSget=()=>+lsGet("ns_"+(me?me.id:""))||0;
-function inbox(){const r=me.role,own=D.inbox||[],bc=(D.bc||[]).filter(b=>b.audience==r||b.audience=="all").map(b=>({...b,url:b.productId?"?p="+b.productId:""}));return[...own,...bc].sort((a,b)=>(tms(b.t)||Date.now())-(tms(a.t)||Date.now())).slice(0,40)}
+const NDget=()=>{try{return JSON.parse(lsGet("nd_"+me.id)||"[]")}catch(e){return[]}},NDadd=ks=>lsSet("nd_"+me.id,JSON.stringify([...new Set([...NDget(),...ks])].slice(-200)));
+function inboxAll(){const r=me.role,own=(D.inbox||[]).map(x=>({...x,k:"i_"+x.id})),bc=(D.bc||[]).filter(b=>b.audience==r||b.audience=="all").map(b=>({...b,k:"b_"+b.id,url:b.productId?"?p="+b.productId:""}));return[...own,...bc].sort((a,b)=>(tms(b.t)||Date.now())-(tms(a.t)||Date.now()))}
+function inbox(){const dm=new Set(NDget()),sn=new Set();return inboxAll().filter(x=>!dm.has(x.k)).filter(x=>{const s=x.title+"|"+x.body;if(sn.has(s))return false;sn.add(s);return true}).slice(0,5)}
+function NDone(k){const all=inboxAll(),x=all.find(i=>i.k==k);if(!x)return;const same=all.filter(i=>i.title==x.title&&i.body==x.body);NDadd(same.map(i=>i.k));same.filter(i=>i.k[0]=="i").forEach(i=>deleteDoc(doc(db,"users",me.id,"inbox",i.id)).catch(()=>{}))}
+function showN(k){const x=inboxAll().find(i=>i.k==k);if(!x)return;let e=$("#nm");if(!e){e=document.createElement("div");e.id="nm";e.style.cssText="position:fixed;inset:0;background:#0008;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px";document.body.appendChild(e)}e.innerHTML=`<div class=card style="max-width:380px;width:100%"><h3>${esc(x.title)}</h3><p style="white-space:pre-wrap">${esc(x.body)}</p><button class="b big" style="width:100%" data-a=nmok>OK</button></div>`}
 function unread(){if(!me)return 0;const s=NSget();return inbox().filter(x=>tms(x.t)>s).length}
 function vNotif(){const L=inbox(),w=x=>x.t&&x.t.toDate?x.t.toDate().toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"abhi";
  return`<h2>Notifications</h2>${notifBox()}${me.role=="admin"?'<div class=row><button class=o data-a=tab data-t=notify>📣 Customers ko offer bhejein</button></div>':""}
- <h3 style="margin:16px 0 8px">Aapki notifications</h3>${L.length?L.map(x=>`<div class="card rowi" style="margin-bottom:8px;cursor:pointer" data-a=nopen data-u="${esc(x.url||"")}"><div style="flex:1"><b>${esc(x.title)}</b>${tms(x.t)>NP?' <span class="tag warn">New</span>':""}<div>${esc(x.body)}</div><div class=mu>${w(x)}</div></div></div>`).join(""):'<div class="card empty mu">Abhi koi notification nahi hai.<br>Offers, order ki khabar aur zaroori suchna yahin dikhengi.</div>'}`}
+ <h3 style="margin:16px 0 8px">Aapki notifications <span class=mu style="font-weight:400;font-size:12px">(max 5, kholne ke baad hat jayengi)</span></h3>${L.length?L.map(x=>`<div class="card rowi" style="margin-bottom:8px;cursor:pointer" data-a=nopen data-k="${esc(x.k)}" data-u="${esc(x.url||"")}"><div style="flex:1"><b>${esc(x.title)}</b>${tms(x.t)>NP?' <span class="tag warn">New</span>':""}<div>${esc(x.body)}</div><div class=mu>${w(x)}</div></div></div>`).join(""):'<div class="card empty mu">Abhi koi notification nahi hai.<br>Offers, order ki khabar aur zaroori suchna yahin dikhengi.</div>'}`}
 /* ---------- payouts ---------- */
 const fh=h=>{h=+h;return(h%12||12)+(h<12?" AM":" PM")};
 const fdt=d=>d?d.toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"now";
@@ -238,17 +294,24 @@ function oCard(o,m){const a=m=="a",s=m=="s",d=m=="d",c=m=="c",boys=D.duty.filter
  <div style="margin:6px 0"><b>${inr(s?payout:o.total)}</b>${s?'<span class=mu> (you receive)</span>':""}${!s&&o.platformFee!=null?`<span class=mu> (items ${inr(o.itemsTotal)}${o.feeBy=="seller"?"":" + platform "+inr(o.platformFee)} + delivery ${inr(o.deliveryFee)}${o.codFee?" + COD "+inr(o.codFee):""})</span>`:""}</div>
  ${(s||a)?sLine(o,a):""}${o.utr&&a?`<div class=mu>UPI reference: <b>${esc(o.utr)}</b></div>`:""}${who}${o.liveLat&&!c?`<a target=_blank href="https://www.google.com/maps?q=${o.liveLat},${o.liveLng}">Live location</a>`:""}
  <div class=row>${act}</div></div>`}
+function cCard(o){const oid=o.id.slice(0,6).toUpperCase(),dn=o.status=="delivered",cx=o.status=="cancelled",unpaid=o.payment!="cod"&&!o.paid,
+ ttl=dn?"Order delivered":cx?"Order cancelled":o.status=="arrived"?"Arrived at your door":o.status=="picked"?"Out for delivery":"Arriving in about "+(o.etaMin||15)+" minutes",
+ imgs=(o.items||[]).slice(0,6).map(i=>{const p=D.products.find(x=>x.id==i.pid);return p&&p.imgs&&p.imgs[0]?`<img src="${opt(p.imgs[0],120)}">`:`<span>${esc((p&&p.emoji)||"📦")}</span>`}).join(""),
+ payTag=o.payment=="cod"?'<span class="tag">Cash on delivery</span>':o.paid?'<span class="tag ok">Paid</span>':'<span class="tag warn">Payment pending</span>';
+ return`<div class="card oc"><div class=oct><span class="oico ${dn?"ok":cx?"bad":""}">${dn?"✅":cx?"❌":"🛵"}</span><div style="flex:1"><b>${ttl}</b><div class=mu>#${oid}${when(o.createdAt)?" · "+when(o.createdAt):""}</div></div><b>${inr(o.total)}</b></div>
+ <div class=oimgs>${imgs}</div><div class=ol><div>${(o.items||[]).map(i=>esc(i.name)).join(", ")}</div><div class=mu>${esc(o.sellerName||"")} ${payTag}</div></div>
+ <div class=row>${!dn&&!cx?`<button class=b data-a=trk data-id=${o.id}>Track order</button>`:""}${o.payment=="upi"&&unpaid&&!o.utr&&!cx?`<button class=y data-a=payo data-id=${o.id}>Pay now</button>`:""}${o.payment=="online"&&unpaid&&!cx?`<button class=y data-a=payon data-id=${o.id}>Pay now</button>`:""}<button class=g data-a=reorder data-id=${o.id}>🔁 Order again</button></div></div>`}
 const oList=(l,m)=>l.length?sorted(l).map(o=>oCard(o,m)).join(""):'<div class="card empty mu">No orders yet</div>';
 /* ---------- customer ---------- */
 function vCust(){return{shop:vShop,cats:vCats,product:()=>vProd(D.products.find(p=>p.id==cur)),cart:vCart,orders:vOrders,track:vTrack,pay:vPay}[cv]()}
 const catTiles=()=>`<div class=cts>${Object.entries(CATS).map(([k,v])=>`<div class="ct ${cat==k?"on":""}" data-a=cat data-k="${esc(k)}"><i>${v.e}</i>${k}</div>`).join("")}</div>`;
 const vCats=()=>`<h2>Shop by category</h2>${catTiles().replace("class=cts","class=\"cts wrap\"")}`;
-function pCard(p){const o=pOff(p);return`<div class="card pc" data-a=view data-id=${p.id}>${o?`<span class=bdg>${o}% off</span>`:""}<div class=im>${p.imgs?.[0]?`<img src="${opt(p.imgs[0],400)}" loading=lazy>`:`<span class=em>${esc(p.emoji||"📦")}</span>`}</div><div class=bd><div class=t2>${esc(p.name)}</div><div><span class=pr>${inr(p.price)}</span> ${o?`<s class=mu>${inr(p.mrp)}</s>`:""}</div><div class=mu>${esc(p.weight||"")}</div>${p.selfDel&&!+p.selfFee?'<div class=off>Free delivery</div>':""}</div></div>`}
+function pCard(p){const o=pOff(p);return`<div class="card pc" data-a=view data-id=${p.id}>${o?`<span class=bdg>${o}% off</span>`:""}<div class=im>${p.imgs?.[0]?`<img src="${opt(p.imgs[0],400)}" loading=lazy>`:`<span class=em>${esc(p.emoji||"📦")}</span>`}</div><div class=bd><span class=eta>⏱ ${etaOf(p)} MINS</span><div class=t2>${esc(p.name)}</div><div class=mu>${esc(p.weight||"")}</div>${p.selfDel&&!+p.selfFee?'<div class=off>Free delivery</div>':""}<div class=pbar><div><div class=pr>${inr(p.price)}</div>${o?`<s class=mu>${inr(p.mrp)}</s>`:""}</div>${stp(p.id)}</div></div></div>`}
 function vShop(){const ps=D.products.filter(p=>p.lat!=null&&(!cat||p.category==cat)&&(p.name||"").toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,mid=BN.filter(b=>b.place=="mid");
  const rs=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,5);
  return`${SITE.open===false?`<div class=alert>${esc(SITE.closedMsg||"Ordering is paused right now.")}</div>`:""}
  ${me.lat==null?'<div class="card note">📍 <span><b>See shops near you.</b> Share your location to see delivery time and fees.</span><button class=b data-a=loc>Share location</button></div>':""}
- ${!cat&&!sq?`<div class=dl>📍 Deliver to <b>${esc(me.city||me.address||"apni location set karein")}</b></div><div class=hero><div><small>Local shops, delivered</small><h1>Fast &amp; Free<br>Delivery!</h1><button class=o data-a=cat data-k="">Order now</button></div><span class=hi>🛵</span></div>`:""}
+ ${!cat&&!sq?`<div class=hero><div><small>Local shops, delivered</small><h1>Fast &amp; Free<br>Delivery!</h1><button class=o data-a=cat data-k="">Order now</button></div><span class=hi>🛵</span></div>`:""}
  <div class=sec><h3>Categories</h3><a data-a=go data-v=cats>See all</a></div>${catTiles()}${cat?`<div class=row><span class=mu>Showing: <b>${esc(cat)}</b></span><button class=g data-a=cat data-k="">Clear filter</button></div>`:""}
  ${mid.length?`<div class=midb>${mid.map(b=>`<img src="${opt(b.img,1000)}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`:""}
  ${rs.length?`<div class=row><span class=mu>Recent searches:</span>${rs.map(x=>`<button class=g data-a=chip data-q="${esc(x)}">${esc(x)}</button>`).join("")}</div>`:""}
@@ -267,8 +330,8 @@ function vCart(){const C=cartItems(),G=split(C),sf=F.feeBy=="seller";
  if(!C.length)return`<div class="card empty"><div class=em>🛒</div><h3>Your cart is empty</h3><button class=b data-a=go data-v=shop>Continue shopping</button></div>`;
  const tot=G.reduce((a,x)=>a+x.t+(sf?0:x.pf)+(x.df||0)+x.cf,0),op=[["cod",`Cash on delivery${F.cod?` (+${inr(F.cod)})`:""}`]];if(SITE.upi)op.push(["upi","Pay now with UPI (GPay, PhonePe, Paytm)"]);if(F.payUrl)op.push(["online","Card / Net banking (PayU)"]);
  if(!op.some(x=>x[0]==pm))pm="cod";const v=k=>esc(me[k]||"");
- return`<h2>Cart & checkout</h2><div class=two><div>${G.map(x=>`<div class=card><div class=oh><b>${esc(x.l[0].sellerName)}</b><span class=mu>${x.k==null?"Share location to see delivery time":x.k.toFixed(1)+" km · about "+x.eta+" min"}</span></div>
- ${x.l.map(p=>`<div class=rowi><span>${esc(p.name)}</span><b style="margin-left:auto">${inr(p.price)}</b><button class=g data-a=rm data-id=${p.id}>Remove</button></div>`).join("")}
+ return`<h2>Cart & checkout</h2>${G.some(x=>x.eta)?`<div class=dstrip>⏱ Delivery in about ${Math.max(...G.map(x=>x.eta||0))} minutes<span class=mu style="margin-left:auto">${C.length} item${C.length>1?"s":""}</span></div>`:""}<div class=two><div>${G.map(x=>`<div class=card><div class=oh><b>${esc(x.l[0].sellerName)}</b><span class=mu>${x.k==null?"Share location to see delivery time":x.k.toFixed(1)+" km · about "+x.eta+" min"}</span></div>
+ ${grp(x.l).map(([p,n])=>`<div class=rowi><span>${esc(p.name)}<div class=mu>${esc(p.weight||"")}</div></span><span style="margin-left:auto">${stp(p.id)}</span><b style="min-width:62px;text-align:right">${inr(p.price*n)}</b></div>`).join("")}
  <div class=mu>Items ${inr(x.t)}${sf?"":" · Platform fee "+inr(x.pf)} · Delivery ${x.df==null?"-":(x.df?inr(x.df):"FREE")}${x.cf?" · COD "+inr(x.cf):""}</div>${x.out?`<div class=alert style="margin-top:8px">This shop is outside your ${F.maxKm} km delivery range. Please remove it.</div>`:""}</div>`).join("")}</div>
  <div class=card><h3>Delivery details</h3><div class=f><div><label class=l>Full name *</label><input id=rn value="${esc(me.rname||(me.name=="Customer"?"":me.name)||"")}"></div><div><label class=l>Mobile number *</label><input id=ph inputmode=numeric maxlength=10 value="${v("phone")}"></div><div><label class=l>PIN code (optional)</label><input id=pn inputmode=numeric maxlength=6 value="${v("pin")}"></div><div><label class=l>City *</label><input id=ct value="${v("city")}"></div></div>
  <label class=l>Full address (house no., street, area) *</label><input id=ad style="width:100%" value="${v("address")}"><div class=row><button class=g data-a=loc>📍 ${me.lat!=null?"Update my location":"Use my location"}</button><span class=mu>${me.lat!=null?"Location saved":"Required for delivery fee and time"}</span></div>
@@ -276,7 +339,7 @@ function vCart(){const C=cartItems(),G=split(C),sf=F.feeBy=="seller";
  <div class=oh style="margin-top:10px"><span>Total payable</span><b style="font-size:20px">${inr(tot)}</b></div><button class="o big" style="width:100%" data-a=place>${pm=="cod"?"Place order":"Place order & pay"}</button></div></div>`}
 function vPay(){if(!pay)return vOrders();const u=`upi://pay?pa=${encodeURIComponent(SITE.upi||"")}&pn=${encodeURIComponent(SITE.name||"Store")}&am=${pay.amt}&cu=INR&tn=${encodeURIComponent(pay.tx||"Order")}`;
  return`<div class="card lg" style="max-width:460px"><h2>Pay ${inr(pay.amt)} by UPI</h2><p class=mu>Tap the button to open your UPI app. After paying, enter the UPI reference number so we can confirm your payment.</p><a class="b big" style="display:block;border-radius:8px;text-decoration:none;color:#fff;padding:13px;margin-bottom:12px" href="${u}">Open UPI app</a><p class=mu>UPI ID: <b>${esc(SITE.upi||"")}</b></p><input id=utr placeholder="UPI reference / UTR number"><button class="o big" style="width:100%" data-a=utr>Submit payment reference</button><p><a data-a=go data-v=orders>I will do this later</a></p></div>`}
-function vOrders(){return`<h2>My orders</h2>${me.guest?`<div class="card note">🔒 <span><b>Create a free account</b> to keep your orders safe and track them from any phone.</span><button class=b data-a=staff>Sign up</button></div>`:""}${oList(D.orders,"c")}`}
+function vOrders(){const L=sorted(D.orders),act=L.filter(o=>!["delivered","cancelled"].includes(o.status)),past=L.filter(o=>["delivered","cancelled"].includes(o.status));return`<h2>Your orders</h2>${me.guest?`<div class="card note">🔒 <span><b>Create a free account</b> to keep your orders safe and track them from any phone.</span><button class=b data-a=staff>Sign up</button></div>`:""}${!L.length?'<div class="card empty"><div class=em>📦</div><h3>No orders yet</h3><button class=b data-a=go data-v=shop>Start shopping</button></div>':""}${act.length?`<div class=sec><h3>Active orders</h3></div>${act.map(cCard).join("")}`:""}${past.length?`<div class=sec><h3>Order history</h3></div>${past.map(cCard).join("")}`:""}`}
 function vTrack(){const o=D.orders.find(x=>x.id==trk);if(!o)return vOrders();const r=RK[o.status]??0,live=o.liveLat!=null&&["picked","arrived","self"].includes(o.status),d=live&&o.lat!=null?km(o.liveLat,o.liveLng,o.lat,o.lng):null,x=o.status=="cancelled";
  return`<button class=g data-a=go data-v=orders>← My orders</button><div class=card style="margin-top:12px"><h3>Order #${o.id.slice(0,6).toUpperCase()} · ${inr(o.total)}</h3><div class=mu>${esc(o.sellerName||"")}</div>
  ${x?'<p><span class="tag bad">Cancelled</span></p>':`<div class=tl style="margin-top:14px">${STEPS.map((l,i)=>`<div class="s ${i<=r?"on":""}"><i></i>${l}</div>`).join("")}</div>`}
@@ -359,10 +422,11 @@ const wcollect=async()=>{const v={...(DR||SITE)};WF.forEach(([k])=>v[k]=$("#w_"+
 const fe=x=>({"auth/email-already-in-use":"This email already has an account. Please log in.","auth/credential-already-in-use":"This email already has an account. Please log in.","auth/invalid-credential":"Wrong email or password.","auth/wrong-password":"Wrong email or password.","auth/user-not-found":"No account with this email.","auth/invalid-email":"Enter a valid email address.","auth/weak-password":"Password must be at least 6 characters."}[x.code]||x.message);
 function drawChat(){$("#chat").style.display=chOpen?"flex":"none";if(!chOpen)return;$("#cm").innerHTML=chat.map(m=>`<div class="m ${m.r}">${esc(m.t)}</div>`).join("")||'<div class=mu>Namaste! Order, delivery, payment ya kisi bhi cheez ke baare mein poochhiye.</div>';$("#cm").scrollTop=1e9}
 const A={
+ nmok(){$("#nm")?.remove()},
  oaok(){clearInterval(alT);$("#oa")?.remove();document.title=ttl;cv="shop";if(me.role!="delivery")tab="orders";render(1)},
  tpl(d){const t=NTPL[+d.i];$("#nt").value=t[2];$("#nb").value=t[3];if(t[0]=="🚨"||t[0]=="🛑"){$("#na").value="all"}},
  async bsend(){const t=$("#nt").value.trim(),m=$("#nb").value.trim(),au=$("#na").value,pid=$("#np").value;
-  if(!t||!m)return toast("Title aur message likhna zaroori hai");if(!F.payUrl)return toast("Pehle Payment server URL bharein");
+  if(!t||!m)return toast("Title aur message likhna zaroori hai");if(/[:\-]$/.test(m))return toast("Message adhoora hai, poora likhiye");if(!F.payUrl)return toast("Pehle Payment server URL bharein");
   if(!confirm("Ye notification "+AUD[au]+" ko bheji jayegi. Bheju?"))return;
   const bref=await addDoc(collection(db,"broadcasts"),{title:t,body:m,audience:au,productId:pid,sent:0,total:0,t:serverTimestamp()});toast("Bhej raha hoon...");let off=0,sent=0,total=0;
   try{for(let n=0;n<40;n++){const tok=await auth.currentUser.getIdToken(),r=await fetch(api("/broadcast"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({idToken:tok,audience:au,title:t,body:m,productId:pid,offset:off})}).then(x=>x.json());
@@ -394,12 +458,14 @@ const A={
  async reset(){const e=$("#em").value.trim();if(!e)return toast("Enter your email first");await sendPasswordResetEmail(auth,e);toast("Password reset link sent")},
  out(){cv="shop";return signOut(auth)},staff(){lv=true;loginV()},back(){cv=({track:"orders",pay:"orders"})[cv]||"shop";cur=null;render(1);scrollTo(0,0)},shop(){lv=false;cv="shop";render(1)},
  go(d){cv=d.v;cur=null;if(cv=="notif"&&me){NP=NSget();lsSet("ns_"+me.id,Date.now())}render(1);scrollTo(0,0)},
- nopen(d){let q;try{q=new URL(d.u||"",location.href).searchParams}catch(e){q=new URLSearchParams()}const p=q.get("p"),t=q.get("track");
+ nopen(d){showN(d.k);NDone(d.k);if(!d.u)return render(1);let q;try{q=new URL(d.u||"",location.href).searchParams}catch(e){q=new URLSearchParams()}const p=q.get("p"),t=q.get("track");
   if(me.role=="customer"){if(p&&D.products.some(x=>x.id==p)){cur=p;gi=0;cv="product"}else if(t&&D.orders.some(x=>x.id==t)){trk=t;cv="track"}else cv=t?"orders":"shop"}else{cv="shop";tab="orders"}render(1);scrollTo(0,0)},tab(d){tab=d.t;cv="shop";render(1);scrollTo(0,0)},
  search(){sq=$("#sq").value.trim();cv="shop";if(sq)addDoc(collection(db,"users",me.id,"history"),{type:"search",text:sq,t:serverTimestamp()});render(1)},
  chip(d){sq=d.q;render(1)},cat(d){cat=d.k;cv="shop";render(1);scrollTo(0,0)},
  view(d){cur=d.id;gi=0;cv="product";const p=D.products.find(x=>x.id==d.id);render(1);scrollTo(0,0)},
- gal(d){gi=+d.i;render(1)},add(d){setCart([...cart(),d.id]);toast("Added to cart")},buy(d){cv="cart";setCart([...cart(),d.id]);scrollTo(0,0)},
+ gal(d){gi=+d.i;render(1)},inc(d){setCart([...cart(),d.id])},dec(d){const c=cart(),i=c.indexOf(d.id);if(i>-1)c.splice(i,1);setCart(c)},
+ reorder(d){const o=D.orders.find(x=>x.id==d.id),ids=((o&&o.items)||[]).map(i=>i.pid).filter(id=>D.products.some(p=>p.id==id));if(!ids.length)return toast("Ye products abhi available nahi hain");cv="cart";setCart([...cart(),...ids]);toast("Cart mein add ho gaya");scrollTo(0,0)},
+ add(d){setCart([...cart(),d.id]);toast("Added to cart")},buy(d){cv="cart";setCart([...cart(),d.id]);scrollTo(0,0)},
  rm(d){const c=cart();c.splice(c.indexOf(d.id),1);setCart(c)},
  loc(){keep();return new Promise(ok=>navigator.geolocation.getCurrentPosition(async p=>{me.lat=p.coords.latitude;me.lng=p.coords.longitude;await updateDoc(doc(db,"users",me.id),{lat:me.lat,lng:me.lng});render(1);toast("Location saved");ok()},()=>{toast("Please allow location access");ok()},{enableHighAccuracy:true}))},
  async notif(){try{await Notification.requestPermission()}catch(e){}ping("Alerts are on.");await pushSetup(true);toast(SITE.vapid?"Alerts enabled, they will also come when the site is closed":"Alerts enabled while this page is open")},
@@ -456,7 +522,7 @@ document.addEventListener("change",async e=>{const s=e.target,c=s.dataset.c;if(s
  if(c=="assign"&&s.value){const u=D.users.find(x=>x.id==s.value);try{await updateDoc(doc(db,"orders",s.dataset.id),{boyId:u.id,boyName:u.name,status:"assigned"});statusPush(s.dataset.id)}catch(x){toast(x.message)}}});
 document.addEventListener("keydown",e=>{if(e.key!="Enter")return;const i=e.target.id;if(i=="sq")A.search();if(i=="cq")A.csearch();if(i=="ci")A.csend();if(i=="pw")(am=="signup"?A.signup():A.login()).catch(x=>toast(fe(x)))});
 /* ---------- auth ---------- */
-function loginV(){$("#hd").innerHTML=head0();$("#bn").style.display="none";$("#nav").innerHTML="";document.body.classList.remove("hn");$("#ft").innerHTML=foot();const su=am=="signup";
+function loginV(){if($("#cbar"))$("#cbar").style.display="none";$("#hd").innerHTML=head0();$("#bn").style.display="none";$("#nav").innerHTML="";document.body.classList.remove("hn");$("#ft").innerHTML=foot();const su=am=="signup";
  $("#app").innerHTML=`<div class="card lg"><div style="font-size:44px">👤</div><h2>${su?"Create your account":"Welcome back"}</h2><p class=mu>${su?"Sign up is free. No approval needed.":"Log in as a customer, seller, delivery partner or admin"}</p>${su?'<input id=nm placeholder="Full name"><input id=mb placeholder="Mobile number" inputmode=numeric maxlength=10>':""}<input id=em placeholder="Email" inputmode=email><input id=pw type=password placeholder="Password${su?" (min 6 characters)":""}"><button class="b big" style="width:100%" data-a=${su?"signup":"login"}>${su?"Create account":"Log in"}</button><p>${su?'Already have an account? <a data-a=amode data-m=login>Log in</a>':'New here? <a data-a=amode data-m=signup>Create an account</a> · <a data-a=reset>Forgot password?</a>'}</p><p><a data-a=shop>← Back to store</a></p></div>`}
 async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(!s.exists()&&u.isAnonymous){await setDoc(doc(db,"users",u.uid),{name:"Customer",email:"",role:"customer",status:"active",address:"",phone:"",createdAt:serverTimestamp()});s=await getDoc(doc(db,"users",u.uid))}
