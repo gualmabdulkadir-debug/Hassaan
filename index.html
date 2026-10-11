@@ -140,9 +140,46 @@ button{border-radius:10px}
 #cbar{position:fixed;left:10px;right:10px;bottom:68px;z-index:35;background:var(--g);color:#fff;border-radius:14px;padding:11px 16px;display:none;align-items:center;justify-content:space-between;box-shadow:0 6px 18px #0c831f66;cursor:pointer}#cbar small{display:block;opacity:.9;font-size:11px}
 body.hn.cb2{padding-bottom:150px}
 body.hn #fab{bottom:140px}body.hn #chat{bottom:200px}
+/* ===== round 2 ===== */
+main{padding:12px}
+.card{border:0}
+.grid{gap:10px}
+.pc,.pc:hover{border:0;box-shadow:0 2px 10px #0000001a;transform:none}
+.pc .im{border:0;padding:6px;background:var(--cd)}
+.av{overflow:hidden}
+.avi{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}.avl{font-weight:800;font-size:18px;color:#fff}
+.hb.pfb{background:var(--g);color:#fff;overflow:hidden;padding:0}
+.avw{position:relative;cursor:pointer;flex:none}.cam{position:absolute;right:-2px;bottom:-2px;background:var(--cd);border:1px solid var(--bd);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px}
+#ft{background:transparent;border:0;border-radius:0;margin-top:14px;padding:0 12px 10px}
+.fs{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:var(--mu);padding:6px 2px;max-width:1100px;margin:auto}
+.fsb{background:var(--cd);color:var(--g);border:1px solid var(--bd);border-radius:99px;font-size:12px;padding:5px 12px;font-weight:700}
+.fsd{background:var(--cd);border-radius:14px;padding:14px;max-width:1100px;margin:6px auto 0;box-shadow:0 1px 6px #0000001a}.fsd .fc a,.fsd .fc span{font-size:13px}
+.shd{display:flex;align-items:center;gap:12px}
+.faq{border-bottom:1px solid var(--bd);padding:10px 0}.faq:last-child{border:0}.faq summary{font-weight:600;cursor:pointer}.faq p{margin:8px 0 0}
+.pick{display:inline-block;cursor:pointer;border-radius:10px;padding:10px 16px;font-weight:600}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin:8px 0}
+.pth{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--bd);background:var(--cd)}.pth img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.pth.ok{border-color:var(--ok)}.pth.err{border-color:var(--bad)}.pth.up{border-color:var(--y)}
+.pn{position:absolute;left:6px;top:6px;background:#000a;color:#fff;font-size:10px;border-radius:99px;padding:2px 8px}
+.px{position:absolute;right:4px;top:4px;background:#000a;color:#fff;border-radius:50%;width:24px;height:24px;padding:0}
+.ps{display:block;text-align:center;font-size:11px;padding:4px}
+.trust{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.trust span{background:#e6f4ea;color:#0c5a17;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600}
+#pbar2{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;background:var(--cd);box-shadow:0 -2px 12px #0003}
+#pbar2 button{flex:1;border-radius:0;padding:16px;font-size:15px;font-weight:800;background:var(--cd);color:var(--tx)}#pbar2 button.buy{background:#fb641b;color:#fff}
+body.pp #nav,body.pp #cbar,body.pp #ft{display:none!important}body.pp{padding-bottom:84px}body.pp #fab{bottom:76px}
+body:not(.rd) #ft,body:not(.rd) #fab,body:not(.rd) #nav{display:none}
+.ldr{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:68vh;gap:16px}
+.ldr-w{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
+.ldr-w:before{content:"";position:absolute;inset:0;border-radius:50%;border:5px solid #0c831f22;border-top-color:var(--g);border-right-color:var(--y);animation:sp .9s linear infinite}
+.ldr-w img{width:62px;height:62px;border-radius:50%;object-fit:cover;animation:pls 1.2s ease-in-out infinite}
+.ldr-t{font-weight:700;color:var(--mu);letter-spacing:.3px}.ldr-t i{font-style:normal;animation:dt 1.2s infinite}.ldr-t i:nth-child(2){animation-delay:.2s}.ldr-t i:nth-child(3){animation-delay:.4s}
+@keyframes sp{to{transform:rotate(360deg)}}@keyframes pls{50%{transform:scale(.88)}}@keyframes dt{0%,80%,100%{opacity:.2}40%{opacity:1}}
+#off{position:fixed;inset:0;z-index:999;background:var(--bg);color:var(--tx);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+.offb h2{margin:14px 0 6px}.offb p{color:var(--mu);max-width:300px;margin:0 auto 18px}.offb button{background:#0c831f;color:#fff;border-radius:10px;padding:12px 30px;font-weight:700}
+.spk{animation:spk .8s infinite}@keyframes spk{0%,100%{opacity:1}50%{opacity:.15}}
 #cm .b{color:var(--tx)}#cm .m{line-height:1.5}
 </style></head><body>
-<div id="hd"></div><div id="bn"></div><main id="app"><p class="mu">Loading...</p></main><footer id="ft"></footer>
+<div id="hd"></div><div id="bn"></div><main id="app"></main><footer id="ft"></footer>
 <div id="nav"></div>
 <button id="fab" data-a="chat" title="Help">🤖</button>
 <div id="chat"><div class="ch"><b>🤖 Help assistant</b><button class="hb" data-a="chat">✕</button></div><div id="cm"></div><div class="cf"><input id="ci" placeholder="Apna sawal likhiye"><button class="b" data-a="csend">Send</button></div></div>
@@ -150,7 +187,14 @@ body.hn #fab{bottom:140px}body.hn #chat{bottom:200px}
 function __e(m){var a=document.getElementById("app");a.innerHTML='<div class="card" style="color:#c92a2a">Something went wrong: '+String(m).replace(/</g,"&lt;")+'</div>'}
 addEventListener("error",function(e){__e(e.message||"script error")});
 addEventListener("unhandledrejection",function(e){__e((e.reason&&e.reason.message)||e.reason)});
-setTimeout(function(){var a=document.getElementById("app");if(a&&a.textContent.indexOf("Loading")>-1)__e("The page code did not load (check internet, or the file upload was incomplete)")},7000);
+var LDR='<div class="ldr"><div class="ldr-w"><img src="icon-192.png" alt=""></div><div class="ldr-t">Loading<i>.</i><i>.</i><i>.</i></div></div>';
+document.getElementById("app").innerHTML=LDR;
+var OFFH='<div class="offb"><svg viewBox="0 0 320 200" width="280" height="175" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 150 C40 150 50 104 92 104" stroke="#9aa0a6"/><rect x="92" y="82" width="46" height="44" rx="8" stroke="#0c831f"/><path d="M138 94h20M138 114h20" stroke="#0c831f"/><path d="M312 60 C278 60 270 104 236 104" stroke="#9aa0a6"/><rect x="192" y="82" width="44" height="44" rx="8" stroke="#0c831f"/><path d="M192 94h10M192 114h10" stroke="#0c831f"/><path d="M166 62l6-14M176 98h14M166 138l6 14" stroke="#f8cb46" class="spk"/><circle cx="165" cy="26" r="14" stroke="#dc2626"/><path d="M159 20l12 12M171 20l-12 12" stroke="#dc2626"/></svg><h2>Internet nahi hai</h2><p>Network ka taar toot gaya lagta hai. Connection check karke dobara try kijiye.</p><button onclick="location.reload()">Retry</button></div>';
+function __off(){var e=document.getElementById("off");if(!navigator.onLine){if(!e){e=document.createElement("div");e.id="off";e.innerHTML=OFFH;document.body.appendChild(e)}}else if(e){e.remove()}}
+addEventListener("offline",__off);
+addEventListener("online",function(){__off();var a=document.getElementById("app");if(a&&a.textContent.indexOf("Loading")>-1)setTimeout(function(){location.reload()},800)});
+__off();
+setTimeout(function(){var a=document.getElementById("app");if(a&&a.textContent.indexOf("Loading")>-1&&navigator.onLine)__e("The page code did not load (check internet, or the file upload was incomplete)")},7000);
 </script>
 <script type="module" onerror="__e('Could not load the Firebase library. Check your internet.')">
 import{initializeApp,deleteApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -171,7 +215,7 @@ const CATS={"Fashion":{e:"👕",f:[["Brand"],["Size",["XS","S","M","L","XL","XXL
 "Beauty & Personal Care":{e:"💄",f:[["Brand"],["Type"],["Quantity"],["Ideal for",["Men","Women","All"]]]},
 "Footwear":{e:"👟",f:[["Brand"],["Size"],["Color"],["Material"],["Ideal for",["Men","Women","Kids"]]]},
 "Toys & Others":{e:"🧸",f:[["Brand"],["Age group"],["Material"]]}};
-const TABS={admin:[["dash","Dashboard"],["orders","Orders"],["products","Products"],["customers","Customers"],["pay","Payouts"],["notify","Notifications"],["staff","Staff"],["settings","Settings"]],seller:[["orders","Orders"],["products","My products"],["earn","Earnings"],["add","Add product"]],delivery:[["orders","My deliveries"]]};
+const TABS={admin:[["dash","Dashboard"],["orders","Orders"],["products","Products"],["customers","Customers"],["pay","Payouts"],["notify","Notifications"],["staff","Staff"],["settings","Settings"]],seller:[["orders","Orders"],["products","My products"],["earn","Earnings"],["add","Add product"],["help","Support"]],delivery:[["orders","My deliveries"]]};
 let me=null,subs=[],seen={},D={products:[],orders:[],users:[],hist:[],duty:[]},F={pct:3,pfMax:10,perKm:7,min:10,maxKm:10,prep:15,minPerKm:3,cod:0,payUrl:"",partners:false,feeBy:"customer",holdHours:48,payHour:18},SITE={},DR=null,BN=[],chat=[],chOpen=false;
 let cv="shop",tab="",cur=null,gi=0,trk=null,sq="",cat="",pm="cod",lv=false,pending=false,sharing=null,wid=null,lastW=0,pay=null,cq="",cshow="ordered",ofil="all",am="login";
 const cart=()=>JSON.parse(localStorage["c_"+me.id]||"[]"),setCart=a=>{localStorage["c_"+me.id]=JSON.stringify(a);render(1)};
@@ -183,6 +227,7 @@ const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r
 const dfee=k=>Math.max(F.min,Math.ceil(k)*F.perKm);
 const etaOf=p=>me&&me.lat!=null&&p.lat!=null?F.prep+Math.ceil(km(me.lat,me.lng,p.lat,p.lng)*F.minPerKm):F.prep;
 const nearEta=()=>{if(me&&me.lat!=null){const d=D.products.filter(p=>p.lat!=null).map(p=>km(me.lat,me.lng,p.lat,p.lng));if(d.length)return F.prep+Math.ceil(Math.min(...d)*F.minPerKm)}return F.prep};
+const avHTML=()=>{if(me.photo)return`<img class=avi src="${esc(me.photo)}">`;const n=(me.rname||me.name||"").trim();return !me.guest&&n&&n!="Customer"?`<span class=avl>${esc(n[0].toUpperCase())}</span>`:"👤"};
 const grp=l=>{const m=new Map();l.forEach(p=>m.set(p.id,[p,(m.get(p.id)?.[1]||0)+1]));return[...m.values()]};
 const stp=id=>{const q=cart().filter(x=>x==id).length;return q?`<div class=stp><button data-a=dec data-id=${id}>−</button><b>${q}</b><button data-a=inc data-id=${id}>+</button></div>`:`<button class=addb data-a=inc data-id=${id}>ADD</button>`};
 const ping=t=>{try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator();o.connect(c.destination);o.frequency.value=880;o.start();setTimeout(()=>o.stop(),600)}catch(e){}navigator.vibrate?.([300,150,300]);try{if(Notification.permission=="granted"){const nt=SITE.name||"Hassaan Digital Point",no={body:t||"New order update",icon:"icon-192.png",tag:"app-"+String(t||"").slice(0,40),vibrate:[200,100,200]};(navigator.serviceWorker?navigator.serviceWorker.ready.then(r=>r.showNotification(nt,no)):Promise.reject()).catch(()=>{try{new Notification(nt,no)}catch(e){}})}}catch(e){}};
@@ -211,13 +256,14 @@ const notifySeller=(o,id)=>{if(!SITE.notifyUrl||!o.sellerPhone)return;const text
 const FORM=()=>cv=="profile"||(me.role=="seller"&&tab=="add"&&cv!="profile")||(me.role=="admin"&&["settings","staff","notify"].includes(tab))||(me.role=="customer"&&["cart","pay"].includes(cv));
 function head0(dv){const lg=`<img class=lgi src="${SITE.logoImg||"icon-192.png"}">`;return`<div class=hw><a class=brand data-a=shop>${lg}${dv||`<b>${esc(SITE.name||"Hassaan Digital Point")}</b>`}</a></div>`}
 function head(){const n=cart().length,c=me.role=="customer";
- const pf=`<button class="hb ic" data-a=go data-v=profile title="Profile">👤<span class=hl>${me.guest?"Login":esc((me.rname||me.name||"").split(" ")[0])}</span></button>`;
+ const pf=`<button class="hb ic pfb" data-a=go data-v=profile title="Profile">${avHTML()}</button>`;
  const un=unread(),bell=`<button class="hb ic" data-a=go data-v=notif title="Notifications">🔔${un?`<i class=cb>${un>9?"9+":un}</i>`:""}</button>`;
  const ins=standalone()?"":`<button class="hb ic" data-a=install title="Install app">📲<span class=hl>App</span></button>`;const acts=c?`${ins}<button class="hb ic" data-a=go data-v=cart title="Cart">🛒${n?`<i class=cb>${n}</i>`:""}</button>${bell}${pf}`:`${ins}<span class=hu>${me.role}</span>${bell}${pf}`;
  const srch=c&&cv=="shop"?`<div class=sb><input id=sq value="${esc(sq)}" placeholder="Search for products, brands and more"><button data-a=search>Search</button></div>`:"";
  const bk=c&&cv!="shop"?`<button class="hb ic bk" data-a=back title="Back">←</button>`:"";const dv=c&&cv=="shop"?`<span class=dv><small>⚡ DELIVERY IN ~${nearEta()} MINUTES</small><b>${esc(me.city||me.address||"Set your location")} ▾</b></span>`:"";return head0(dv).replace("<div class=hw>","<div class=hw>"+bk).replace("</a></div>",`</a>${srch}<div class=ha>${acts}</div></div>`)}
 function supportHTML(){const w=SITE.wa||DEF.wa,m=SITE.mail||DEF.mail,a=SITE.addr||DEF.addr;return`<div class=fc><b>Help & Support</b><a target=_blank href="${waLink(w,"Hello, I need help")}">💬 WhatsApp: ${esc(w)}</a><a href="mailto:${esc(m)}">✉️ ${esc(m)}</a><span>📍 ${esc(a)}</span><a data-a=chat>🤖 Chat with our AI assistant</a></div>`}
-function foot(){return`<div class=fw>${supportHTML()}<div class=fc><b>${esc(SITE.name||"Hassaan Digital Point")}</b><span>${esc(SITE.footer||"Local shops, delivered to your door.")}</span>${SITE.phone?`<a href="tel:${esc(SITE.phone)}">📞 ${esc(SITE.phone)}</a>`:""}</div></div><div class=cp>© ${new Date().getFullYear()} ${esc(SITE.name||"Hassaan Digital Point")}. All rights reserved.</div>`}
+let FS=false;
+function foot(){const nm=esc(SITE.name||"Hassaan Digital Point");return`<div class=fs><span>© ${new Date().getFullYear()} ${nm}</span><button class=fsb data-a=fsup>💬 Contact support ${FS?"▴":"▾"}</button></div>${FS?`<div class=fsd><div class=fw>${supportHTML()}<div class=fc><b>${nm}</b><span>${esc(SITE.footer||"Local shops, delivered to your door.")}</span>${SITE.phone?`<a href="tel:${esc(SITE.phone)}">📞 ${esc(SITE.phone)}</a>`:""}</div></div></div>`:""}`}
 function render(f){if(!me||lv)return;if(!f&&(FORM()||document.activeElement?.matches("input,select,textarea"))){pending=true;return}pending=false;
  const c=me.role=="customer",prof=cv=="profile"||cv=="notif";
  $("#hd").innerHTML=head();$("#bn").style.display=c&&cv=="shop"?"":"none";
@@ -226,11 +272,11 @@ function render(f){if(!me||lv)return;if(!f&&(FORM()||document.activeElement?.mat
  const hsl=$(".hs")?.scrollLeft||0,ctl=$(".cts")?.scrollLeft||0;$("#app").innerHTML=tb+((!prof&&(!c||cv=="shop"||cv=="orders"))?instCard()+notifCard():"")+(cv=="notif"?vNotif():prof?vProfile():{customer:vCust,admin:vAdmin,seller:vSeller,delivery:vDel}[me.role]());
  {const h=$(".hs"),k=$(".cts");if(h)h.scrollLeft=hsl;if(k)k.scrollLeft=ctl}
  const nv=[["shop","🏠","Home"],["cats","🗂️","Categories"],["orders","📦","Orders"],["cart","🛒","Cart"],["profile","👤","Account"]];
- $("#nav").innerHTML=c?nv.map(([k,i,l])=>`<button class="${cv==k||(k=="shop"&&cv=="product")?"on":""}" data-a=go data-v=${k}><span>${i}</span>${l}</button>`).join(""):"";document.body.classList.toggle("hn",c);document.body.classList.toggle("adm",me.role=="admin");cbar();$("#ft").style.display=prof?"none":"";
- $("#ft").innerHTML=foot();if($("#calc"))calc()}
+ $("#nav").innerHTML=c?nv.map(([k,i,l])=>`<button class="${cv==k||(k=="shop"&&cv=="product")?"on":""}" data-a=go data-v=${k}><span>${i}</span>${l}</button>`).join(""):"";document.body.classList.toggle("hn",c);document.body.classList.toggle("adm",me.role=="admin");document.body.classList.toggle("pp",c&&cv=="product");document.body.classList.add("rd");cbar();$("#ft").style.display=prof?"none":"";
+ $("#ft").innerHTML=foot();if($("#calc"))calc();if($("#pprev"))drawPrev()}
 document.addEventListener("focusout",()=>setTimeout(()=>pending&&render(),80));
 function cbar(){let e=$("#cbar");if(!e){e=document.createElement("div");e.id="cbar";e.dataset.a="go";e.dataset.v="cart";document.body.appendChild(e)}
- const C=me&&me.role=="customer"&&!lv?cartItems():[],show=C.length&&["shop","cats","product"].includes(cv);
+ const C=me&&me.role=="customer"&&!lv?cartItems():[],show=C.length&&["shop","cats"].includes(cv);
  e.style.display=show?"flex":"none";document.body.classList.toggle("cb2",!!show);
  if(show){const t=C.reduce((a,p)=>a+p.price,0);e.innerHTML=`<span><b>${C.length} item${C.length>1?"s":""}</b><small>${inr(t)} + fees</small></span><b>View cart ›</b>`}}
 function drawBn(){const t=BN.filter(b=>b.place!="mid");let h=SITE.banner?`<div class="card" style="background:var(--p);color:#fff;font-weight:600">${esc(SITE.banner)}</div>`:"";
@@ -323,9 +369,9 @@ function vProd(p){if(!p)return vShop();const im=p.imgs||[],o=pOff(p);
  <div><h2>${esc(p.name)}</h2><div class=mu>${esc(p.category||"")} · Sold by ${esc(p.sellerName)}</div>
  <div style="font-size:28px;font-weight:700;margin:8px 0">${inr(p.price)} ${o?`<s class=mu style="font-size:16px">${inr(p.mrp)}</s> <span class=off>${o}% off</span>`:""}</div>
  <div class=mu>Weight: ${esc(p.weight||"-")}</div>${p.selfDel?`<div class=mu>🚚 Delivered by seller: ${+p.selfFee?inr(p.selfFee):"<b style=color:var(--ok)>FREE delivery</b>"}</div>`:""}${me.lat!=null&&p.lat!=null?`<div style="color:var(--ok)">⏱ Delivery in about ${F.prep+Math.ceil(km(me.lat,me.lng,p.lat,p.lng)*F.minPerKm)} min</div>`:""}
- <div class=row><button class="y big" style="flex:1" data-a=add data-id=${p.id}>Add to cart</button><button class="o big" style="flex:1" data-a=buy data-id=${p.id}>Buy now</button></div>
+ <div class=trust><span>🚚 Fast delivery</span><span>✅ Quality checked</span><span>💬 Easy support</span></div>
  <h3 style="margin-top:18px">Highlights</h3><table>${Object.entries(p.attrs||{}).map(([k,v])=>`<tr><td class=mu>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>
- <h3 style="margin-top:18px">Description</h3><p>${esc(p.desc||"")}</p></div></div>`}
+ <h3 style="margin-top:18px">Description</h3><p>${esc(p.desc||"")}</p></div></div><div id=pbar2>${cart().includes(p.id)?`<button data-a=go data-v=cart>🛒 Go to cart</button>`:`<button data-a=add data-id=${p.id}>🛒 Add to cart</button>`}<button class=buy data-a=buy data-id=${p.id}>⚡ Buy now</button></div>`}
 function vCart(){const C=cartItems(),G=split(C),sf=F.feeBy=="seller";
  if(!C.length)return`<div class="card empty"><div class=em>🛒</div><h3>Your cart is empty</h3><button class=b data-a=go data-v=shop>Continue shopping</button></div>`;
  const tot=G.reduce((a,x)=>a+x.t+(sf?0:x.pf)+(x.df||0)+x.cf,0),op=[["cod",`Cash on delivery${F.cod?` (+${inr(F.cod)})`:""}`]];if(SITE.upi)op.push(["upi","Pay now with UPI (GPay, PhonePe, Paytm)"]);if(F.payUrl)op.push(["online","Card / Net banking (PayU)"]);
@@ -348,25 +394,36 @@ function vTrack(){const o=D.orders.find(x=>x.id==trk);if(!o)return vOrders();con
 /* ---------- profile ---------- */
 function vProfile(){if(me.guest)return`<div class="card lg"><div class=av>👤</div><h2>Welcome!</h2><p class=mu>Login or create a free account to save your address and track orders.</p><button class="b big" style="width:100%" data-a=staff>Login / Sign up</button></div>${instBox()}${notifBox()}<div class=card>${supportHTML()}</div>`;
  const c=me.role=="customer",v=k=>esc(me[k]||"");
- return`<div class="card" style="display:flex;gap:14px;align-items:center"><div class=av style="margin:0">${esc((me.rname||me.name||"U")[0].toUpperCase())}</div><div><h2 style="margin:0">${esc(me.rname||me.name)}</h2><div class=mu>${esc(me.email||"")} · ${me.role}</div></div></div>
+ return`<div class="card" style="display:flex;gap:14px;align-items:center"><label class=avw><div class=av style="margin:0;width:72px;height:72px;font-size:32px">${me.photo?`<img class=avi src="${esc(me.photo)}">`:esc((me.rname||me.name||"U")[0].toUpperCase())}</div><span class=cam>📷</span><input id=phf type=file accept="image/*" hidden></label><div><h2 style="margin:0">${esc(me.rname||me.name)}</h2><div class=mu>${esc(me.email||"")} · ${me.role}</div>${me.photo?'<a data-a=rmph class=mu style="font-size:12px">Remove photo</a>':'<span class=mu style="font-size:12px">Tap the camera to add your photo</span>'}</div></div>
  <div class=card><h3>My details</h3><div class=f><div><label class=l>Name</label><input id=fn value="${v("rname")||v("name")}"></div><div><label class=l>${me.role=="seller"?"WhatsApp / mobile number (order alerts come here) *":"Mobile number"}</label><input id=fph inputmode=numeric maxlength=10 value="${v("phone")}"></div>${me.role=="seller"?`<div><label class=l>UPI ID for payouts (e.g. name@bank) *</label><input id=fup value="${v("upi")}"></div>`:""}${c?`<div><label class=l>PIN code</label><input id=fpi inputmode=numeric maxlength=6 value="${v("pin")}"></div><div><label class=l>City</label><input id=fci value="${v("city")}"></div>`:""}</div>${c?`<label class=l>Address</label><input id=fad style="width:100%" value="${v("address")}">`:""}<div class=row><button class=b data-a=savep>Save details</button></div></div>
  ${c?`<div class=card><div class=rowi><a data-a=go data-v=orders>📦 My orders</a></div><div class=rowi><a data-a=go data-v=cart>🛒 My cart</a></div></div>`:""}
  ${instBox()}${notifBox()}<div class=card>${supportHTML()}</div><button class="r big" style="width:100%" data-a=out>Logout</button>`}
 /* ---------- seller & delivery ---------- */
 function vSeller(){const prompt=(me.lat==null?'<div class="card note">📍 <span><b>Set your shop location.</b> Required before you can list products.</span><button class=b data-a=loc>Set shop location</button></div>':"")+(!/^[6-9]\d{9}$/.test(me.phone||"")?'<div class="card note">📲 <span><b>Add your WhatsApp / mobile number.</b> New order alerts are sent to this number.</span><button class=b data-a=go data-v=profile>Open profile</button></div>':"")+(!me.upi?'<div class="card note">💸 <span><b>Add your UPI ID.</b> The platform sends your earnings to this UPI ID.</span><button class=b data-a=go data-v=profile>Open profile</button></div>':"");
- if(tab=="earn")return prompt+vEarn();if(tab=="products")return prompt+`<h2>My products</h2>${D.products.length?D.products.map(p=>pRow(p)).join(""):'<div class="card empty mu">No products yet</div>'}`;
- if(tab=="add")return me.lat==null||!me.phone?prompt:vAddP();return prompt+`<h2>Orders</h2>${oList(D.orders,"s")}`}
+ if(tab=="help")return vHelp();if(tab=="earn")return prompt+vEarn();if(tab=="products")return prompt+`<h2>My products</h2>${D.products.length?D.products.map(p=>pRow(p)).join(""):'<div class="card empty mu">No products yet</div>'}`;
+ if(tab=="add")return me.lat==null||!me.phone?prompt:vAddP();return prompt+sHead()+`<h2>Orders</h2>${oList(D.orders,"s")}`}
+function sHead(){const O=D.orders,P=D.products,nw=O.filter(o=>o.status=="placed").length,pr=O.filter(o=>["self","needboy","assigned","picked","arrived"].includes(o.status)).length,dl=O.filter(o=>o.status=="delivered"),live=P.filter(p=>p.status=="approved").length,pend=P.length-live,sales=dl.reduce((a,o)=>a+(o.itemsTotal||0),0);
+ return`<div class="card shd"><div class=av style="margin:0">${me.photo?`<img class=avi src="${esc(me.photo)}">`:esc((me.name||"S")[0].toUpperCase())}</div><div style="flex:1"><b style="font-size:17px">${esc(me.name)}</b><div class=mu>Seller account · ${live} live product${live==1?"":"s"}</div></div><a class="g ab" data-a=tab data-t=help>🛟 Support</a></div>
+ <div class=st><div class=card><b style="color:var(--bad)">${nw}</b>New orders</div><div class=card><b>${pr}</b>In progress</div><div class=card><b>${dl.length}</b>Delivered</div><div class=card><b>${inr(sales)}</b>Delivered sales</div><div class=card><b>${live}</b>Live products</div><div class=card><b>${pend}</b>Awaiting approval</div></div>`}
+function vHelp(){const w=SITE.wa||DEF.wa,m=SITE.mail||DEF.mail,hi="Hello, I am seller "+(me.name||"")+" ("+(me.phone||"")+"). ";
+ const faq=[["Product kab live hoga?","Product submit karne ke baad admin approve karta hai. Approve hote hi wo customers ko dikhne lagta hai."],["Order aaye to kya karein?","Orders tab me order kholiye, 'I will deliver' dabaiye, customer ko call kijiye, aur delivery ke baad Delivered dabaiye."],["Payment kab milegi?","Online payment delivery ke "+(F.holdHours??48)+" ghante baad roz "+fh(F.payHour??18)+" par aapke UPI ID par bheji jati hai. COD me cash aap rakhte hain aur platform fee wapas bhejte hain."],["Photo upload nahi ho rahi?","1 se 4 photo chuniye, upload se pehle preview me check kijiye. Chhoti JPG ya PNG photo best chalti hai."],["UPI ya mobile number badalna hai?","Upar 👤 icon par jaakar Profile me details save kijiye."]];
+ return`<h2>Support desk</h2><div class=card><p class=mu>Koi bhi dikkat ho to humse seedha baat kijiye. Hum jaldi jawab dete hain.</p><div class=row><a class="b ab" target=_blank href="${waLink(w,hi)}">💬 WhatsApp</a><a class="g ab" href="tel:${esc(w)}">📞 Call</a><a class="g ab" href="mailto:${esc(m)}?subject=Seller%20support">✉️ Email</a></div></div>
+ <div class=card><h3>Send us a message</h3><div class=f><div><label class=l>Topic</label><select id=hq><option>Order problem</option><option>Payment / payout</option><option>Product approval</option><option>Account / profile</option><option>Other</option></select></div></div><textarea id=hm rows=3 style="width:100%" placeholder="Apni problem likhiye"></textarea><div class=row><button class=b data-a=hsend>Send on WhatsApp</button></div></div>
+ <div class=card><h3>Help &amp; FAQ</h3>${faq.map(([q,a])=>`<details class=faq><summary>${q}</summary><p class=mu>${a}</p></details>`).join("")}</div>`}
 function pRow(p,a){return`<div class="card rowi" style="margin-bottom:8px">${p.imgs?.[0]?`<img src="${opt(p.imgs[0],120)}" width=56 height=56 style="object-fit:contain;border-radius:8px;background:#fff">`:`<span class=em style="font-size:32px">${esc(p.emoji||"📦")}</span>`}<div style="flex:1"><b>${esc(p.name||p.title||"(no name)")}</b><div class=mu>${esc(p.category||"")} ${a?"· "+esc(p.sellerName||""):""} · ${inr(p.price)}${p.selfDel?" · self delivery "+(+p.selfFee?inr(p.selfFee):"FREE"):""}</div></div><span class="tag ${p.status=="approved"?"ok":"warn"}">${p.status=="approved"?"Live":"Pending approval"}</span>
  ${a?(p.status=="approved"?`<button class=g data-a=pst data-id=${p.id} data-s=pending>Pause</button>`:`<button class=b data-a=pst data-id=${p.id} data-s=approved>Approve</button>`):""}<button class=r data-a=delp data-id=${p.id}>Delete</button></div>`}
 function vAddP(){return`<div id=addp><h2>Add a product</h2><div class=card><div class=f><div><label class=l>Category *</label><select id=pc data-c=cat><option value="">Select category</option>${Object.keys(CATS).map(c=>`<option>${c}</option>`).join("")}</select></div><div><label class=l>Product name *</label><input id=pn2></div><div><label class=l>MRP (₹) *</label><input id=pm type=number></div><div><label class=l>Selling price (₹) *</label><input id=pp type=number></div><div><label class=l>Weight *</label><input id=pw type=number></div><div><label class=l>Unit</label><select id=pu><option>g</option><option>kg</option><option>ml</option><option>L</option></select></div></div>
  <div id=attrs class=f></div><label class=l>Description *</label><textarea id=pd rows=3 style="width:100%"></textarea>
  <h3 style="margin-top:14px">Delivery</h3><div class=f><div><label class=l>Who delivers this product? *</label><select id=dm><option value=platform>Platform delivery (fee by distance)</option><option value=self>I will deliver myself</option></select></div><div id=dfw style="display:none"><label class=l>My delivery charge (₹) - enter 0 for FREE delivery</label><input id=df type=number value=0></div></div>
  <div id=calc class="card calc"></div>
- <label class=l style="margin-top:10px">Photos (1 to 4) *</label><input id=pi type=file accept="image/*" multiple><div class=row><button class="b big" data-a=addp>Submit for approval</button></div><p class=mu>Your product goes live after the admin approves it.</p></div></div>`}
+ <label class=l style="margin-top:10px">Product photos (1 to 4) *</label><div id=pprev class=pgrid></div><label class="g pick" id=ppick><input id=pi type=file accept="image/*" multiple hidden>📷 Add photos</label><div class=mu id=pcnt style="margin-top:6px"></div><div class=row><button class="b big" data-a=addp>Submit for approval</button></div><p class=mu>Your product goes live after the admin approves it.</p></div></div>`}
 function calc(){const el=$("#calc");if(!el)return;const mrp=+$("#pm").value||0,pr=+$("#pp").value||0,self=$("#dm").value=="self";$("#dfw").style.display=self?"":"none";
  const fee=+$("#df").value||0,pf=Math.min(F.pfMax,Math.round(pr*F.pct/100)),sel=F.feeBy=="seller",off=pOff({mrp,price:pr});
  const R=(a,b,c="")=>`<tr><td>${a}</td><td style="text-align:right;${c}"><b>${b}</b></td></tr>`;
  el.innerHTML=`<h3>💰 Price calculator</h3><table>${R("MRP",inr(mrp))}${R("Your selling price",inr(pr))}${R("Customer discount",off?off+"% off (saves "+inr(mrp-pr)+")":"No discount")}${R("Platform fee ("+F.pct+"%, max "+inr(F.pfMax)+")",inr(pf)+(sel?" - deducted from you":" - paid by customer"),sel?"color:var(--bad)":"")}${self?R("Delivery (you deliver)",fee?inr(fee)+" - paid by customer to you":"FREE - customer pays nothing"):R("Delivery (platform)",inr(F.perKm)+"/km, min "+inr(F.min)+" - paid by customer")}${R("Customer pays",inr(pr+(sel?0:pf)+(self?fee:0))+(self?"":" + delivery"))}${R("You receive",inr(pr-(sel?pf:0)+(self?fee:0)),"color:var(--ok);font-size:16px")}</table>${pr>mrp&&mrp?'<div class=alert style="margin-top:8px">Selling price is more than MRP.</div>':""}`}
+let PF=[];
+function drawPrev(){const e=$("#pprev");if(!e)return;e.innerHTML=PF.map((x,i)=>`<div class="pth ${x.st}"><img src="${x.u}"><span class=pn>${i==0?"Main":i+1}</span>${x.st=="wait"||x.st=="err"?`<button class=px data-a=pdel data-i=${i}>✕</button>`:""}<span class=ps>${x.st=="up"?"Uploading...":x.st=="ok"?"✓ Uploaded":x.st=="err"?"Failed, retry":Math.round(x.f.size/1024)+" KB"}</span></div>`).join("");const c=$("#pcnt");if(c)c.textContent=PF.length?PF.length+" of 4 photos selected":"No photos selected yet";const k=$("#ppick");if(k)k.style.display=PF.length>=4?"none":""}
+function addPics(fl){for(const f of fl){if(PF.length>=4){toast("Maximum 4 photos");break}if(!/^image\//.test(f.type)){toast(f.name+" photo nahi hai");continue}PF.push({f,u:URL.createObjectURL(f),st:"wait"})}drawPrev()}
 const attrsUI=c=>{$("#attrs").innerHTML=(CATS[c]?.f||[]).map(([k,o],i)=>`<div><label class=l>${k} *</label>${o?`<select id=at${i}><option value="">Select</option>${o.map(x=>`<option>${x}</option>`).join("")}</select>`:`<input id=at${i}>`}</div>`).join("")};
 const vDel=()=>{const on=D.duty.some(x=>x.id==me.id);return`<div class="card oh"><div><b>Duty status</b><div class=mu>${on?"You are online and can be assigned orders.":"You are offline and will not get new orders."}</div></div><button class="${on?"r":"b"} big" data-a=duty>${on?"Go offline":"Go online"}</button></div><h2>My deliveries</h2>${oList(D.orders,"d")}`};
 function vEarn(){const all=D.orders.map(o=>({o,i:sInfo(o)})).filter(x=>x.i),dl=x=>x.o.status=="delivered",L=[...all.filter(x=>!dl(x)),...all.filter(dl).sort((x,y)=>(y.o.deliveredAt?.seconds||0)-(x.o.deliveredAt?.seconds||0))],now=Date.now(),open=all.filter(x=>dl(x)&&!x.i.done),sum=f=>open.filter(f).reduce((a,x)=>a+x.i.amt,0);
@@ -423,6 +480,10 @@ const fe=x=>({"auth/email-already-in-use":"This email already has an account. Pl
 function drawChat(){$("#chat").style.display=chOpen?"flex":"none";if(!chOpen)return;$("#cm").innerHTML=chat.map(m=>`<div class="m ${m.r}">${esc(m.t)}</div>`).join("")||'<div class=mu>Namaste! Order, delivery, payment ya kisi bhi cheez ke baare mein poochhiye.</div>';$("#cm").scrollTop=1e9}
 const A={
  nmok(){$("#nm")?.remove()},
+ async rmph(){await updateDoc(doc(db,"users",me.id),{photo:""});me.photo="";toast("Photo hata di gayi");render(1)},
+ fsup(){FS=!FS;$("#ft").innerHTML=foot();if(FS)setTimeout(()=>scrollTo({top:document.body.scrollHeight,behavior:"smooth"}),60)},
+ pdel(d){const x=PF.splice(+d.i,1)[0];if(x)URL.revokeObjectURL(x.u);drawPrev()},
+ hsend(){const m=$("#hm").value.trim();if(!m)return toast("Pehle apni problem likhiye");open(waLink(SITE.wa||DEF.wa,"Seller support ("+$("#hq").value+")\nName: "+me.name+"\nPhone: "+(me.phone||"")+"\n\n"+m),"_blank")},
  oaok(){clearInterval(alT);$("#oa")?.remove();document.title=ttl;cv="shop";if(me.role!="delivery")tab="orders";render(1)},
  tpl(d){const t=NTPL[+d.i];$("#nt").value=t[2];$("#nb").value=t[3];if(t[0]=="🚨"||t[0]=="🛑"){$("#na").value="all"}},
  async bsend(){const t=$("#nt").value.trim(),m=$("#nb").value.trim(),au=$("#na").value,pid=$("#np").value;
@@ -492,13 +553,13 @@ const A={
   wid=navigator.geolocation.watchPosition(p=>{if(Date.now()-lastW<15000)return;lastW=Date.now();updateDoc(doc(db,"orders",d.id),{liveLat:p.coords.latitude,liveLng:p.coords.longitude,liveAt:Date.now()}).catch(()=>{})},()=>{toast("Please allow location access");sharing=null;render(1)},{enableHighAccuracy:true});render(1)},
  st(d){if(d.s=="delivered"&&sharing==d.id){navigator.geolocation.clearWatch(wid);sharing=null}return updateDoc(doc(db,"orders",d.id),d.s=="delivered"?{status:d.s,deliveredAt:serverTimestamp()}:{status:d.s}).then(()=>statusPush(d.id))},
  paid(d){return updateDoc(doc(db,"orders",d.id),{paid:true})},delo(d){if(confirm("Delete this order permanently?"))return deleteDoc(doc(db,"orders",d.id))},
- async addp(){const c=$("#pc").value,n=$("#pn2").value.trim(),mrp=+$("#pm").value,pr=+$("#pp").value,w=$("#pw").value,ds=$("#pd").value.trim(),fs=[...$("#pi").files].slice(0,4),self=$("#dm").value=="self",fee=Math.max(0,+$("#df").value||0);
+ async addp(){const c=$("#pc").value,n=$("#pn2").value.trim(),mrp=+$("#pm").value,pr=+$("#pp").value,w=$("#pw").value,ds=$("#pd").value.trim(),fs=PF,self=$("#dm").value=="self",fee=Math.max(0,+$("#df").value||0);
   if(!c||!n||!mrp||!pr||!w||!ds||!fs.length)return toast("Category, name, prices, weight, description and at least 1 photo are required");if(pr>mrp)return toast("Selling price cannot be more than MRP");
   if(!/^[6-9]\d{9}$/.test(me.phone||""))return toast("Add your mobile number in Profile first");
   const at={};for(const[i,[k]]of CATS[c].f.entries()){const v=$("#at"+i).value.trim();if(!v)return toast("Please fill: "+k);at[k]=v}
-  const imgs=await Promise.all(fs.map(f=>upImg(f,[1000,.8],[520,.65])));
+  const imgs=[];for(const x of PF){x.st="up";drawPrev();try{if(!x.url)x.url=await upImg(x.f,[1000,.8],[520,.65]);x.st="ok";imgs.push(x.url)}catch(e){x.st="err";drawPrev();return toast("Photo "+(PF.indexOf(x)+1)+" upload nahi hui: "+(e.message||e)+". Dobara Submit dabaiye.")}drawPrev()}
   await addDoc(collection(db,"products"),{name:n,category:c,mrp,price:pr,weight:w+" "+$("#pu").value,desc:ds,attrs:at,imgs,emoji:CATS[c].e,selfDel:self,selfFee:self?fee:0,sellerId:me.id,sellerName:me.name,sellerPhone:me.phone,lat:me.lat,lng:me.lng,status:"pending",createdAt:serverTimestamp()});
-  toast("Submitted. Waiting for admin approval");tab="products";render(1)},
+  PF.forEach(x=>URL.revokeObjectURL(x.u));PF=[];toast("Submitted. Waiting for admin approval");tab="products";render(1)},
  delp(d){if(confirm("Delete this product?"))return deleteDoc(doc(db,"products",d.id))},pst(d){return updateDoc(doc(db,"products",d.id),{status:d.s})},
  async mk(){const n=$("#sn").value.trim(),e=$("#se").value.trim(),p=$("#sp").value,r=$("#sr").value;if(!n||!e||p.length<6)return toast("Fill all fields (password min 6)");
   const sec=initializeApp(cfg,"s"+Date.now());try{const a=getAuth(sec),c=await createUserWithEmailAndPassword(a,e,p);await setDoc(doc(db,"users",c.user.uid),{name:n,email:e,role:r,status:"active",createdAt:serverTimestamp()});await signOut(a);toast("Account created");$("#sn").value=$("#se").value=$("#sp").value=""}finally{deleteApp(sec)}},
@@ -517,12 +578,14 @@ async function payNow(tx,amt){const r=await fetch(F.payUrl.trim().replace(/\/+$/
 document.addEventListener("click",async e=>{if(me&&me.role!="customer"&&window.Notification&&Notification.permission=="default"){try{Notification.requestPermission().then(()=>pushSetup())}catch(x){}}
  const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;try{await A[b.dataset.a](b.dataset,b)}catch(x){toast(fe(x))}});
 document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#addp"))calc()});
-document.addEventListener("change",async e=>{const s=e.target,c=s.dataset.c;if(s.closest&&s.closest("#addp"))calc();if(s.name=="pm"){keep();pm=s.value;return render(1)}
+document.addEventListener("change",async e=>{const s=e.target,c=s.dataset.c;
+ if(s.id=="phf"){const f=s.files[0];s.value="";if(f)try{toast("Photo upload ho rahi hai...");const u=await upImg(f,[500,.8],[240,.7]);await updateDoc(doc(db,"users",me.id),{photo:u});me.photo=u;toast("Photo save ho gayi");render(1)}catch(x){toast(fe(x))}return}
+ if(s.id=="pi"){addPics(s.files);s.value="";return}if(s.closest&&s.closest("#addp"))calc();if(s.name=="pm"){keep();pm=s.value;return render(1)}
  if(c=="cat")return attrsUI(s.value);if(c=="ofil"){ofil=s.value;return render(1)}if(c=="cshow"){cshow=s.value;return render(1)}
  if(c=="assign"&&s.value){const u=D.users.find(x=>x.id==s.value);try{await updateDoc(doc(db,"orders",s.dataset.id),{boyId:u.id,boyName:u.name,status:"assigned"});statusPush(s.dataset.id)}catch(x){toast(x.message)}}});
 document.addEventListener("keydown",e=>{if(e.key!="Enter")return;const i=e.target.id;if(i=="sq")A.search();if(i=="cq")A.csearch();if(i=="ci")A.csend();if(i=="pw")(am=="signup"?A.signup():A.login()).catch(x=>toast(fe(x)))});
 /* ---------- auth ---------- */
-function loginV(){if($("#cbar"))$("#cbar").style.display="none";$("#hd").innerHTML=head0();$("#bn").style.display="none";$("#nav").innerHTML="";document.body.classList.remove("hn");$("#ft").innerHTML=foot();const su=am=="signup";
+function loginV(){document.body.classList.add("rd");if($("#cbar"))$("#cbar").style.display="none";$("#hd").innerHTML=head0();$("#bn").style.display="none";$("#nav").innerHTML="";document.body.classList.remove("hn");$("#ft").innerHTML=foot();const su=am=="signup";
  $("#app").innerHTML=`<div class="card lg"><div style="font-size:44px">👤</div><h2>${su?"Create your account":"Welcome back"}</h2><p class=mu>${su?"Sign up is free. No approval needed.":"Log in as a customer, seller, delivery partner or admin"}</p>${su?'<input id=nm placeholder="Full name"><input id=mb placeholder="Mobile number" inputmode=numeric maxlength=10>':""}<input id=em placeholder="Email" inputmode=email><input id=pw type=password placeholder="Password${su?" (min 6 characters)":""}"><button class="b big" style="width:100%" data-a=${su?"signup":"login"}>${su?"Create account":"Log in"}</button><p>${su?'Already have an account? <a data-a=amode data-m=login>Log in</a>':'New here? <a data-a=amode data-m=signup>Create an account</a> · <a data-a=reset>Forgot password?</a>'}</p><p><a data-a=shop>← Back to store</a></p></div>`}
 async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(!s.exists()&&u.isAnonymous){await setDoc(doc(db,"users",u.uid),{name:"Customer",email:"",role:"customer",status:"active",address:"",phone:"",createdAt:serverTimestamp()});s=await getDoc(doc(db,"users",u.uid))}
@@ -539,7 +602,7 @@ async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(r!="customer"){navigator.wakeLock?.request("screen").catch(()=>{});document.addEventListener("visibilitychange",()=>{if(!document.hidden)navigator.wakeLock?.request("screen").catch(()=>{})})}
  render(1);setTimeout(pushSetup,800)}
 onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};me=null;D={products:[],orders:[],users:[],hist:[],duty:[],inbox:[],bc:[]};
- if(!u){$("#app").innerHTML='<p class="mu">Loading...</p>';signInAnonymously(auth).catch(e=>{loginV();toast("Guest access is off. Enable Anonymous sign-in in Firebase Authentication ("+e.code+")")})}else boot(u)});
+ if(!u){$("#app").innerHTML=LDR;signInAnonymously(auth).catch(e=>{loginV();toast("Guest access is off. Enable Anonymous sign-in in Firebase Authentication ("+e.code+")")})}else boot(u)});
 onSnapshot(doc(db,"settings","site"),x=>site(x.exists()?x.data():{}),()=>{});
 onSnapshot(query(collection(db,"banners"),limit(8)),s=>{BN=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.t?.seconds||9e9)-(b.t?.seconds||9e9));drawBn();render()},()=>{});
 {const q=new URLSearchParams(location.search).get("pay");if(q)setTimeout(()=>toast(q=="ok"?"Payment successful. The store will confirm your order shortly.":"Payment was not completed. Please try again."),900)}
