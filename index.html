@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2874f0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hassan Digital">
 <title>Hassaan Digital Point</title>
 <style>
 :root{--p:#2874f0;--bg:#f1f3f6;--cd:#fff;--tx:#212121;--mu:#6b7280;--bd:#e5e7eb;--ok:#16a34a;--bad:#dc2626;--cta:#fb641b}
@@ -15,7 +21,7 @@ a{color:var(--p);cursor:pointer}h2{font-size:20px;margin:6px 0 12px}h3{font-size
 .sb input{flex:1;border:0;border-radius:0;color:#212121;background:#fff}.sb button{background:#fff;color:var(--p);border-radius:0}
 .ha{display:flex;gap:6px;margin-left:auto;align-items:center}.hb{background:transparent;color:#fff;border:1px solid #ffffff55}.hb.ic{position:relative;font-size:16px;padding:8px 12px;border-radius:99px}.hl{font-size:12px;margin-left:4px}.hu{font-size:12px;text-transform:capitalize}
 .cb{position:absolute;top:-4px;right:-4px;background:var(--cta);color:#fff;font-size:11px;font-style:normal;min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;justify-content:center}
-@media(max-width:520px){.hl{display:none}}
+@media(max-width:520px){.hl{display:none}}@media(max-width:480px){.brand b{font-size:14px}.hb.ic{padding:7px 9px}.ha{gap:4px}}
 main{max-width:1100px;margin:auto;padding:14px}#bn{max-width:1100px;margin:auto;padding:14px 14px 0}
 .bsl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 10px #0002}.bsl::-webkit-scrollbar{display:none}.bsl img{flex:0 0 100%;width:100%;scroll-snap-align:start;object-fit:cover;max-height:260px;cursor:pointer}
 .midb{display:flex;gap:10px;overflow-x:auto;margin-bottom:14px;scrollbar-width:none}.midb img{height:120px;border-radius:12px;cursor:pointer}
@@ -102,33 +108,36 @@ function orderAlert(t){ping(t);let e=$("#oa");if(!e){e=document.createElement("d
  clearInterval(alT);alT=setInterval(()=>ping(t),5000);document.title="🔔 New order! "+ttl}
 const shrink=(f,m=520,q=.65)=>new Promise((ok,no)=>{const i=new Image;i.onload=()=>{const k=Math.min(1,m/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",q))};i.onerror=()=>no(new Error("Could not read that image"));i.src=URL.createObjectURL(f)});
 function split(C){const g={};C.forEach(p=>(g[p.sellerId]=g[p.sellerId]||[]).push(p));return Object.values(g).map(l=>{const t=l.reduce((a,p)=>a+p.price,0),k=me.lat!=null&&l[0].lat!=null?km(me.lat,me.lng,l[0].lat,l[0].lng):null,sd=l.every(p=>p.selfDel);return{l,t,k,sd,pf:Math.min(F.pfMax,Math.round(t*F.pct/100)),df:k==null?null:(sd?Math.max(...l.map(p=>+p.selfFee||0)):dfee(k)),out:k!=null&&k>F.maxKm,eta:k==null?null:F.prep+Math.ceil(k*F.minPerKm),cf:pm=="cod"?F.cod:0}})}
-const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));if(me&&me.role=="customer"){if(k=="products"&&PP&&D.products.some(p=>p.id==PP)){cur=PP;gi=0;cv="product";PP=null}if(k=="orders"&&PT&&D.orders.some(o=>o.id==PT)){trk=PT;cv="track";PT=null}}render()},e=>console.error(k,e)));
+const sub=(q,k)=>subs.push(onSnapshot(q,s=>{if(me&&seen[k]&&(k=="inbox"||k=="bc")){const ch=s.docChanges().filter(x=>x.type=="added"&&!x.doc.metadata.hasPendingWrites);if(ch.length&&!document.hidden){const o=ch[0].doc.data();if(k=="inbox"||o.audience==me.role||o.audience=="all"){toast("🔔 "+o.title);ping(o.title)}}if(cv=="notif")lsSet("ns_"+me.id,Date.now())}if(me&&seen[k]&&k=="orders"&&me.role!="customer"){const ch=s.docChanges().filter(c=>c.type=="added"||(me.role=="delivery"&&c.type=="modified"));if(ch.length){const o=ch[0].doc.data();orderAlert("Order #"+ch[0].doc.id.slice(0,6).toUpperCase()+" - "+(o.items||[]).map(i=>i.name).join(", "))}}seen[k]=1;D[k]=s.docs.map(d=>({id:d.id,...d.data()}));if(me&&me.role=="customer"){if(k=="products"&&PP&&D.products.some(p=>p.id==PP)){cur=PP;gi=0;cv="product";PP=null}if(k=="orders"&&PT&&D.orders.some(o=>o.id==PT)){trk=PT;cv="track";PT=null}}render()},e=>console.error(k,e)));
 let PP=new URLSearchParams(location.search).get("p"),PT=new URLSearchParams(location.search).get("track");
 const api=p=>F.payUrl.trim().replace(/\/+$/,"")+p;
 const statusPush=id=>{if(F.payUrl)fetch(api("/status"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({id})}).catch(()=>{})};
 const canAsk=()=>{try{return me&&me.role=="customer"&&SITE.vapid&&window.Notification&&Notification.permission=="default"&&!localStorage.nno}catch(e){return false}};
-const pushNotify=ids=>{if(!F.payUrl||!ids.length)return;fetch(F.payUrl.trim().replace(/\/+$/,"")+"/notify",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({ids})}).catch(()=>{})};
-async function pushSetup(){try{if(!me||!SITE.vapid||!("serviceWorker" in navigator)||!window.Notification||Notification.permission!="granted")return;
+const pushNotify=ids=>{if(!F.payUrl)return;ids.forEach(id=>fetch(api("/notify"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({ids:[id]})}).catch(()=>{}))};
+async function pushSetup(loud){try{if(!me||!SITE.vapid||!("serviceWorker" in navigator)||!window.Notification||Notification.permission!="granted")return false;
  const{getMessaging,getToken}=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js");
  const reg=await navigator.serviceWorker.register("firebase-messaging-sw.js"),tok=await getToken(getMessaging(app),{vapidKey:SITE.vapid,serviceWorkerRegistration:reg});
- if(tok&&localStorage["fcm_"+me.id]!=tok){await updateDoc(doc(db,"users",me.id),{fcm:arrayUnion(tok)});localStorage["fcm_"+me.id]=tok}}catch(e){console.warn("push",e)}}
+ if(!tok)throw new Error("Phone ka token nahi mila");
+ if(lsGet("fcm_"+me.id)!=tok||!(me.fcm||[]).includes(tok)){await updateDoc(doc(db,"users",me.id),{fcm:arrayUnion(tok)});lsSet("fcm_"+me.id,tok);me.fcm=[...(me.fcm||[]),tok]}
+ me.pushOk=true;me.pushFail=false;me.pushErr="";render();return true}catch(e){console.warn("push",e);me.pushOk=false;me.pushFail=true;me.pushErr=String(e.code||e.message||e);if(loud)toast("Notification setup fail: "+(e.code||e.message||e));render();return false}}
 const notifySeller=(o,id)=>{if(!SITE.notifyUrl||!o.sellerPhone)return;const text="🛒 New order #"+id.slice(0,6).toUpperCase()+" - "+(SITE.name||"Store")+"\n"+o.items.map(i=>i.name).join(", ")+"\nAmount: "+inr(o.itemsTotal)+"\nCustomer: "+o.rname+" "+o.phone+"\nAddress: "+o.addr+", "+o.city+"\nPlease open the seller panel to accept.";fetch(SITE.notifyUrl.replace(/\/$/,"")+"/notify",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({to:o.sellerPhone,text})}).catch(()=>{})};
 /* ---------- layout ---------- */
 const FORM=()=>cv=="profile"||(me.role=="seller"&&tab=="add"&&cv!="profile")||(me.role=="admin"&&["settings","staff","notify"].includes(tab))||(me.role=="customer"&&["cart","pay"].includes(cv));
-function head0(){const lg=SITE.logoImg?`<img class=lgi src="${SITE.logoImg}">`:`<span class=lge>${esc(SITE.logo||"🛍️")}</span>`;return`<div class=hw><a class=brand data-a=shop>${lg}<b>${esc(SITE.name||"Hassaan Digital Point")}</b></a></div>`}
+function head0(){const lg=`<img class=lgi src="${SITE.logoImg||"icon-192.png"}">`;return`<div class=hw><a class=brand data-a=shop>${lg}<b>${esc(SITE.name||"Hassaan Digital Point")}</b></a></div>`}
 function head(){const n=cart().length,c=me.role=="customer";
  const pf=`<button class="hb ic" data-a=go data-v=profile title="Profile">👤<span class=hl>${me.guest?"Login":esc((me.rname||me.name||"").split(" ")[0])}</span></button>`;
- const acts=c?`<button class="hb ic" data-a=go data-v=cart title="Cart">🛒${n?`<i class=cb>${n}</i>`:""}</button>${pf}`:`<span class=hu>${me.role}</span><button class="hb ic" data-a=notif title="Alerts">🔔</button>${pf}`;
+ const un=unread(),bell=`<button class="hb ic" data-a=go data-v=notif title="Notifications">🔔${un?`<i class=cb>${un>9?"9+":un}</i>`:""}</button>`;
+ const acts=c?`<button class="hb ic" data-a=go data-v=cart title="Cart">🛒${n?`<i class=cb>${n}</i>`:""}</button>${bell}${pf}`:`<span class=hu>${me.role}</span>${bell}${pf}`;
  const srch=c?`<div class=sb><input id=sq value="${esc(sq)}" placeholder="Search for products, brands and more"><button data-a=search>Search</button></div>`:"";
  return head0().replace("</a></div>",`</a>${srch}<div class=ha>${acts}</div></div>`)}
 function supportHTML(){const w=SITE.wa||DEF.wa,m=SITE.mail||DEF.mail,a=SITE.addr||DEF.addr;return`<div class=fc><b>Help & Support</b><a target=_blank href="${waLink(w,"Hello, I need help")}">💬 WhatsApp: ${esc(w)}</a><a href="mailto:${esc(m)}">✉️ ${esc(m)}</a><span>📍 ${esc(a)}</span><a data-a=chat>🤖 Chat with our AI assistant</a></div>`}
 function foot(){return`<div class=fw>${supportHTML()}<div class=fc><b>${esc(SITE.name||"Hassaan Digital Point")}</b><span>${esc(SITE.footer||"Local shops, delivered to your door.")}</span>${SITE.phone?`<a href="tel:${esc(SITE.phone)}">📞 ${esc(SITE.phone)}</a>`:""}</div></div><div class=cp>© ${new Date().getFullYear()} ${esc(SITE.name||"Hassaan Digital Point")}. All rights reserved.</div>`}
 function render(f){if(!me||lv)return;if(!f&&(FORM()||document.activeElement?.matches("input,select,textarea"))){pending=true;return}pending=false;
- const c=me.role=="customer",prof=cv=="profile";
+ const c=me.role=="customer",prof=cv=="profile"||cv=="notif";
  $("#hd").innerHTML=head();$("#bn").style.display=c&&cv=="shop"?"":"none";
  const t=TABS[me.role];if(t&&!tab)tab=t[0][0];
  const tb=t&&!prof?`<div class=tabs>${t.map(([k,l])=>`<button class="tab ${tab==k?"on":""}" data-a=tab data-t=${k}>${l}</button>`).join("")}</div>`:"";
- $("#app").innerHTML=tb+(prof?vProfile():{customer:vCust,admin:vAdmin,seller:vSeller,delivery:vDel}[me.role]());
+ $("#app").innerHTML=tb+((!prof&&(!c||cv=="shop"||cv=="orders"))?instCard()+notifCard():"")+(cv=="notif"?vNotif():prof?vProfile():{customer:vCust,admin:vAdmin,seller:vSeller,delivery:vDel}[me.role]());
  const nv=[["shop","🏠","Home"],["cats","🗂️","Categories"],["orders","📦","Orders"],["cart","🛒","Cart"],["profile","👤","Account"]];
  $("#nav").innerHTML=c?nv.map(([k,i,l])=>`<button class="${cv==k||(k=="shop"&&cv=="product")?"on":""}" data-a=go data-v=${k}><span>${i}</span>${l}</button>`).join(""):"";document.body.classList.toggle("hn",c);
  $("#ft").innerHTML=foot();if($("#calc"))calc()}
@@ -138,6 +147,33 @@ function drawBn(){const t=BN.filter(b=>b.place!="mid");let h=SITE.banner?`<div c
  if(t.length)h+=`<div class=bsl id=bsl>${t.map(b=>`<img src="${b.img}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`;$("#bn").innerHTML=h}
 setInterval(()=>{const e=$("#bsl");if(!e||e.children.length<2)return;const i=Math.round(e.scrollLeft/e.clientWidth)+1;e.scrollTo({left:(i>=e.children.length?0:i)*e.clientWidth,behavior:"smooth"})},4000);
 function site(d){SITE=d||{};setTimeout(()=>pushSetup(),500);document.title=SITE.name||"Hassaan Digital Point";document.documentElement.style.setProperty("--p",SITE.color||"#2874f0");drawBn();$("#ft").innerHTML=foot();if(!me||lv)$("#hd").innerHTML=head0();render()}
+/* ---------- install app + notification cards ---------- */
+let DIP=null;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(e){return false}};
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();DIP=e;render()});
+addEventListener("appinstalled",()=>{DIP=null;toast("App install ho gaya!");render()});
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("firebase-messaging-sw.js").catch(()=>{}));
+const lsGet=k=>{try{return localStorage[k]}catch(e){return""}},lsSet=(k,v)=>{try{localStorage[k]=v}catch(e){}};
+function instCard(){if(standalone()||lsGet("ino"))return"";
+ if(DIP)return`<div class="card note"><img src="icon-192.png" width=44 height=44 style="border-radius:50%"><span><b>App install karein.</b> Ek tap mein home screen par aa jayega, bilkul app jaisa.</span><button class="o" data-a=install>Install</button><button class=g data-a=inno>Later</button></div>`;
+ if(isIOS)return`<div class="card note"><img src="icon-192.png" width=44 height=44 style="border-radius:50%"><span><b>App install karein.</b> Safari mein Share dabaiye, phir <b>Add to Home Screen</b>.</span><button class=g data-a=inno>Ok</button></div>`;return""}
+function notifCard(){if(!me||!window.Notification)return"";const p=Notification.permission,r=me.role,why=r=="customer"?"Offers, sale aur order ki khabar":r=="delivery"?"Nayi delivery milne par alert":"Naye orders ki alert";
+ if(p=="denied")return r=="customer"?"":`<div class="card alert">🔕 Notifications blocked hain. Chrome menu (⋮) → Site settings → Notifications → Allow kijiye.</div>`;
+ if(p=="default"){if(!SITE.vapid)return r=="admin"?`<div class="card alert">⚠️ Push key (VAPID) set nahi hai. Settings mein daaliye, tabhi phone notification chalegi.</div>`:"";if(r=="customer"&&lsGet("nno"))return"";
+  return`<div class="card note">🔔 <span><b>Notifications allow karein.</b> ${why} phone par milegi, app band ho tab bhi.</span><button class=b data-a=cnotif>Allow</button>${r=="customer"?'<button class=g data-a=cnotifno>Later</button>':""}</div>`}
+ if(p=="granted"&&SITE.vapid&&me.pushFail)return`<div class="card alert">⚠️ Notification allow hai par is phone ka setup nahi hua. <button class=b data-a=cnotif>Phir try karein</button></div>`;return""}
+const instBox=()=>standalone()?'<div class=card>✅ App is phone par install hai.</div>':`<div class=card><h3>📲 App install karein</h3>${DIP?'<button class="o big" data-a=install>Install app</button>':'<p class=mu>Chrome menu (⋮) → <b>Install app</b> ya <b>Add to Home screen</b>.'+(isIOS?"<br>iPhone: Share → Add to Home Screen.":"")+"</p>"}</div>`;
+function notifBox(){if(!window.Notification)return'<div class=card><h3>🔔 Notifications</h3><p class=mu>Is browser mein notifications nahi chalti. Chrome use kijiye.</p></div>';
+ const p=Notification.permission,st=p=="granted"?(me.pushOk?"✅ ON hai. Is phone par notification aayegi.":me.pushFail?"⚠️ Allow hai par setup fail hua. Neeche Retry dabaiye.":"⏳ Setup ho raha hai..."):p=="denied"?"🔕 Blocked. Chrome menu (⋮) → Site settings → Notifications → Allow.":"Abhi OFF hai.";
+ const ck=(b,t)=>`<div>${b?"✅":"❌"} ${t}</div>`,E=me.pushErr||"",
+ hint=/token-subscribe|applicationServerKey|vapid/i.test(E)?"Push key (VAPID) galat hai, ya Google Cloud mein Firebase Cloud Messaging API band hai.":/permission-blocked/i.test(E)?"Notification blocked hai. Chrome Site settings se Allow kijiye.":/sw|service-worker|registration/i.test(E)?"firebase-messaging-sw.js file GitHub par index.html ke saath honi chahiye.":"";
+ return`<div class=card><h3>🔔 Notifications</h3><p>${st}</p><div class=mu style="margin:6px 0 10px">${ck("serviceWorker" in navigator&&"PushManager" in window,"Browser support")}${ck(p=="granted","Notification allow")}${ck(!!SITE.vapid,"Store ki push key (VAPID) set")}${ck(!!me.pushOk,"Is phone ka setup")}</div>${!SITE.vapid?'<p class=mu>Admin ko Settings mein push key daalni hogi.</p>':""}${me.pushFail&&E?`<p class=mu>Error: <b>${esc(E)}</b>${hint?"<br>"+hint:""}</p>`:""}<div class=row>${p!="granted"?'<button class=b data-a=cnotif>Allow notifications</button>':'<button class=g data-a=ntest>Send test notification</button><button class=g data-a=cnotif>Retry setup</button>'}</div></div>`}
+/* ---------- notification inbox (bell icon) ---------- */
+let NP=0;const tms=t=>t&&t.toMillis?t.toMillis():0,NSget=()=>+lsGet("ns_"+(me?me.id:""))||0;
+function inbox(){const r=me.role,own=D.inbox||[],bc=(D.bc||[]).filter(b=>b.audience==r||b.audience=="all").map(b=>({...b,url:b.productId?"?p="+b.productId:""}));return[...own,...bc].sort((a,b)=>(tms(b.t)||Date.now())-(tms(a.t)||Date.now())).slice(0,40)}
+function unread(){if(!me)return 0;const s=NSget();return inbox().filter(x=>tms(x.t)>s).length}
+function vNotif(){const L=inbox(),w=x=>x.t&&x.t.toDate?x.t.toDate().toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"abhi";
+ return`<h2>Notifications</h2>${notifBox()}${me.role=="admin"?'<div class=row><button class=o data-a=tab data-t=notify>📣 Customers ko offer bhejein</button></div>':""}
+ <h3 style="margin:16px 0 8px">Aapki notifications</h3>${L.length?L.map(x=>`<div class="card rowi" style="margin-bottom:8px;cursor:pointer" data-a=nopen data-u="${esc(x.url||"")}"><div style="flex:1"><b>${esc(x.title)}</b>${tms(x.t)>NP?' <span class="tag warn">New</span>':""}<div>${esc(x.body)}</div><div class=mu>${w(x)}</div></div></div>`).join(""):'<div class="card empty mu">Abhi koi notification nahi hai.<br>Offers, order ki khabar aur zaroori suchna yahin dikhengi.</div>'}`}
 /* ---------- payouts ---------- */
 const fh=h=>{h=+h;return(h%12||12)+(h<12?" AM":" PM")};
 const fdt=d=>d?d.toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"now";
@@ -172,7 +208,6 @@ function pCard(p){const o=pOff(p);return`<div class="card pc" data-a=view data-i
 function vShop(){const ps=D.products.filter(p=>p.lat!=null&&(!cat||p.category==cat)&&(p.name||"").toLowerCase().includes(sq.toLowerCase())&&(me.lat==null||km(me.lat,me.lng,p.lat,p.lng)<=F.maxKm)),H=D.hist,mid=BN.filter(b=>b.place=="mid");
  const rs=[...new Set(H.filter(h=>h.type=="search").map(h=>h.text))].slice(0,5);
  return`${SITE.open===false?`<div class=alert>${esc(SITE.closedMsg||"Ordering is paused right now.")}</div>`:""}
- ${canAsk()?'<div class="card note">🔔 <span><b>Offers aur order updates</b> ki notification chahiye? Order nikalne par aur sale ki khabar phone par milegi.</span><button class=b data-a=cnotif>Allow</button><button class=g data-a=cnotifno>Later</button></div>':""}
  ${me.lat==null?'<div class="card note">📍 <span><b>See shops near you.</b> Share your location to see delivery time and fees.</span><button class=b data-a=loc>Share location</button></div>':""}
  ${catTiles()}${cat?`<div class=row><span class=mu>Showing: <b>${esc(cat)}</b></span><button class=g data-a=cat data-k="">Clear filter</button></div>`:""}
  ${mid.length?`<div class=midb>${mid.map(b=>`<img src="${b.img}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`:""}
@@ -207,12 +242,12 @@ function vTrack(){const o=D.orders.find(x=>x.id==trk);if(!o)return vOrders();con
  ${x||o.status=="delivered"?"":`<p>⏱ ${d!=null?`About ${Math.max(1,Math.ceil(d*F.minPerKm))} min away (${d.toFixed(1)} km)`:`Estimated ${o.etaMin||"-"} min`}</p>`}${o.boyName?`<div class=mu>Delivery partner: ${esc(o.boyName)}</div>`:""}
  ${live?`<iframe src="https://maps.google.com/maps?q=${o.liveLat},${o.liveLng}&z=15&output=embed" style="width:100%;height:280px;border:0;border-radius:12px;margin-top:10px"></iframe>`:""}</div>`}
 /* ---------- profile ---------- */
-function vProfile(){if(me.guest)return`<div class="card lg"><div class=av>👤</div><h2>Welcome!</h2><p class=mu>Login or create a free account to save your address and track orders.</p><button class="b big" style="width:100%" data-a=staff>Login / Sign up</button></div><div class=card>${supportHTML()}</div>`;
+function vProfile(){if(me.guest)return`<div class="card lg"><div class=av>👤</div><h2>Welcome!</h2><p class=mu>Login or create a free account to save your address and track orders.</p><button class="b big" style="width:100%" data-a=staff>Login / Sign up</button></div>${instBox()}${notifBox()}<div class=card>${supportHTML()}</div>`;
  const c=me.role=="customer",v=k=>esc(me[k]||"");
  return`<div class="card" style="display:flex;gap:14px;align-items:center"><div class=av style="margin:0">${esc((me.rname||me.name||"U")[0].toUpperCase())}</div><div><h2 style="margin:0">${esc(me.rname||me.name)}</h2><div class=mu>${esc(me.email||"")} · ${me.role}</div></div></div>
  <div class=card><h3>My details</h3><div class=f><div><label class=l>Name</label><input id=fn value="${v("rname")||v("name")}"></div><div><label class=l>${me.role=="seller"?"WhatsApp / mobile number (order alerts come here) *":"Mobile number"}</label><input id=fph inputmode=numeric maxlength=10 value="${v("phone")}"></div>${me.role=="seller"?`<div><label class=l>UPI ID for payouts (e.g. name@bank) *</label><input id=fup value="${v("upi")}"></div>`:""}${c?`<div><label class=l>PIN code</label><input id=fpi inputmode=numeric maxlength=6 value="${v("pin")}"></div><div><label class=l>City</label><input id=fci value="${v("city")}"></div>`:""}</div>${c?`<label class=l>Address</label><input id=fad style="width:100%" value="${v("address")}">`:""}<div class=row><button class=b data-a=savep>Save details</button></div></div>
  ${c?`<div class=card><div class=rowi><a data-a=go data-v=orders>📦 My orders</a></div><div class=rowi><a data-a=go data-v=cart>🛒 My cart</a></div></div>`:""}
- <div class=card>${supportHTML()}</div><button class="r big" style="width:100%" data-a=out>Logout</button>`}
+ ${instBox()}${notifBox()}<div class=card>${supportHTML()}</div><button class="r big" style="width:100%" data-a=out>Logout</button>`}
 /* ---------- seller & delivery ---------- */
 function vSeller(){const prompt=(me.lat==null?'<div class="card note">📍 <span><b>Set your shop location.</b> Required before you can list products.</span><button class=b data-a=loc>Set shop location</button></div>':"")+(!/^[6-9]\d{9}$/.test(me.phone||"")?'<div class="card note">📲 <span><b>Add your WhatsApp / mobile number.</b> New order alerts are sent to this number.</span><button class=b data-a=go data-v=profile>Open profile</button></div>':"")+(!me.upi?'<div class="card note">💸 <span><b>Add your UPI ID.</b> The platform sends your earnings to this UPI ID.</span><button class=b data-a=go data-v=profile>Open profile</button></div>':"");
  if(tab=="earn")return prompt+vEarn();if(tab=="products")return prompt+`<h2>My products</h2>${D.products.length?D.products.map(p=>pRow(p)).join(""):'<div class="card empty mu">No products yet</div>'}`;
@@ -287,13 +322,19 @@ const A={
  tpl(d){const t=NTPL[+d.i];$("#nt").value=t[2];$("#nb").value=t[3];if(t[0]=="🚨"||t[0]=="🛑"){$("#na").value="all"}},
  async bsend(){const t=$("#nt").value.trim(),m=$("#nb").value.trim(),au=$("#na").value,pid=$("#np").value;
   if(!t||!m)return toast("Title aur message likhna zaroori hai");if(!F.payUrl)return toast("Pehle Payment server URL bharein");
-  if(!confirm("Ye notification "+AUD[au]+" ko bheji jayegi. Bheju?"))return;toast("Bhej raha hoon...");let off=0,sent=0,total=0;
-  for(let n=0;n<40;n++){const tok=await auth.currentUser.getIdToken(),r=await fetch(api("/broadcast"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({idToken:tok,audience:au,title:t,body:m,productId:pid,offset:off})}).then(x=>x.json());
-   if(!r.ok)throw new Error(r.error||"Send failed");sent+=r.sent;total=r.total;if(r.next==null)break;off=r.next}
-  if(!total)return toast("Abhi kisi ne notification allow nahi ki");
-  await addDoc(collection(db,"broadcasts"),{title:t,body:m,audience:au,productId:pid,sent,total,t:serverTimestamp()});toast(sent+" phones par bhej di");$("#nt").value=$("#nb").value=""},
- async cnotif(){try{await Notification.requestPermission()}catch(e){}await pushSetup();toast(Notification.permission=="granted"?"Done! Ab offers aur order updates milenge":"Notification allow nahi hui");render(1)},
- cnotifno(){try{localStorage.nno=1}catch(e){}render(1)},
+  if(!confirm("Ye notification "+AUD[au]+" ko bheji jayegi. Bheju?"))return;
+  const bref=await addDoc(collection(db,"broadcasts"),{title:t,body:m,audience:au,productId:pid,sent:0,total:0,t:serverTimestamp()});toast("Bhej raha hoon...");let off=0,sent=0,total=0;
+  try{for(let n=0;n<40;n++){const tok=await auth.currentUser.getIdToken(),r=await fetch(api("/broadcast"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({idToken:tok,audience:au,title:t,body:m,productId:pid,offset:off})}).then(x=>x.json());
+   if(!r.ok)throw new Error(r.error||"Send failed");sent+=r.sent;total=r.total;if(r.next==null)break;off=r.next}}finally{await updateDoc(bref,{sent,total}).catch(()=>{})}
+  $("#nt").value=$("#nb").value="";toast(total?sent+" phones par notification gayi. Baaki sabko app ke andar dikhegi.":"Abhi kisi ne phone notification allow nahi kiya. App ke andar sabko dikhegi.")},
+ async cnotif(){try{await Notification.requestPermission()}catch(e){}if(Notification.permission!="granted"){toast("Notification allow nahi hui");return render(1)}const ok=await pushSetup(true);if(ok)toast("Done! Notification ON ho gayi");render(1)},
+ install(){if(!DIP)return;DIP.prompt();return DIP.userChoice.then(()=>{DIP=null;render(1)})},
+ inno(){lsSet("ino",1);render(1)},
+ async ntest(){if(!F.payUrl)return toast("Store ka payment server URL set nahi hai");toast("Test bhej raha hoon...");let r;
+  try{const tok=await auth.currentUser.getIdToken();r=await fetch(api("/test"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({idToken:tok})}).then(x=>x.json())}catch(e){return toast("Server tak nahi pahunch paya. Payment server URL aur ALLOWED_ORIGIN check kijiye.")}
+  if(r.error=="not found")return toast("Cloudflare worker purana hai. Naya payu-worker.js deploy kijiye.");
+  toast(r.ok?"Test bhej di. Kuch second mein aayegi":(r.error||"Test fail"))},
+ cnotifno(){lsSet("nno",1);render(1)},
  chat(){chOpen=!chOpen;drawChat();if(chOpen)setTimeout(()=>$("#ci").focus(),50)},
  async csend(){const i=$("#ci"),t=i.value.trim();if(!t)return;i.value="";chat.push({r:"u",t},{r:"b",t:"..."});drawChat();let rep;
   try{if(!SITE.aiUrl)throw 0;const r=await fetch(SITE.aiUrl.replace(/\/$/,"")+"/chat",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({store:SITE.name||"Hassaan Digital Point",messages:chat.slice(0,-1).slice(-10).map(m=>({role:m.r=="u"?"user":"assistant",content:m.t}))})}).then(x=>x.json());rep=r.reply}
@@ -311,14 +352,16 @@ const A={
  login(){return signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)},
  async reset(){const e=$("#em").value.trim();if(!e)return toast("Enter your email first");await sendPasswordResetEmail(auth,e);toast("Password reset link sent")},
  out(){cv="shop";return signOut(auth)},staff(){lv=true;loginV()},shop(){lv=false;cv="shop";render(1)},
- go(d){cv=d.v;cur=null;render(1);scrollTo(0,0)},tab(d){tab=d.t;cv="shop";render(1);scrollTo(0,0)},
+ go(d){cv=d.v;cur=null;if(cv=="notif"&&me){NP=NSget();lsSet("ns_"+me.id,Date.now())}render(1);scrollTo(0,0)},
+ nopen(d){let q;try{q=new URL(d.u||"",location.href).searchParams}catch(e){q=new URLSearchParams()}const p=q.get("p"),t=q.get("track");
+  if(me.role=="customer"){if(p&&D.products.some(x=>x.id==p)){cur=p;gi=0;cv="product"}else if(t&&D.orders.some(x=>x.id==t)){trk=t;cv="track"}else cv=t?"orders":"shop"}else{cv="shop";tab="orders"}render(1);scrollTo(0,0)},tab(d){tab=d.t;cv="shop";render(1);scrollTo(0,0)},
  search(){sq=$("#sq").value.trim();cv="shop";if(sq)addDoc(collection(db,"users",me.id,"history"),{type:"search",text:sq,t:serverTimestamp()});render(1)},
  chip(d){sq=d.q;render(1)},cat(d){cat=d.k;cv="shop";render(1);scrollTo(0,0)},
  view(d){cur=d.id;gi=0;cv="product";const p=D.products.find(x=>x.id==d.id);if(p)addDoc(collection(db,"users",me.id,"history"),{type:"view",text:p.name,t:serverTimestamp()});render(1);scrollTo(0,0)},
  gal(d){gi=+d.i;render(1)},add(d){setCart([...cart(),d.id]);toast("Added to cart")},buy(d){cv="cart";setCart([...cart(),d.id]);scrollTo(0,0)},
  rm(d){const c=cart();c.splice(c.indexOf(d.id),1);setCart(c)},
  loc(){keep();return new Promise(ok=>navigator.geolocation.getCurrentPosition(async p=>{me.lat=p.coords.latitude;me.lng=p.coords.longitude;await updateDoc(doc(db,"users",me.id),{lat:me.lat,lng:me.lng});render(1);toast("Location saved");ok()},()=>{toast("Please allow location access");ok()},{enableHighAccuracy:true}))},
- async notif(){try{await Notification.requestPermission()}catch(e){}ping("Alerts are on.");await pushSetup();toast(SITE.vapid?"Alerts enabled, they will also come when the site is closed":"Alerts enabled while this page is open")},
+ async notif(){try{await Notification.requestPermission()}catch(e){}ping("Alerts are on.");await pushSetup(true);toast(SITE.vapid?"Alerts enabled, they will also come when the site is closed":"Alerts enabled while this page is open")},
  csearch(){cq=$("#cq").value.trim();render(1)},
  async place(){const g=i=>$("#"+i).value.trim(),rn=g("rn"),ph=g("ph"),pn=g("pn"),ad=g("ad"),ct=g("ct");
   if(!rn||!ad||!ct)return toast("Please enter your name, address and city");if(!/^[6-9]\d{9}$/.test(ph))return toast("Enter a valid 10-digit mobile number");if(pn&&!/^\d{6}$/.test(pn))return toast("PIN code must be 6 digits (or leave it empty)");
@@ -364,7 +407,7 @@ const A={
  async fees(){const g=i=>+$("#"+i).value;await setDoc(doc(db,"settings","fees"),{pct:g("fp"),perKm:g("fk"),min:g("fm"),maxKm:g("fr")||10,prep:g("fq"),minPerKm:g("fv"),cod:g("fcod"),holdHours:g("fh"),payHour:Math.min(23,Math.max(0,g("fhr"))),pfMax:g("fx"),feeBy:$("#ffb").value,partners:$("#fdp").value=="1",payUrl:$("#fpu").value.trim()});toast("Saved")}};
 async function payNow(tx,amt){const r=await fetch(F.payUrl.trim().replace(/\/+$/,"")+"/start",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({txnid:tx,amount:amt,firstname:((me.rname||me.name||"").replace(/[^\w ]/g,"")||"Customer"),email:me.email||"customer@hassandigitalpoint.xyz",phone:me.phone})}).then(x=>x.json());if(!r.fields)throw new Error(r.error||"Payment server error");
  const fm=document.createElement("form");fm.method="POST";fm.action=r.action;for(const[k,v]of Object.entries(r.fields)){const i=document.createElement("input");i.type="hidden";i.name=k;i.value=v;fm.appendChild(i)}document.body.appendChild(fm);fm.submit()}
-document.addEventListener("click",async e=>{if(me&&me.role!="customer"&&window.Notification&&Notification.permission=="default"){try{Notification.requestPermission().then(pushSetup)}catch(x){}}
+document.addEventListener("click",async e=>{if(me&&me.role!="customer"&&window.Notification&&Notification.permission=="default"){try{Notification.requestPermission().then(()=>pushSetup())}catch(x){}}
  const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;try{await A[b.dataset.a](b.dataset,b)}catch(x){toast(fe(x))}});
 document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#addp"))calc()});
 document.addEventListener("change",async e=>{const s=e.target,c=s.dataset.c;if(s.closest&&s.closest("#addp"))calc();if(s.name=="pm"){keep();pm=s.value;return render(1)}
@@ -383,11 +426,12 @@ async function boot(u){let s=await getDoc(doc(db,"users",u.uid));
  if(r=="customer"){sub(query(collection(db,"products"),where("status","==","approved")),"products");sub(query(collection(db,"orders"),where("customerId","==",me.id)),"orders");sub(query(collection(db,"users",me.id,"history"),orderBy("t","desc"),limit(40)),"hist")}
  if(r=="seller"){sub(query(collection(db,"products"),where("sellerId","==",me.id)),"products");sub(query(collection(db,"orders"),where("sellerId","==",me.id)),"orders")}
  if(r=="delivery")sub(query(collection(db,"orders"),where("boyId","==",me.id)),"orders");
- if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users");sub(query(collection(db,"broadcasts"),orderBy("t","desc"),limit(10)),"bc")}
+ if(r=="admin"){sub(collection(db,"products"),"products");sub(collection(db,"orders"),"orders");sub(collection(db,"users"),"users")}
+ sub(query(collection(db,"broadcasts"),orderBy("t","desc"),limit(20)),"bc");sub(query(collection(db,"users",me.id,"inbox"),orderBy("t","desc"),limit(30)),"inbox");
  if(r!="customer")sub(query(collection(db,"duty"),where("online","==",true)),"duty");
  if(r!="customer"){navigator.wakeLock?.request("screen").catch(()=>{});document.addEventListener("visibilitychange",()=>{if(!document.hidden)navigator.wakeLock?.request("screen").catch(()=>{})})}
  render(1);setTimeout(pushSetup,800)}
-onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};me=null;D={products:[],orders:[],users:[],hist:[],duty:[]};
+onAuthStateChanged(auth,u=>{subs.forEach(f=>f());subs=[];seen={};me=null;D={products:[],orders:[],users:[],hist:[],duty:[],inbox:[],bc:[]};
  if(!u){$("#app").innerHTML='<p class="mu">Loading...</p>';signInAnonymously(auth).catch(e=>{loginV();toast("Guest access is off. Enable Anonymous sign-in in Firebase Authentication ("+e.code+")")})}else boot(u)});
 onSnapshot(doc(db,"settings","site"),x=>site(x.exists()?x.data():{}),()=>{});
 onSnapshot(collection(db,"banners"),s=>{BN=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.t?.seconds||9e9)-(b.t?.seconds||9e9));drawBn();render()},()=>{});

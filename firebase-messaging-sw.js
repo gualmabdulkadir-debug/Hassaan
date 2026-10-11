@@ -1,5 +1,9 @@
-// Service worker: shows a phone notification when a new order arrives, even if the site is closed.
+// Service worker: makes the site installable as an app and shows phone notifications even when the site is closed.
 // Upload this file to GitHub next to index.html (same folder). Do not rename it.
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (e) => e.waitUntil(clients.claim()));
+self.addEventListener("fetch", () => {}); // lets Chrome offer "Install app"
+
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();
   const u = (e.notification.data && e.notification.data.url) || "./";
@@ -30,6 +34,8 @@ firebase.messaging().onBackgroundMessage((p) => {
   const d = p.data || {};
   return self.registration.showNotification(d.title || "New order", {
     body: d.body || "",
+    icon: new URL("icon-192.png", self.registration.scope).href,
+    badge: new URL("favicon.png", self.registration.scope).href,
     tag: d.tag || "order",
     renotify: true,
     requireInteraction: true,
