@@ -172,6 +172,7 @@ body:not(.rd) #ft,body:not(.rd) #fab,body:not(.rd) #nav{display:none}
 .ldr-w{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
 .ldr-w:before{content:"";position:absolute;inset:0;border-radius:50%;border:5px solid #0c831f22;border-top-color:var(--g);border-right-color:var(--y);animation:sp .9s linear infinite}
 .ldr-w img{width:62px;height:62px;border-radius:50%;object-fit:cover;animation:pls 1.2s ease-in-out infinite}
+#tp{background:#d32f2f;color:#fff;font-size:12px;font-weight:600;text-align:center;padding:4px 12px;line-height:1.35;letter-spacing:.1px}#tp:empty{display:none}
 .ldr-s{font-size:13px;color:#4a3c00;text-align:center;padding:0 24px;font-weight:600}
 .ldr{position:fixed;inset:0;z-index:300;min-height:0;background:linear-gradient(180deg,#f8cb46 0%,#fbdf85 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
 .ldr-c{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
@@ -213,7 +214,7 @@ body:not(.rd) #ft,body:not(.rd) #fab,body:not(.rd) #nav{display:none}
 @keyframes bob{50%{transform:translateY(-4px)}}@keyframes tap{50%{transform:translateY(8px)}}@keyframes wv{50%{transform:rotate(-14deg)}}@keyframes bubp{50%{transform:scale(1.05)}}
 #cm .b{color:var(--tx)}#cm .m{line-height:1.5}
 </style></head><body>
-<div id="hd"></div><div id="bn"></div><main id="app"></main><footer id="ft"></footer>
+<div id="tp"></div><div id="hd"></div><div id="bn"></div><main id="app"></main><footer id="ft"></footer>
 <div id="nav"></div>
 <button id="fab" data-a="chat" title="Help">🤖</button>
 <div id="chat"><div class="ch"><b>🤖 Help assistant</b><span><button class="hb" id="vt" data-a="vtog">🔊</button> <button class="hb" data-a="chat">✕</button></span></div><div id="cm"></div><div class="cf"><input id="ci" placeholder="Apna sawal likhiye"><button class="g" id="mc" data-a="mic">🎤</button><button class="b" data-a="csend">Send</button></div></div>
@@ -330,7 +331,7 @@ function cbar(){let e=$("#cbar");if(!e){e=document.createElement("div");e.id="cb
  const C=me&&me.role=="customer"&&!lv?cartItems():[],show=C.length&&["shop","cats"].includes(cv);
  e.style.display=show?"flex":"none";document.body.classList.toggle("cb2",!!show);
  if(show){const t=C.reduce((a,p)=>a+fp(p),0);e.innerHTML=`<span><b>${C.length} item${C.length>1?"s":""}</b><small>${inr(t)} + delivery</small></span><b>View cart ›</b>`}}
-function drawBn(){const t=BN.filter(b=>b.place!="mid");let h=SITE.banner?`<div class="card" style="background:var(--p);color:#fff;font-weight:600">${esc(SITE.banner)}</div>`:"";
+function drawBn(){const t=BN.filter(b=>b.place!="mid");const tp=$("#tp");if(tp)tp.innerHTML=SITE.banner?esc(SITE.banner):"";let h="";
  if(SITE.bannerImg&&!BN.length)h+=`<div class=bsl><img src="${SITE.bannerImg}"></div>`;
  if(t.length)h+=`<div class=bsl id=bsl>${t.map(b=>`<img src="${opt(b.img,1000)}" data-a=bnc data-k="${esc(b.cat||"")}">`).join("")}</div>`;$("#bn").innerHTML=h}
 setInterval(()=>{const e=$("#bsl");if(!e||e.children.length<2)return;const i=Math.round(e.scrollLeft/e.clientWidth)+1;e.scrollTo({left:(i>=e.children.length?0:i)*e.clientWidth,behavior:"smooth"})},4000);
@@ -414,8 +415,8 @@ function labelPDF(J,o,sl){
  const g=new Map();(o.items||[]).forEach(i=>{const k=i.pid||i.name,e=g.get(k)||{n:i.name,p:+i.price||0,q:0};e.q++;g.set(k,e)});
  g.forEach(e=>{const ls=wr(e.n,108,10).slice(0,3);ls.forEach((l,i)=>{tx(l,X+3,py+i*4.8,10)});tx(String(e.q),X+120,py,10);tx(rs(e.p),X+142,py,10);tx(rs(e.p*e.q),L-3,py,10,false,"right");py+=Math.max(1,ls.length)*4.8+3});
  py+=1;d.line(X,py,L,py);py+=6;
- const it=(o.itemsTotal||0)+(o.feeBy=="seller"?0:(o.platformFee||0)),row=(a,b,bo)=>{tx(a,X+118,py,10,bo);tx(b,L-3,py,10,bo,"right");py+=5.5};
- row("Items",rs(it));row("Delivery",o.deliveryFee?rs(o.deliveryFee):"FREE");if(o.codFee)row("COD charge",rs(o.codFee));
+ const pt=o.feeBy=="seller"?0:(o.platformFee||0),row=(a,b,bo)=>{tx(a,X+118,py,10,bo);tx(b,L-3,py,10,bo,"right");py+=5.5};
+ row("Items",rs(o.itemsTotal||0));if(pt)row("Platform tax",rs(pt));row("Delivery",o.deliveryFee?rs(o.deliveryFee):"FREE");if(o.codFee)row("COD charge",rs(o.codFee));
  d.line(X+116,py-3.5,L,py-3.5);row("Total",rs(tot),true);py+=1;
  const dt=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString("en-IN"):"";
  d.line(X,py,L,py);py+=5.5;
