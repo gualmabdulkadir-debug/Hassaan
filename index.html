@@ -172,6 +172,15 @@ body:not(.rd) #ft,body:not(.rd) #fab,body:not(.rd) #nav{display:none}
 .ldr-w{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
 .ldr-w:before{content:"";position:absolute;inset:0;border-radius:50%;border:5px solid #0c831f22;border-top-color:var(--g);border-right-color:var(--y);animation:sp .9s linear infinite}
 .ldr-w img{width:62px;height:62px;border-radius:50%;object-fit:cover;animation:pls 1.2s ease-in-out infinite}
+.ldr-s{font-size:13px;color:#4a3c00;text-align:center;padding:0 24px;font-weight:600}
+.ldr{position:fixed;inset:0;z-index:300;min-height:0;background:linear-gradient(180deg,#f8cb46 0%,#fbdf85 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.ldr-c{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.ldr-c img{position:relative;width:96px;height:96px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 8px 24px #0003;animation:pls 1.6s ease-in-out infinite}
+.ldr-c .rg{position:absolute;inset:0;border-radius:50%;border:3px solid #ffffffcc;animation:rgo 1.8s ease-out infinite;opacity:0}.ldr-c .r2{animation-delay:.9s}
+.ldr-n{font-size:22px;font-weight:800;color:#1c1c1c;letter-spacing:.2px}
+.ldr-tg{font-size:13px;color:#4a3c00;margin:4px 0 26px;font-weight:600}
+.ldr-bar{width:150px;height:5px;border-radius:99px;background:#ffffff88;overflow:hidden}.ldr-bar i{display:block;width:45%;height:100%;border-radius:99px;background:#0c831f;animation:bar 1.2s ease-in-out infinite}
+@keyframes rgo{0%{transform:scale(.72);opacity:.9}100%{transform:scale(1.25);opacity:0}}@keyframes bar{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .ldr-t{font-weight:700;color:var(--mu);letter-spacing:.3px}.ldr-t i{font-style:normal;animation:dt 1.2s infinite}.ldr-t i:nth-child(2){animation-delay:.2s}.ldr-t i:nth-child(3){animation-delay:.4s}
 @keyframes sp{to{transform:rotate(360deg)}}@keyframes pls{50%{transform:scale(.88)}}@keyframes dt{0%,80%,100%{opacity:.2}40%{opacity:1}}
 #off{position:fixed;inset:0;z-index:999;background:var(--bg);color:var(--tx);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
@@ -212,14 +221,15 @@ body:not(.rd) #ft,body:not(.rd) #fab,body:not(.rd) #nav{display:none}
 function __e(m){var a=document.getElementById("app");a.innerHTML='<div class="card" style="color:#c92a2a">Something went wrong: '+String(m).replace(/</g,"&lt;")+'</div>'}
 addEventListener("error",function(e){__e(e.message||"script error")});
 addEventListener("unhandledrejection",function(e){__e((e.reason&&e.reason.message)||e.reason)});
-var LDR='<div class="ldr"><div class="ldr-w"><img src="icon-192.png" alt=""></div><div class="ldr-t">Loading<i>.</i><i>.</i><i>.</i></div></div>';
+var LDR='<div class="ldr"><div class="ldr-c"><span class="rg r1"></span><span class="rg r2"></span><img src="icon-192.png" alt=""></div><div class="ldr-n">Hassaan Digital Point</div><div class="ldr-tg">Aapka apna local bazaar</div><div class="ldr-bar"><i></i></div></div>';
 document.getElementById("app").innerHTML=LDR;
 var OFFH='<div class="offb"><svg viewBox="0 0 320 200" width="280" height="175" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 150 C40 150 50 104 92 104" stroke="#9aa0a6"/><rect x="92" y="82" width="46" height="44" rx="8" stroke="#0c831f"/><path d="M138 94h20M138 114h20" stroke="#0c831f"/><path d="M312 60 C278 60 270 104 236 104" stroke="#9aa0a6"/><rect x="192" y="82" width="44" height="44" rx="8" stroke="#0c831f"/><path d="M192 94h10M192 114h10" stroke="#0c831f"/><path d="M166 62l6-14M176 98h14M166 138l6 14" stroke="#f8cb46" class="spk"/><circle cx="165" cy="26" r="14" stroke="#dc2626"/><path d="M159 20l12 12M171 20l-12 12" stroke="#dc2626"/></svg><h2>Internet nahi hai</h2><p>Network ka taar toot gaya lagta hai. Connection check karke dobara try kijiye.</p><button onclick="location.reload()">Retry</button></div>';
 function __off(){var e=document.getElementById("off");if(!navigator.onLine){if(!e){e=document.createElement("div");e.id="off";e.innerHTML=OFFH;document.body.appendChild(e)}}else if(e){e.remove()}}
 addEventListener("offline",__off);
 addEventListener("online",function(){__off();var a=document.getElementById("app");if(a&&a.textContent.indexOf("Loading")>-1)setTimeout(function(){location.reload()},800)});
 __off();
-setTimeout(function(){var a=document.getElementById("app");if(a&&a.textContent.indexOf("Loading")>-1&&navigator.onLine)__e("The page code did not load (check internet, or the file upload was incomplete)")},7000);
+setTimeout(function(){var a=document.getElementById("app"),l=a&&a.querySelector(".ldr");if(l&&!l.querySelector(".ldr-s")){var d=document.createElement("div");d.className="ldr-s";d.textContent="Internet thoda dheere chal raha hai, please wait...";l.appendChild(d)}},8000);
+setTimeout(function(){var a=document.getElementById("app"),l=a&&a.querySelector(".ldr");if(l&&navigator.onLine){l.innerHTML='<div class="ldr-t" style="text-align:center">Site load hone me bahut der lag rahi hai.<br><button onclick="location.reload()" style="margin-top:14px;background:#0c831f;color:#fff;border-radius:10px;padding:12px 30px;font-weight:700">Retry</button></div>'}},40000);
 </script>
 <script type="module" onerror="__e('Could not load the Firebase library. Check your internet.')">
 import{initializeApp,deleteApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -254,6 +264,7 @@ const dfee=k=>Math.max(F.min,Math.ceil(k)*F.perKm);
 const etaOf=p=>me&&me.lat!=null&&p.lat!=null?F.prep+Math.ceil(km(me.lat,me.lng,p.lat,p.lng)*F.minPerKm):F.prep;
 const nearEta=()=>{if(me&&me.lat!=null){const d=D.products.filter(p=>p.lat!=null).map(p=>km(me.lat,me.lng,p.lat,p.lng));if(d.length)return F.prep+Math.ceil(Math.min(...d)*F.minPerKm)}return F.prep};
 const avHTML=()=>{if(me.photo)return`<img class=avi src="${esc(me.photo)}">`;const n=(me.rname||me.name||"").trim();return !me.guest&&n&&n!="Customer"?`<span class=avl>${esc(n[0].toUpperCase())}</span>`:"👤"};
+const loadJs=()=>window.jspdf?Promise.resolve(window.jspdf.jsPDF):new Promise((res,rej)=>{const e=document.createElement("script");e.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";e.onload=()=>res(window.jspdf.jsPDF);e.onerror=()=>rej(new Error("Internet check kijiye"));document.head.appendChild(e)});
 const TICON={dash:"📊",orders:"📦",products:"🛍️",earn:"💰",add:"➕",help:"🛟",customers:"👥",pay:"💸",notify:"📣",staff:"🧑‍💼",settings:"⚙️"};
 const avOk=()=>!!me.photo||(!me.guest&&!!(me.rname||me.name||"").trim()&&(me.rname||me.name).trim()!="Customer");
 let PA=null;
@@ -363,6 +374,56 @@ function dueAt(o){const t=o.deliveredAt?.toMillis?o.deliveredAt.toMillis():0;if(
 function sInfo(o){if(o.status=="cancelled")return null;const cod=o.payment=="cod";if(!cod&&!o.paid)return null;const sh=share(o),held=!cod||!!o.boyId;return{dir:held?"in":"out",amt:held?sh:(o.total||0)-sh,due:dueAt(o),dl:o.status=="delivered",done:!!o.settled}}
 function sLine(o,a){const i=sInfo(o);if(!i)return"";const txt=i.dir=="in"?(a?"Pay seller ":"Platform pays you ")+inr(i.amt):(a?"Collect from seller ":"You send to platform ")+inr(i.amt);const w=i.done?"✔ Settled":!i.dl?"after delivery (+"+(F.holdHours??48)+"h)":(i.dir=="in"?"on ":"by ")+fdt(i.due);return`<div class=mu>💸 ${txt} · ${w}</div>`}
 /* ---------- orders ---------- */
+/*LBL*/
+const C128=["212222","222122","222221","121223","121322","131222","122213","122312","132212","221213","221312","231212","112232","122132","122231","113222","123122","123221","223211","221132","221231","213212","223112","312131","311222","321122","321221","312212","322112","322211","212123","212321","232121","111323","131123","131321","112313","132113","132311","211313","231113","231311","112133","112331","132131","113123","113321","133121","313121","211331","231131","213113","213311","213131","311123","311321","331121","312113","312311","332111","314111","221411","431111","111224","111422","121124","121421","141122","141221","112214","112412","122114","122411","142112","142211","241211","221114","413111","241112","134111","111242","121142","121241","114212","124112","124211","411212","421112","421211","212141","214121","412121","111143","111341","131141","114113","114311","411113","411311","113141","114131","311141","411131","211412","211214","211232","2331112"];
+function c128(t){const v=[104];for(const ch of t){const c=ch.charCodeAt(0);v.push(c>=32&&c<127?c-32:0)}let m=104;for(let i=1;i<v.length;i++)m+=v[i]*i;v.push(m%103,106);return v.map(x=>C128[x]).join("")}
+function labelPDF(J,o,sl){
+ const d=new J({unit:"mm",format:"a4"}),cl=x=>String(x==null?"":x).replace(/₹/g,"Rs.").replace(/[^\x20-\x7E]/g," ").replace(/\s+/g," ").trim(),rs=n=>"Rs."+Math.round(+n||0),
+ X=10,Y=10,W=190,M=105,L=X+W,tx=(t,x,y,sz,b,al,c)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(c||0);d.text(t,x,y,al?{align:al}:undefined)},
+ wr=(t,w,sz,b)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);return d.splitTextToSize(cl(t),w)};
+ d.setDrawColor(0);d.setLineWidth(.35);
+ const cod=o.payment=="cod",paid=!!o.paid,tot=Math.round(o.total||0);
+ // right: black status bar
+ d.setFillColor(0);d.rect(M,Y,L-M,11,"F");
+ tx(cod?"COD: Collect Rs."+tot+" cash":paid?"Prepaid: Do not collect cash":"Payment pending: Rs."+tot,M+4,Y+7.4,12,false,0,255);
+ // left: customer
+ let y=Y+7;tx("Customer Address",X+3,y,9,true);y+=6;
+ tx(cl(o.rname||o.name),X+3,y,13,true);y+=5.5;
+ const addr=[wr(o.addr,M-X-8,10).slice(0,4),wr((o.city||"")+(o.pin?", "+o.pin:""),M-X-8,10)].flat();
+ addr.forEach(l=>{tx(l,X+3,y,10);y+=4.8});
+ if(o.phone){tx("Phone: "+cl(o.phone),X+3,y,10);y+=5}
+ const ry=Math.max(y+3,Y+50);d.line(X,ry,M,ry);y=ry+6;
+ tx("If undelivered, return to:",X+3,y,9,true);y+=5.5;
+ tx(cl(sl.shop||o.sellerName),X+3,y,10.5,true);y+=5;
+ [sl.name&&"Seller: "+sl.name,sl.addr,sl.phone&&"Phone: "+sl.phone].filter(Boolean).forEach(t=>wr(t,M-X-8,9.5).slice(0,3).forEach(l=>{tx(l,X+3,y,9.5);y+=4.5}));
+ const top=Math.max(y+3,Y+100);
+ // right: shop, delivery, barcode
+ tx(cl(sl.brand||"Hassaan Digital Point"),M+4,Y+21,15,true);
+ const del=(o.selfDel||!o.boyId)&&o.status!="needboy"?"Delivery by seller":"Delivery by our partner";
+ d.setFillColor(0);d.roundedRect(M+4,Y+25,38,6,1,1,"F");tx(del.indexOf("seller")>-1?"SELLER DELIVERY":"PARTNER DELIVERY",M+6,Y+29.3,8,true,0,255);
+ tx("Order ID",M+4,Y+39,9,false);tx("#"+o.id.slice(0,6).toUpperCase(),M+4,Y+45,13,true);
+ tx(cl((o.city||"")+(o.pin?" - "+o.pin:"")),M+4,Y+52,10,true);
+ tx(o.km!=null?"Distance: "+o.km+" km":"",M+4,Y+57,9);
+ const code=c128(o.id),mods=[...code].reduce((a,c)=>a+ +c,0),bx=M+6,bw=L-M-12,u=bw/mods,by=Y+66,bh=24;
+ let cx=bx;[...code].forEach((c,i)=>{const w=+c*u;if(i%2==0){d.setFillColor(0);d.rect(cx,by,w,bh,"F")}cx+=w});
+ tx(o.id,M+(L-M)/2,by+bh+5,10,true,"center");
+ d.line(M,Y,M,top);
+ // product details
+ d.line(X,top,L,top);let py=top+6;tx("Product Details",X+3,py,10,true);py+=3;d.line(X,py,L,py);py+=5.5;
+ tx("Item",X+3,py,10,true);tx("Qty",X+118,py,10,true);tx("Price",X+142,py,10,true);tx("Total",L-3,py,10,true,"right");py+=2;d.line(X,py,L,py);py+=5.5;
+ const g=new Map();(o.items||[]).forEach(i=>{const k=i.pid||i.name,e=g.get(k)||{n:i.name,p:+i.price||0,q:0};e.q++;g.set(k,e)});
+ g.forEach(e=>{const ls=wr(e.n,108,10).slice(0,3);ls.forEach((l,i)=>{tx(l,X+3,py+i*4.8,10)});tx(String(e.q),X+120,py,10);tx(rs(e.p),X+142,py,10);tx(rs(e.p*e.q),L-3,py,10,false,"right");py+=Math.max(1,ls.length)*4.8+3});
+ py+=1;d.line(X,py,L,py);py+=6;
+ const it=(o.itemsTotal||0)+(o.feeBy=="seller"?0:(o.platformFee||0)),row=(a,b,bo)=>{tx(a,X+118,py,10,bo);tx(b,L-3,py,10,bo,"right");py+=5.5};
+ row("Items",rs(it));row("Delivery",o.deliveryFee?rs(o.deliveryFee):"FREE");if(o.codFee)row("COD charge",rs(o.codFee));
+ d.line(X+116,py-3.5,L,py-3.5);row("Total",rs(tot),true);py+=1;
+ const dt=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString("en-IN"):"";
+ d.line(X,py,L,py);py+=5.5;
+ tx("Order date: "+dt+"   |   Payment: "+(cod?"Cash on delivery":paid?"Paid online":"Pending"),X+3,py,9);py+=4.8;
+ tx("Order slip for packing & delivery. This is not a tax invoice.",X+3,py,8,false,0,90);py+=3.5;
+ d.rect(X,Y,W,py-Y);
+ return d}
+/*END*/
 function oCard(o,m){const a=m=="a",s=m=="s",d=m=="d",c=m=="c",boys=D.duty.filter(x=>D.users.some(u=>u.id==x.id&&u.status=="active"));
  const B=(x,t,k,e="")=>`<button class=${k} data-a=${x} data-id=${o.id} ${e}>${t}</button>`,S=(t,n,k="b")=>B("st",t,k,`data-s=${n}`);
  const sh=`<button class=g data-a=share data-id=${o.id}>${sharing==o.id?"Stop sharing":"📡 Share live location"}</button>`;
@@ -379,7 +440,7 @@ function oCard(o,m){const a=m=="a",s=m=="s",d=m=="d",c=m=="c",boys=D.duty.filter
  <div>${(o.items||[]).map(i=>esc(i.name)).join(", ")}</div><div class=mu>${esc(o.sellerName||"")} ${when(o.createdAt)?"· "+when(o.createdAt):""}${o.boyName?" · Partner: "+esc(o.boyName):""}</div>
  <div style="margin:6px 0"><b>${inr(s?payout:o.total)}</b>${s?'<span class=mu> (you receive)</span>':""}${!s&&o.platformFee!=null?`<span class=mu> (items ${inr(o.itemsTotal)}${o.feeBy=="seller"?"":" + platform "+inr(o.platformFee)} + delivery ${inr(o.deliveryFee)}${o.codFee?" + COD "+inr(o.codFee):""})</span>`:""}</div>
  ${(s||a)?sLine(o,a):""}${o.utr&&a?`<div class=mu>UPI reference: <b>${esc(o.utr)}</b></div>`:""}${who}${o.liveLat&&!c?`<a target=_blank href="https://www.google.com/maps?q=${o.liveLat},${o.liveLng}">Live location</a>`:""}
- <div class=row>${act}</div></div>`}
+ <div class=row>${act}${(s||a)&&o.status!="cancelled"?B("lbl","🏷️ Download label","g"):""}</div></div>`}
 function cCard(o){const oid=o.id.slice(0,6).toUpperCase(),dn=o.status=="delivered",cx=o.status=="cancelled",unpaid=o.payment!="cod"&&!o.paid,
  ttl=dn?"Order delivered":cx?"Order cancelled":o.status=="arrived"?"Arrived at your door":o.status=="picked"?"Out for delivery":"Arriving in about "+(o.etaMin||15)+" minutes",
  imgs=(o.items||[]).slice(0,6).map(i=>{const p=D.products.find(x=>x.id==i.pid);return p&&p.imgs&&p.imgs[0]?`<img src="${opt(p.imgs[0],120)}">`:`<span>${esc((p&&p.emoji)||"📦")}</span>`}).join(""),
@@ -551,6 +612,7 @@ function speak(t){if(!VO||!window.speechSynthesis)return;try{speechSynthesis.can
 function drawChat(){$("#chat").style.display=chOpen?"flex":"none";if(!chOpen)return;if($("#vt"))$("#vt").textContent=VO?"🔊":"🔇";$("#cm").innerHTML=chat.map(m=>`<div class="m ${m.r}">${esc(m.t)}</div>`).join("")||'<div class=mu>Namaste! Order, delivery, payment ya kisi bhi cheez ke baare mein poochhiye.</div>';$("#cm").scrollTop=1e9}
 const A={
  nmok(){$("#nm")?.remove()},
+ async lbl(d,b){const o=D.orders.find(x=>x.id==d.id);if(!o)return;const t=b.textContent;b.disabled=true;b.textContent="Ban raha hai...";try{const J=await loadJs(),mine=me.id==o.sellerId?me:(D.users||[]).find(u=>u.id==o.sellerId)||{};const sl={brand:SITE.name||"Hassaan Digital Point",shop:o.sellerName,name:mine.name||o.sellerName,phone:mine.phone||o.sellerPhone||"",addr:[mine.address,mine.city,mine.pin].filter(Boolean).join(", ")};labelPDF(J,o,sl).save("Label_"+o.id.slice(0,6).toUpperCase()+".pdf");toast("Label download ho gaya")}catch(e){toast("Label nahi bana: "+(e.message||e))}b.disabled=false;b.textContent=t},
  menu(){const e=$("#dr");if(e)e.classList.toggle("open")},
  dtab(d){$("#dr")?.classList.remove("open");return A.tab(d)},
  dgo(d){$("#dr")?.classList.remove("open");return A.go(d)},
