@@ -534,7 +534,7 @@ function aRefer(){const U=D.users,byC={};U.forEach(u=>{if(u.refCode)byC[u.refCod
 const RS=new Map();function runRef(){if(!me||me.role!="admin"||!F.refOn||!seen.orders||!seen.users)return;const by={};D.users.forEach(u=>{if(u.refBy)(by[u.refBy]=by[u.refBy]||[]).push(u)});const dl=new Set(D.orders.filter(o=>o.status=="delivered"&&(o.itemsTotal||0)>=(F.refMin||0)).map(o=>o.customerId));
  D.users.filter(u=>u.refCode).forEach(r=>{const L=by[r.refCode]||[],j=L.length,o=L.filter(x=>dl.has(x.id)).length,key=j+"|"+o;if((r.refJoined||0)!=j||(r.refOrdered||0)!=o){if(RS.get(r.id)==key)return;RS.set(r.id,key);updateDoc(doc(db,"users",r.id),{refJoined:j,refOrdered:o}).catch(()=>{})}})}
 const refIn=()=>F.refOn?`<input id=rc placeholder="Referral code (optional)" value="${esc(lsGet("refc")||"")}" style="text-transform:uppercase">`+(F.refFr?`<p class=mu style="margin:0 0 8px;font-size:12px">Use a friend's code and get ${inr(F.refFr)} on your first order</p>`:""):"";
-{const r=new URLSearchParams(location.search).get("ref");if(r)lsSet("refc",r.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,12))}
+{const r=new URLSearchParams(location.search).get("ref");if(r){try{localStorage.refc=r.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,12)}catch(e){}}}
 function head0(dv){const lg=`<img class=lgi src="${LOGO}">`;return`<div class=hw><a class=brand data-a=shop>${lg}${dv||`<b>${esc(SITE.name||"Hassaan Digital Point")}</b>`}</a></div>`}
 function head(){const n=cart().length,c=me.role=="customer";
  const pf=`<button class="hb ic ${avOk()?"pfb":""}" data-a=go data-v=profile title="Profile">${avHTML()}</button>`;
@@ -989,7 +989,7 @@ const A={
       if($("#otpbox"))$("#otpbox").style.display="block";if($("#lgb"))$("#lgb").textContent="Verify OTP & create account";if($("#otp"))$("#otp").focus();return toast("OTP sent to "+ph)}
     const code=($("#otp")?$("#otp").value:"").trim();if(!/^\d{6}$/.test(code))return toast("Enter the 6-digit OTP");
     try{await OT.conf.confirm(code);OT.ok=ph}catch(x){return toast(otpErr(x))}}
-  {const cl=await claimPhone(ph,u.uid);if(cl=="taken")return toast("This mobile number is already registered with another account. One mobile number can be used only once.")}try{await linkWithCredential(u,EmailAuthProvider.credential(e,p))}catch(x){freePhone(ph);throw x}const pr={name:n,rname:n,phone:ph,email:e,refCode:mkCode(u.uid)};if(OT.ok==ph)pr.phoneVerified=true;if(rc)pr.refBy=rc;await updateDoc(doc(db,"users",u.uid),pr);Object.assign(me,pr,{guest:false});lv=false;toast("Account created. Welcome!");applyPA();render(1)},
+  {const cl=await claimPhone(ph,u.uid);if(cl=="taken")return toast("This mobile number is already registered with another account. One mobile number can be used only once.")}try{await linkWithCredential(u,EmailAuthProvider.credential(e,p))}catch(x){freePhone(ph);throw x}const pr={name:n,rname:n,phone:ph,email:e,refCode:mkCode(u.uid)};if(OT.ok==ph)pr.phoneVerified=true;await updateDoc(doc(db,"users",u.uid),pr);Object.assign(me,pr,{guest:false});if(rc){try{await updateDoc(doc(db,"users",u.uid),{refBy:rc});me.refBy=rc}catch(x){console.warn("refBy save failed (check Firestore rules):",x)}}lv=false;toast("Account created. Welcome!");applyPA();render(1)},
  amode(d){am=d.m;loginV()},otpresend(){OT.conf=null;OT.ph="";return A.signup()},
  duty(){const on=D.duty.some(x=>x.id==me.id);return setDoc(doc(db,"duty",me.id),{name:me.name,online:!on})},
  login(){return signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)},
